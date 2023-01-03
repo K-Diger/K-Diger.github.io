@@ -29,9 +29,9 @@ package org.springframework.data.jpa.repository;
 @NoRepositoryBean
 public interface JpaRepository<T, ID> extends PagingAndSortingRepository<T, ID>, QueryByExampleExecutor<T> {
 
-    findAll
+    findAll();
 
-        findById
+    findById();
 
     ...
 }
@@ -85,7 +85,7 @@ Crud 레포지토리에서 상속받는 Repository는 Spring이 Bean Scan을 하
 
 # Spring Data JPA 공통 인터페이스 구성
 
-![img.png](images/SpringDataJPA-1.png)
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/SpringDataJPA-1.png?raw=true)
 
 ---
 
@@ -256,3 +256,101 @@ public class SimpleJpaRepository<T, ID> implements JpaRepositoryImplementation<T
 
 # 새로운 엔티티를 구별하는 방법
 
+## 객체 식별 기본 전략
+
+- 식별자가 객체일 때 Null 검증, Null 일땐 새로운 엔티티로 판단한다.
+
+- 식별자가 기본 타입일 때 0이면 새로운 엔티티로 판단한다.
+
+
+이 전략을 알아둬야하는 이유가 있다.
+
+```java
+@Entity
+public class Item {
+
+    @Id @GenereatedValue
+    private Long id;
+}
+```
+
+우리는 보통 위와 같이 객체 식별자를 등록하는데, 그렇지 않은 경우에 주의해야할 점이 생기기 때문이다.
+
+만약 다음과 같이 엔티티를 설계했을 때, isNew()메서드에서는 어떻게 인식을 할까?
+
+```java
+@Entity
+public class Item {
+
+    @Id
+    private String uuid;
+}
+
+class ItemRepositoryTest {
+
+    @Autowired ItemRepository itemRepository;
+
+    @Test
+    public void save() {
+        Item item = new Item("A");
+        itemRepository.save(item);
+    }
+}
+```
+
+isNew()메서드는 새로운 객체임을 인식하지 못한다. (Null이 아닌 값이 들어있기 때문이다.)
+
+따라서 merge를 하게되는 일이 발생하게 된다.
+
+Merge는 엔티티가 영속성 컨텍스트 생명주기에서 Detached 되었다가 다시 Attached 되는 상황이 아니라면 굳이 쓸 일도 이유도 없는 기능이다.
+
+
+그럼 위와 같은 상황은 어떻게 해결해야하는가??
+
+## Persistable 구현
+
+```java
+@Entity
+public class Item implements Persistable<String> {
+
+    @Id
+    private String uuid;
+
+    @Override
+    public String getUuid() {
+        return uuid;
+    }
+
+    @Override
+    public boolean isNew() {
+        // 새로운 객체인지 판별하는 로직을 작성해야한다.
+        return false;
+    }
+}
+```
+
+## Persistable 구현 및 JPA Auditing 활용
+
+```java
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+public class Item implements Persistable<String> {
+
+    @Id
+    private String uuid;
+
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+    @Override
+    public String getUuid() {
+        return uuid;
+    }
+
+    @Override
+    public boolean isNew() {
+        // 새로운 객체인지 판별하는 로직을 작성
+        return createdDate == null;
+    }
+}
+```
