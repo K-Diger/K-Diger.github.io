@@ -1,6 +1,6 @@
 ---
 
-title: Spring Web MVC - 웹 서버, 웹 애플리케이션서버, 서블릿, 멀티 쓰레드, HTML, HTTP, API, CSR, SSR
+title: Spring Web MVC - 웹 서버, 웹 애플리케이션서버, 서블릿, 멀티 쓰레드
 author: 김도현
 date: 2023-01-09
 categories: [Spring, MVC]
@@ -39,7 +39,7 @@ WAS가 HTML,CSS,JS 같이 단순 정적 컨텐츠를 내려주는 역할은 금�
 
 # 서블릿이란? 그리고 이건 왜 필요한거야??
 
-![img.png](images/서버가해야할일.png)
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/%EC%84%9C%EB%B2%84%EA%B0%80%ED%95%B4%EC%95%BC%ED%95%A0%EC%9D%BC.png?raw=true)
 
 위 그림과 같이 실제로 웹 애플리케이션 서버가 해줘야하는 일은 저렇게 산더미만큼 있다.
 
@@ -77,7 +77,7 @@ public class HelloServlet extends HttpServlet {
 
 서블릿은 동시 요청에 대한 멀티 쓰레드 처리를 지원한다!
 
-![img.png](images/서블릿을호출하는것은.png)
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/%EC%84%9C%EB%B8%94%EB%A6%BF%EC%9D%84%ED%98%B8%EC%B6%9C%ED%95%98%EB%8A%94%EA%B2%83%EC%9D%80.png?raw=true)
 
 정리하자면 서블릿의 도움을 받아 손쉽게 웹 애플리케이션과 클라이언트간의 HTTP 통신을 할 수 있게되는 것이다.
 
