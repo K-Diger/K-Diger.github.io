@@ -1,8 +1,8 @@
 ---
 
-title: Spring Web MVC - 서블릿이란? MVC 패턴이란??
+title: Spring Web MVC - 서블릿 및 구조
 author: 김도현
-date: 2023-01-10
+date: 2023-01-12
 categories: [Spring, MVC]
 tags: [Spring, MVC]
 math: true
@@ -12,7 +12,7 @@ mermaid: true
 
 # 서블릿 컨테이너의 동작 방식
 
-![img.png](images/서블릿 컨테이너 동작 방식.png)
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/%EC%84%9C%EB%B8%94%EB%A6%BF%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%8F%99%EC%9E%91%20%EB%B0%A9%EC%8B%9D.png?raw=true)
 
 1. **Spring Boot**가 실행되면 **내장 톰캣 서버**를 띄워준다.
 2. 여기서 **톰캣 서버**는 그 내부에서 **서블릿 컨테이너**를 가지고 있다.
@@ -107,7 +107,29 @@ Front Controller 패턴을 도입하면 이 문제를 해결할 수 있게 된�
 
 Spring Web MVC 환경에서 DispatcherServlet 이 Front Controller의 역할을 수행한다.
 
-![img_1.png](images/SpringMVC구조.png)
+![img_1.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/SpringMVC%EA%B5%AC%EC%A1%B0.png?raw=true)
 
 
-![img.png](images/디스패처 서블릿 관계구조.png)
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/%EB%94%94%EC%8A%A4%ED%8C%A8%EC%B2%98%20%EC%84%9C%EB%B8%94%EB%A6%BF%20%EA%B4%80%EA%B3%84%EA%B5%AC%EC%A1%B0.png?raw=true)
+
+# Spring Boot와 Dispatcher Servlet
+
+스프링 부트 애플리케이션을 실행하면, 스프링 부트가 내장 톰캣을 띄우는 것과 동시에 Dispatcher Servlet을 띄운다.
+
+그리고 이 때, 모든 경로에 대해서 URI 매핑을 수행한다.
+
+하지만 만약 디스패처 서블릿이 아니라 커스텀한 서블릿을 만들고 적용하면 과연 어떤 서블릿이 적용되는 걸까?
+
+그 결론은, 더 구체적인 경로를 지정한 서블릿이 우선순위가 높아진다. 따라서 모든 경로를 대상으로한 서블릿을 만든게 아니라면
+
+커스텀한 서블릿이 먼저 수행된다.
+
+# Dispatecher Servlet 동작 흐름
+
+- WAS로 HTTP 요청이 들어와서 서블릿이 호출되면, service()메서드가 호출된다.
+- Spring MVC 는 Dispatcher Servlet의 부모 객체인 FrameworkServlet에서 service()를 Override 해두었다.
+- 결국 FrameworkServlet.service()가 실행되면 DispatcherServlet.doDispatch() 메서드가 호출된다.
+  - 이 부분이 가장 중요한데, 핸들러를 찾고 컨트롤러를 호출하기 위한 Root 과정이다.
+  - doDispatcher() 메서드의 흐름을 살펴보면 다음과 같다.
+  - 핸들러 조회(컨트롤러 조회) -> 핸들러 어댑터 조회 -> 핸들러 어댑터 실행 -> 핸들러 어댑터에 의한 핸들러 실행 -> ModelAndView 반환
+- 여기서 핸들러 조회 과정에서는 요청 URI 뿐만 아니라, HTTP 스펙에 담겨있는 다양한 헤더 정보 또한 활용된다.
