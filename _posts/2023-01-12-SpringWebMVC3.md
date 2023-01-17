@@ -109,6 +109,25 @@ Spring Web MVC 환경에서 DispatcherServlet 이 Front Controller의 역할을 
 
 ![img_1.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/SpringMVC%EA%B5%AC%EC%A1%B0.png?raw=true)
 
+또한 핸들러 어댑터가 있어야 Front Controller가 다양한 Controller 호출할 수 있게 된다.
+
+핸들러 어댑터는 GOF 디자인 패턴 중 어댑터 패턴으로 구성되어 있다.
+
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/SpringMVCAdapter.png?raw=true)
+
+핸들러 어댑터는 위와 같이 구성할 수 있는데
+
+```java
+boolean supports(Object handler)
+```
+이 구문에서 handler는 컨트롤러를 의미하며, 해당 어댑터가 해당 컨트롤러를 처리할 수 있는지 판단하는 메서드이다.
+
+```java
+ModelView handler(HttpServletRequest request, HttpServletResponse response, Object handler) {
+
+    }
+```
+이 구문에서는 적절한 어댑터를 찾아 반환해주는 기능을 수행한다.
 
 ![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/%EB%94%94%EC%8A%A4%ED%8C%A8%EC%B2%98%20%EC%84%9C%EB%B8%94%EB%A6%BF%20%EA%B4%80%EA%B3%84%EA%B5%AC%EC%A1%B0.png?raw=true)
 
