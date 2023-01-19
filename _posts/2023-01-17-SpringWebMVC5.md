@@ -47,7 +47,6 @@ public class SpringMvcControllerV3 {
 
 위와 같이 직접 ModelAndView를 만들고 반환하지 않고 String으로 View 이름만 적어줘도 똑같이 동작하게 된다!
 
-
 ```java
 @Controller
 @RequestMapping("/mvc")
