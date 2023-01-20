@@ -1,6 +1,6 @@
 ---
 
-title: Spring Web MVC - HTTP 응답
+title: Spring Web MVC - HTTP 응답, Http Message Converter
 author: 김도현
 date: 2023-01-19
 categories: [Spring, MVC]
@@ -114,3 +114,11 @@ read(), writer() 라는 메서드도 명세되어있는데, 이는 Converter를 
 위와 같이 여러 종류의 Message Converter가 존재하는데 각 컨버터를 배정하기 위해서는
 
 대상 클래스 타입, 미디어 타입을 체크하여 어떤 컨버터를 사용할지 결정한다.
+
+## HTTP Message Converter는 어디서 동작하는건가?
+
+애노테이션 기반의 컨트롤러인 @RequestMapping을 처리하는 HandlerAdapter인 RequsetMappingHandlerAdapter를 주목하자.
+
+### RequsetMappingHandlerAdapter 동작방식
+
+![img.png](images/SpringMVC 구조의 핸들러 어댑터 상세.png)
