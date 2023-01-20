@@ -488,20 +488,147 @@ public class RequestBodyStringController {
 
 위와 같이 서블릿을 받지않고 InputStream, Writer를 직접 받을 수 있는 이유는 Spring MVC가 해결해주기 때문이다!
 
-##
+## HttpEntity 활용하기
 
 ```java
 @Slf4j
 @Controller
 public class RequestBodyStringController {
     @PostMapping("/request-body-string-v3")
-    public void requestBodyString(HttpEntity<String> httpEntity) throws IOException {
-        String messageBody = StramUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+    public HttpEntity<String> requestBodyString(HttpEntity<String> httpEntity) throws IOException {
+        String messageBody = httpEntity.body();
 
         log.info(messageBody);
-        responseWriter.write("ok");
+        return new HttpEntity<>("ok");
     }
 }
 ```
 
-위와 같이 HttpEntity<String> 와 같은 형태로 받을 수도 있는데, 이는 HttpConverter
+위와 같이 HttpEntity<String> 와 같은 형태로 요청받기/반환하기 를 할 수 있는데, 이는 HttpMessageConverter가 지원해주는 기능이다.
+
+
+## HttpEntity와 ResponseEntity
+
+```java
+@Slf4j
+@Controller
+public class RequestBodyStringController {
+    @PostMapping("/request-body-string-v3")
+    public HttpEntity<String> requestBodyString(HttpEntity<String> httpEntity) throws IOException {
+        String messageBody = httpEntity.body();
+
+        log.info(messageBody);
+        return new ResponseEntity<>("ok", HttpStatus.CREATED);
+    }
+}
+```
+
+위와 같이 ResponseEntity를 사용하여 상태코드를 명시적으로 내려줄 수도 있다.
+
+그리고 ResponseEntity는 HttpEntity를 상속받은 클래스이다.
+
+## @RequestBody로 입력받고 @ResponseBody로 반환하기
+
+```java
+@Slf4j
+@Controller
+public class RequestBodyStringController {
+
+    @ResponseBody
+    @PostMapping("/request-body-string-v4")
+    public String requestBodyString(@RequestBody String messageBody) throws IOException {
+        log.info(messageBody);
+        return "ok";
+    }
+}
+```
+
+위와 같이 @ResponseBody가 붙은 메서드의 메서드 반환 타입을 String으로 바꾸고 문자열을 반환하면 JSON 형식으로 Body에 데이터를 응답해준다.
+
+# HTTP Message Body에 JSON으로 요청 받기
+
+## Row한 방법으로 JSON 요청 받기
+
+```java
+
+@Slf4j
+@Controller
+public class RequestBodyJSONController {
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    @PostMapping("/request-body-json-v1")
+    public void requestBodyJsonV1(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ServletInputStream inputStream = request.getInputSteram();
+        String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+
+        log.info(messageBody);
+        HelloData helloData = objectMapper.readValue(messageBody, HelloData.class);
+
+        log.info("username = {}", helloData.getUsername());
+    }
+}
+```
+
+## @RequestBody로 입력 받기 (@RequsetBody + String messageBody)
+
+```java
+
+@Slf4j
+@Controller
+public class RequestBodyJSONController {
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    @ResponseBody
+    @PostMapping("/request-body-json-v2")
+    public String requestBodyJsonV2(@RequestBody String messageBody) throws IOException {
+        log.info(messageBody);
+        HelloData helloData = objectMapper.readValue(messageBody, HelloData.class);
+        log.info("username = {}", helloData.getUsername());
+
+        return "ok";
+    }
+}
+```
+
+## 객체 타입으로 입력 받기 (@RequestBody + DTO)
+
+```java
+
+@Slf4j
+@Controller
+public class RequestBodyJSONController {
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    @ResponseBody
+    @PostMapping("/request-body-json-v3")
+    public String requestBodyJsonV3(@RequestBody HelloData helloData) throws IOException {
+        log.info("username = {}", helloData.getUsername());
+        return "ok";
+    }
+}
+```
+
+이 방법이 가능한 이유는 다음과 같다.
+
+HttpEntity, @RequestBody를 사용하면 HTTP 메시지 컨버터가 HTTP메시지 바디의 내용을 우리가 원하는 문자나 객체로 변환해준다.
+
+HTTP 메시지 컨버터는 문자 뿐만 아니라, JSON도 객체로 변환해주는 것인데 코드로 살펴본다면 V2에서 작성했던
+
+```java
+HelloData helloData = objectMapper.readValue(messageBody, HelloData.class);
+```
+이런 구문을 대신 해준다는 것이다.
+
+# RequestBody는 생략 불가능하다.
+
+매개변수에 애노테이션을 생략하고 입력한다면 @ModelAttribute 라는 애노테이션으로 처리해버린다.
+
+그리고 위에서 다룬 내용을 다시 한 번 살펴보자면
+
+String, int, Integer 같은 단순 타입은 @RequestParam
+
+커스텀한 객체 등 그 외의 타입은 @ModelAttribute 로 인식한다.
+
