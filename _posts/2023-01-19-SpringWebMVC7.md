@@ -104,7 +104,7 @@ read(), writer() 라는 메서드도 명세되어있는데, 이는 Converter를 
 
 - 2 = MappingJackson2HttpMessageConverter
   - 클래스 타입 : Object, HashMap
-  - 미디어 타입 : application/json || application/json 관련 ...
+  - 미디어 타입 : application/json 혹은 application/json 관련 ...
   - 요청 예시 : @RequestBody RequestForm requestForm
   - 응답 예시 : @ResponseBody return ResponseForm
 
@@ -120,7 +120,7 @@ read(), writer() 라는 메서드도 명세되어있는데, 이는 Converter를 
 
 ### RequsetMappingHandlerAdapter 동작방식
 
-![img.png](images/SpringMVC 구조의 핸들러 어댑터 상세.png)
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/SpringMVC%20%EA%B5%AC%EC%A1%B0%EC%9D%98%20%ED%95%B8%EB%93%A4%EB%9F%AC%20%EC%96%B4%EB%8C%91%ED%84%B0%20%EC%83%81%EC%84%B8.png?raw=true)
 
 애노테이션 기반의 컨트롤러는 매우 다양한 파라미터를 사용할 수 있다. (HttpServletRequest, Model, @RequestParam, @ModelAttribute, @RequestBody, HttpEntity)
 
@@ -173,7 +173,13 @@ ReturnValueHandler는 컨트롤러에서 String으로 View이름만 반환해도
 
 ## 다시 본론으로. HttpMessageConverter는 어디에서 동작하는가?
 
-![img.png](images/SpringMVC HttpMessageConverter의 위치.png)
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/SpringMVC%20HttpMessageConverter%EC%9D%98%20%EC%9C%84%EC%B9%98.png?raw=true)
 
-HttpMessageConverter를 사용하는 @RequestBody도 컨트롤러가 필요로 하는 파라미터의 값에 사용된다.
+위 그림과 같이
+
+ArgumentResolver가 HttpMessageConverter를 호출하고
+
+ReturnValueHandler가 HttpMessageConverter를 호출한다.
+
+결국에는 ArgumentResolver는 MessageConverter를 호출해서 나온 값을 HandlerAdapter에게 전달하는 것이다!
 
