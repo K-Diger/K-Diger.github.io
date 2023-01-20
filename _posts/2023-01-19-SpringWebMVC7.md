@@ -1,6 +1,6 @@
 ---
 
-title: Spring Web MVC - HTTP 응답, Http Message Converter
+title: Spring Web MVC - HTTP 응답, ArgumentResolver, ReturnValueHandler, Http Message Converter
 author: 김도현
 date: 2023-01-19
 categories: [Spring, MVC]
@@ -70,7 +70,6 @@ public class ResponseBodyController {
 
 ### @RestController = @Controller + @ResponseBody 이다.
 
-
 # HTTP Message Converter
 
 Spring MVC는 각 경우에 HTTP Message Converter를 적용한다.
@@ -122,3 +121,59 @@ read(), writer() 라는 메서드도 명세되어있는데, 이는 Converter를 
 ### RequsetMappingHandlerAdapter 동작방식
 
 ![img.png](images/SpringMVC 구조의 핸들러 어댑터 상세.png)
+
+애노테이션 기반의 컨트롤러는 매우 다양한 파라미터를 사용할 수 있다. (HttpServletRequest, Model, @RequestParam, @ModelAttribute, @RequestBody, HttpEntity)
+
+이렇게 유연한 파라미터를 다룰 수 있는 것은 ArgumentResolver 덕분이다.
+
+애노테이션 기반 컨트롤러를 처리하는 RequestMappingHandlerAdapter는 ArgumentResolver를 호출하여 핸들러가 필요로 하는 여러 파라미터의 객체(값)을 생성한다.
+
+그리고 파라미터 값이 셋팅되면 컨트롤러를 호출한다.
+
+즉, 다시 한 번 정리하자면,
+
+1. Dispatcher Servlet이 요청을 처리할 수 있는 적절한 핸들러를 찾는다. (핸들러 매핑)
+2. Disaptcher Servlet이 요청을 처리할 수 있는 핸들러를 다룰 수 있는 핸들러 어댑터를 찾는다.
+3. 핸들러 어댑터를 호출한다.
+4. 핸들러 어댑터는 요청으로 들어온 값을 자기가 다룰 수 있는 핸들러의 파라미터를 만들기 위해 Argument Resolver를 호출한다.
+5. Argument Resolver는 컨트롤러가 다룰 수 있는 타입으로 요청 값을 변환하여 핸들러 어댑터에게 전달한다.
+6. 핸들러 어댑터는 반환받은 값을 바탕으로 핸들러를 호출한다.
+
+### ArgumentResolver
+
+```java
+public interface HandlerMethodArgumentResolver {
+    boolean supportsParameter(MethodParameter parameter);
+
+    @Nullable
+    Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
+                           NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception;
+}
+```
+
+ArgumentResolver의 동작방식은 다음과 같다.
+
+1. ArgumentResolver의 supportsParameter()를 호출해서 해당 파라미터를 지원하는지 체크한다.
+2. 지원한다면, resolveArgument()를 호출해서 실제 객체를 생성한다.
+3. 지원하지 않는다면, 다른 ArgumentResolver를 검사한다.
+
+### ReturnValueHandler
+
+```java
+public interface HandlerMethodReturnValueHandler {
+    boolean supportsReturnType(MethodParameter parameter);
+
+    @Nullable
+    void handlerReturnValue(@Nullable Object returnValue, MethodParameter returnType,
+                           ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception;
+}
+```
+
+ReturnValueHandler는 컨트롤러에서 String으로 View이름만 반환해도 동작하던 이유를 설명한다.
+
+## 다시 본론으로. HttpMessageConverter는 어디에서 동작하는가?
+
+![img.png](images/SpringMVC HttpMessageConverter의 위치.png)
+
+HttpMessageConverter를 사용하는 @RequestBody도 컨트롤러가 필요로 하는 파라미터의 값에 사용된다.
+
