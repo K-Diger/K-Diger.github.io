@@ -71,7 +71,7 @@ public class Stack {
 
 ## 활성 영역이란 무엇일까?
 
-![img.png](images/WhatIsActiveAreaInJavaArray.png)
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/WhatIsActiveAreaInJavaArray.png?raw=true)
 
 그냥 배열의 모든 원소라고 보면 될 것 같다.
 
@@ -93,7 +93,7 @@ Live Thread란 현재 실행 중 혹은 향후 실행할 스레드를 나타내�
 
 Live Thread에서 **도달 가능한 객체는 GC의 대상에서 제외**된다.
 
-그리고 특**정 객체를 수집하려면, 그 객체가 참조하는 모든 객체도 수집**해야한다!
+그리고 **특정 객체를 수집하려면, 그 객체가 참조하는 모든 객체도 수집**해야한다!
 
 그렇기 때문에 **GC는 다른 객체의 참조를 찾기 위하여 재귀적으로 탐색**하는 알고리즘을 가지고 있다.
 
