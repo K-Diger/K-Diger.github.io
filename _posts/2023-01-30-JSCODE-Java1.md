@@ -12,15 +12,15 @@ mermaid: true
 
 # 1회차 미션
 
-## 1. Java 설치하기
+- 1. Java 설치하기
 
-## 2. IDE 설치하기 (IntelliJ)
+- 2. IDE 설치하기 (IntelliJ)
 
-## 3. IntelliJ에서 Hello World 출력하기!
+- 3. IntelliJ에서 Hello World 출력하기!
 
-## 4. 블로그 개설하기
+- 4. 블로그 개설하기
 
-## 5. 블로그 글 작성하기
+- 5. 블로그 글 작성하기
 
 ---
 
@@ -30,17 +30,17 @@ mermaid: true
 
 자바를 설치하는 과정은 매우매우매우 쉽다. 아래 사진을 따라하기만 하면 설치 끝이다!!
 
-![img.png](images/jscode/week1/img.png)
+![img.png](https://github.com/K-Diger/K-Diger.github.io/tree/main/images/jscode/week1/images/jscode/week1/img.png)
 
-![img_1.png](images/jscode/week1/img_1.png)
+![img_1.png](https://github.com/K-Diger/K-Diger.github.io/tree/main/images/jscode/week1/images/jscode/week1/img_1.png)
 
-![img_2.png](images/jscode/week1/img_2.png)
+![img_2.png](https://github.com/K-Diger/K-Diger.github.io/tree/main/images/jscode/week1/images/jscode/week1/img_2.png)
 
-![img_3.png](images/jscode/week1/img_3.png)
+![img_3.png](https://github.com/K-Diger/K-Diger.github.io/tree/main/images/jscode/week1/images/jscode/week1/img_3.png)
 
 ## 2. IDE 설치하기 (IntelliJ)
 
-![img_4.png](images/jscode/week1/img_4.png)
+![img_4.png](https://github.com/K-Diger/K-Diger.github.io/tree/main/images/jscode/week1/images/jscode/week1/img_4.png)
 
 
 IDE는 위 URL을 참고하여 보이는 페이지에서 다운받을 수 있다. 학교를 다니는 중이라면 학생 계정으로 Ultimate 버전을 쓸 수 있다!
