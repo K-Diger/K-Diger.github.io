@@ -32,15 +32,15 @@ mermaid: true
 
 ![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/jscode/week1/img.png?raw=true)
 
-![img_1.png](https://github.com/K-Diger/K-Diger.github.io/tree/main/images/jscode/week1/images/jscode/week1/img_1.png?raw=true)
+![img_1.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/jscode/week1/img_1.png?raw=true)
 
-![img_2.png](https://github.com/K-Diger/K-Diger.github.io/tree/main/images/jscode/week1/images/jscode/week1/img_2.png?raw=true)
+![img_2.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/jscode/week1/img_2.png?raw=true)
 
-![img_3.png](https://github.com/K-Diger/K-Diger.github.io/tree/main/images/jscode/week1/images/jscode/week1/img_3.png?raw=true)
+![img_3.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/jscode/week1/img_3.png?raw=true)
 
 ## 2. IDE 설치하기 (IntelliJ)
 
-![img_4.png](https://github.com/K-Diger/K-Diger.github.io/tree/main/images/jscode/week1/images/jscode/week1/img_4.png?raw=true)
+![img_4.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/jscode/week1/img_4.png?raw=true)
 
 IDE는 위 URL을 참고하여 보이는 페이지에서 다운받을 수 있다. 학교를 다니는 중이라면 학생 계정으로 Ultimate 버전을 쓸 수 있다!
 
@@ -52,7 +52,7 @@ IDE는 위 URL을 참고하여 보이는 페이지에서 다운받을 수 있다
 
 해결에 도움을 구하려고 팀원들에게 화면 공유를 키고 천천히 프로젝트 생성부터 다시 진행하니 귀신같이 해결됐다..
 
-![img_5.png](https://github.com/K-Diger/K-Diger.github.io/tree/main/images/jscode/week1/images/jscode/week1/img_5.png?raw=true)
+![img_5.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/jscode/week1/img_5.png?raw=true)
 
 ## 4. 블로그 개설하기
 
