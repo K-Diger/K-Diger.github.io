@@ -1,6 +1,6 @@
 ---
 
-title: Item 7. 다 쓴 객체 참조를 해제하라
+title: Effective-Java Item 7. 다 쓴 객체 참조를 해제하라
 author: 김도현
 date: 2023-01-24
 categories: [Effective-Java]

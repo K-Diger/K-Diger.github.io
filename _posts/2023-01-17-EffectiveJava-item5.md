@@ -1,6 +1,6 @@
 ---
 
-title: Item 5. 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라
+title: Effective-Java Item 5. 자원을 직접 명시하지 말고 의존 객체 주입을 사용하라
 author: 김도현
 date: 2023-01-17
 categories: [Effective-Java]

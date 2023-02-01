@@ -1,6 +1,6 @@
 ---
 
-title: Item 3. private 생성자 또는 enum 타입으로 싱글톤을 보장할 것
+title: Effective-Java Item 3. private 생성자 또는 enum 타입으로 싱글톤을 보장할 것
 author: 김도현
 date: 2023-01-09
 categories: [Effective-Java]
