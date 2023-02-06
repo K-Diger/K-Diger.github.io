@@ -317,7 +317,7 @@ JIT 에서 이미 전체 코드를 컴파일 해두었기 때문에 해당 부�
 
 서로의 단점을 보완해주는 관계이다.
 
-### Execution Engine Garbage Collector
+### Execution Engine - Garbage Collector
 
 참조되지 않는 객체를 정리해준다.
 
@@ -331,17 +331,15 @@ GC는 메모리(Heap영역)상의 상주하는 사용하지 않는 객체를 수
 
 JVM의 메모리 구조의 일부는 위와 같이 생겼다.
 
-### Young Generation
+### Young Generation (Eden + Survivor)
 
 새로 생성된 객체는 Young Generation 에서 시작한다. 모든 객체가 시작되는 1개의 Eden 공간과 Garbage Collection Cycle 에서 살아남은 후
 
-Eden 공간에서 살아남은 객체들이 이동하는 공간인 2개의 Survivor 공간이 있다.
+Eden 공간에서 살아남은 객체들은 Survivor 영역으로 이동한다.
 
 ### Old Generation
 
-Young Generation에서 수집되지 않은 객체들은 Young Generation 에서 Old Generation 으로 이동된다.
-
-Old Generation 에서 Garbage Collected 가 되었을 때, 가장 우선순위가 높게 처리되는 공간이다.
+Young Generation의 Survivor에서도 수집되지 않은 객체들은 Young Generation 에서 Old Generation 으로 이동된다.
 
 ### Permanent Generation (Metaspace)
 
@@ -351,7 +349,7 @@ Old Generation 에서 Garbage Collected 가 되었을 때, 가장 우선순위�
 
 Permanent Generation 은 JVM 에 의해서 Heap 영역의 메모리 크기가 강제되던 영역이였다.
 
-하지만 Metaspace 가 Native 메모리 영역에 배치되면서, 운영체제가 자동으로 그 크기를 조절할 수 있게 되고, Heap 에서 사용할 수 있는 메모리의 크기가 늘어나게 됐다.
+하지만 Metaspace 가 Native 영역에 배치되면서, 운영체제가 자동으로 그 크기를 조절할 수 있게 되고, Heap 에서 사용할 수 있는 메모리의 크기가 늘어나게 됐다.
 
 ## GC 상태
 
