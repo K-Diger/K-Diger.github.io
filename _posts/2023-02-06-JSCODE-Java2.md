@@ -204,7 +204,7 @@ Java 언어로 작성된 코드를 기계어에 꽤나 가까운 Byte Code로 �
 
 클래스 로더는 다음 과정을 거쳐 그 역할을 수행해낸다.
 
-### Loading
+### Class Loader 1. Loading
 
 .class 파일을 읽고 바이너리 데이터를 생성하여 **메서드 영역**에 저장한다.
 
@@ -212,7 +212,7 @@ Java 언어로 작성된 코드를 기계어에 꽤나 가까운 Byte Code로 �
 
 .class 로딩을 마친 후에 JVM은 **Heap 영역**에 이 파일들을 나타내기위해 Class타입의 객체를 생성한다. (getClass()메서드를 사용할 수 있는 이유!)
 
-### Linking
+### Class Loader 2. Linking
 
 Linking 과정은 아래 세 가지 과정을 통해 수행된다.
 
@@ -238,7 +238,7 @@ Linking 과정은 아래 세 가지 과정을 통해 수행된다.
 >
 > 간접 참조와 직접 참조의 차이점은 무엇인가요?!...
 
-### Initialization
+### Class Loader 3. Initialization
 
 모든 static 변수가 코드 및 static block 에 정의된 값으로 할당된다. (static 키워드가 들어간 요소들 메모리 할당)
 
