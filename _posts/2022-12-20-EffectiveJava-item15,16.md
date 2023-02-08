@@ -1,6 +1,6 @@
 ---
 
-title: Item 15, 16. 클래스와 멤버의 접근을 최소화하라, Public 클래스에서는 Public 필드가 아닌 접근자 메서드를 사용하라.
+title: Effective-Java Item 15, 16. 클래스와 멤버의 접근을 최소화하라, Public 클래스에서는 Public 필드가 아닌 접근자 메서드를 사용하라.
 author: Diger
 date: 2022-12-20
 categories: [Effective-Java]
