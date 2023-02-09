@@ -1,7 +1,6 @@
 ---
 
-title: JSCODE - 자바 스터디 3회차 (반복문, 배열, List(ArrayList), 제네릭) + 심화 미션(JCF, Generic, String vs StringBuilder vs
-StringBuffer)
+title: JSCODE - 자바 스터디 3회차 (반복문, 배열, List, 제네릭) + 심화 미션(JCF, Generic, String vs StringBuilder vs StringBuffer)
 author: 김도현
 date: 2023-02-09
 categories: [Java, Study]
