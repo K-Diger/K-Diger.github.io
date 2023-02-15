@@ -242,3 +242,92 @@ Static은 사용하기 편하다. 언제 어디서든 호출이 가능하기 때
 
 ## 심화미션 - Call By Reference, Call By Value
 
+### Call By Reference란
+
+특정 메서드를 실행할 때 파라미터에 특정 주소를 직접 전달하며 Pass By Reference 라고도 불린다.
+
+참조 값을 직접 넘기기 때문에 파라미터로 넘겨받은 수신 변수와, 파라미터로 넘기는 송신 변수가 동일한 변수로써 동작한다.
+
+이 방식은 주로 C++ 에서 사용되는데 Java는 Call By Value 방식을 채택하고있다.
+
+### Call By Value란
+
+특정 메서드를 실행할 때 파라미터에 특정 값을 직접 전달하며 Pass By Value 라고도 불린다.
+
+Java 에는 Primitive Type, ReferenceType (Wrapper Class) 두가지가 존재하는데 각 타입에 따라서 동작되는 방식도 살짝 다르다.
+
+우선 Primitive Type은 JVM의 Stack 영역에서 생성되는데 그 특징을 살펴보면 아래 코드와 같다.
+
+```java
+public class Main {
+
+    void test() {
+        int a = 1;
+        int b = 2;
+
+        modify(a, b);
+    }
+
+    private void modify(int a, int b) {
+        // 여기 있는 파라미터 a, b 는 이름만 같을 뿐 test() 에 있는 a, b 와 다른 변수
+        a = 5;
+        b = 10;
+    }
+}
+```
+
+modify(a, b) 를 호출하는 순간 Stack 영역에 새로운 변수 a, b 가 새로 생성되어 총 4 개의 변수가 생기게 된다.
+
+이렇게 변수명이 같던 이러한 상관없이 Primitive Type은 그 변수가 가진 값 만을 전달하는 방식으로 동작한다.
+
+ReferenceType 에서는 조금 동작이 다르게 되는데 코드로 살펴보면 다음과 같다.
+
+```java
+class Member {
+    public String name;
+
+    public User(String name) {
+        this.name = name;
+    }
+}
+
+public class Main {
+
+    void test() {
+        Member memberA = new Member("Diger");
+        Member memberB = new User("John");
+
+        modify(memberA, memberB);
+    }
+
+    private void modify(Member memberA, Member memberB) {
+        // modify 의 memberA 와 test 의 memberA 는 같은 객체를 바라보고 있다.
+        memberA.name = "DDiger";
+
+        // b 에 새로운 객체를 할당하면 가리키는 객체가 달라지고 원본에는 영향이 없다.
+        memberB = new Member("JJohn");
+        memberB.name = "JJJohn";
+    }
+}
+```
+
+위 코드와 주석이 조금 복잡하게 느껴질 수 있지만 쉽게 요약하자면 다음과 같다.
+
+Wrapper Class는 기본적으로 "객체"이다. Integer든 String 이든, Member든 해당 타입을 사용한다는 것은
+
+해당 타입을 가진 인스턴스를 만든다는 것이고, 그렇기 때문에 Heap 영역에 해당 타입을 참조하고 있는 것이 되는 것이다.
+
+```java
+private void modify(Member memberA, Member memberB) 라는 구문에서도
+```
+
+결국에는 Java 는 memberA가 가진 **"값"**, memberB가 가진 **"값"** 만을 사용하는 것이기 때문에
+
+test() 메서드 내에 있는 memberA, memberB와는 다른 것이다.
+
+매개변수로 test()의 memberA, memberB의 값을 받았고 그를 바탕으로 다른 인스턴스를 만들어 버린 것이다!!
+
+
+[참고한 블로그 - 정리가 매우 잘 되어있다.](https://bcp0109.tistory.com/360)
+
+이를 확실하게 이해하기 위해서는 반드시 JVM의 메모리 구조를 알아야 하고, 왜 Java가 Call By Reference가 아닌지는 코드를 따라 쳐보면 이해가 좀 더 잘갔다.
