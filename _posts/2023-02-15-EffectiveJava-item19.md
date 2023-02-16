@@ -56,7 +56,7 @@ public final class Child extends Parent {
     }
 
     @Override
-    public void parentMethod() {
+    public void parentOverrideTargetMethod() {
         System.out.println("먀");
     }
 
