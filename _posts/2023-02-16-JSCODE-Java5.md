@@ -91,7 +91,7 @@ hotfix-N 으로 네이밍을 하는 것이 일반적이다.
 
 보조 브랜치는, 병합 후 삭제되어야 한다.
 
-[Git-Flow](https://user-images.githubusercontent.com/43775108/125800526-2ea36d8e-6262-4ba5-9ef0-af7845131d85.png)
+![Git-Flow](https://user-images.githubusercontent.com/43775108/125800526-2ea36d8e-6262-4ba5-9ef0-af7845131d85.png)
 
 위 그림은 가장 이상적인 Git Flow 흐름을 나타내는 그림이다.
 
@@ -172,3 +172,24 @@ git push origin :기존브랜치이름 변경브랜치이름
 # GitHub Flow
 
 [참고하기 좋은 블로그](https://sihyung92.oopy.io/architecture/gitflow-vs-githubflow#c609762c-92c6-4e20-a997-d839056941be)
+
+아마 우리가 보통 Git을 처음 쓰고 프로젝트를 진행하면서 가장 많이 사용해왔던 패턴이 아닐까 하는 초간단 전략이다.
+
+부연 설명할 것이 없이 아래 그림으로 모든 설명이 끝난다...
+
+![GitHub-Flow](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcSQzqk%2FbtqUTnAMFqj%2FdliROOijRpnhkVncaTEloK%2Fimg.png)
+
+위 그림처럼 main브랜치는 항상 배포가 가능한 상태에 있으며 모든 브랜치는 main에서 시작한다는 특징과
+
+이렇게 뻗어나간 브랜치들은 **반드시** PR후에 Merge가 되는 방식을 제안하는것이 GitHub Flow이다.
+
+정말 단순하고 쉽게 사용할 수 있는 점이 큰 강점으로 생각되지만 규모가 큰 프로젝트에서는 과연 살아남을 수 있는 전략인지 궁금하긴하다!
+
+---
+
+# GitLab Flow
+
+GitHub Flow는 너무 간단해서 배포, 환경 구성, 릴리즈, 통합 에 대한 이슈가 많다고 한다.
+
+그래서 이를 보완하고자 GitLab에서 제안한 전략이다.
+
