@@ -189,7 +189,87 @@ git push origin :기존브랜치이름 변경브랜치이름
 
 # GitLab Flow
 
+[참고하기 좋은 블로그](https://sihyung92.oopy.io/architecture/gitflow-vs-githubflow#c609762c-92c6-4e20-a997-d839056941be)
+
 GitHub Flow는 너무 간단해서 배포, 환경 구성, 릴리즈, 통합 에 대한 이슈가 많다고 한다.
 
 그래서 이를 보완하고자 GitLab에서 제안한 전략이다.
 
+![GitLab-Flow](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcKg4cN%2FbtrsC9Iih0f%2FXl7RoK2KfrzWVkWttjfKNk%2Fimg.png)
+
+위 그림이 GitLab Flow를 잘 나타내는 그림이다.
+
+master 에서 기능 개발을 수행하고 (필요 시 feature 브랜치도 만들어서 기능 개발을 한다.)
+
+완성된 기능을 가진 내용을 pre-production 에 반영하고
+
+그 이후에 production 에 반영하는 형태이다.
+
+즉, 앞서 살펴본 GitHub Flow에서 배포를 위한 브랜치를 따로 추가하는 것으로 생각하면 된다.
+
+---
+
+# Trunk Based Development
+
+GitHub Flow와 비슷하게 보이는 방식이다.
+
+trunck 혹은 master(main) 브랜치에서 모든 작업을 수행하는 방식인데 여기서 반드시 지켜야하는 규악이 있다는 점이 가장 큰 차이점이다.
+
+## Trunk Based Development Rule 1. 페어 프로그래밍
+
+페어 프로그래밍은 한 명은 개발, 한 명은 코드 리뷰를 실시간으로 수행하는 방식인데
+
+PR 요청이 추가로 필요하지 않고 즉각적인 피드백을 적용할 수 있다는 장점으로
+
+Trunk Based Development의 꼭 지켜야하는 규악 중 한 가지로 채택되었다.
+
+## Trunk Based Development Rule 2. 빌드의 신뢰성
+
+현재 반영된 코드가 항상 빌드가 가능한가? 를 고려해야한다.
+
+이를 위해선 자동테스트와 효과적인 테스트 전략이 요구된다.
+
+## Trunk Based Development Rule 3. 작업이 완료되지 않은 내용이 있는가?
+
+main 브랜치에는 미처 작업이 완료되지 않은 내용이 있을 수 있다.
+
+그렇기 때문에 feature 브랜치를 사용하여 작업이 완료되지 않은 부분은 숨겨야한다.
+
+이 때 완료되지 않은 내용이 단순한 작업이라면 branch by abstraction
+
+다소 복잡한 내용이라면 feature 브랜치를 사용하면 된다.
+
+## Trunk Based Development Rule 4. 소규모 개발
+
+릴리즈를 더 자주 할 수 있도록 소규모 단위로 쪼개서 개발한다.
+
+소규모 단위의 적절한 양은 며칠이 아닌, 몇 시간안에 완료될 수 있는 양을 말한다.
+
+## Trunk Based Development Rule 5. 빠른 빌드
+
+빌드/테스트 작업은 수 분 이내로 완료되어야한다. 이 때 작업시간이 길어진다면 아키텍처적인 개선을 고려해봐야한다.
+
+
+## Trunk Based Development 의 장점
+
+- 빠른 피드백
+
+- 코드 컨벤션
+
+- CI
+
+- 병합 충돌 방지 -> 대규모 리팩터링 가능
+
+---
+
+# Rebase
+
+rebase는 같은 뿌리를 가진 2개 이상의 Branch에서
+
+Branch A의 Base를 Branch B의 최신 커밋으로 base를 옮기는 것이다.
+
+이렇게 되면, Branch B의 그동안의 커밋 내용을 모두 깔끔하게 가져가 더 보기좋은 커밋 히스토리를 만들 수 있지만
+
+한 커밋마다 매번 충돌을 해결해줘야하는 상황도 발생하긴한다.
+
+rebase를 사용하는 명령어와 어떨 때 쓰이면 좋을지는 조금 더 알아본 후 작성해보자 (2023/02/18)
