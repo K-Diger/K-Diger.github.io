@@ -60,14 +60,14 @@ package src.class6;
 public class Main {
 
     public static void main(String[] args) {
-        Starter starter = new Starter(
-            new PhoneNumberValidator(), new InputAgent(), new PrintAgent());
-        starter.start();
+        Starter starter = new Starter(new PhoneNumberValidator(), new InputAgent(), new PrintAgent());
+        starter.execute();
     }
 }
 ```
 
 ## Starter.java
+
 ```java
 package src.class6;
 
@@ -86,7 +86,7 @@ public class Starter {
         this.printAgent = printAgent;
     }
 
-    public void start() {
+    public void execute() {
         while (isContinued) {
             try {
                 printAgent.executeInputGuide();
