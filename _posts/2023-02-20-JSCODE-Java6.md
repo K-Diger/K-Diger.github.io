@@ -67,7 +67,7 @@ public class Main {
 }
 ```
 
-## Stater.java
+## Starter.java
 ```java
 package src.class6;
 
