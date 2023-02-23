@@ -155,7 +155,7 @@ public class MemberRepository {
 
 ## 패키지 구조
 
-![img.png](img.png)
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/jscode/img.png?raw=true)
 
 - DependencyFactory는 클래스 간 의존성 주입을 대신 수행해주는 역할이다.
 
