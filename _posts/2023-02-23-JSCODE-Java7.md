@@ -354,7 +354,7 @@ public class GymService {
 
     private void findMember() {
         gymPrintAgent.inputSearchedTargetUserGuide();
-        Member member = memberRepository.findByName(gymInputAgent.input());
+        final Member member = memberRepository.findByName(gymInputAgent.input());
         if (member == null) {
             gymPrintAgent.illegalArgumentExceptionPrinter(
                 new IllegalArgumentException("존재하지 않은 회원입니다.")
@@ -410,6 +410,7 @@ public class MemberRepository {
 
     private final List<Member> members = new ArrayList<>();
 
+    // 디미터의 법칙을 잘 적용했는가?
     public Member findByEmail(String email) {
         for (Member member : members) {
             if (member.getEmail().equals(email)) {
@@ -581,3 +582,54 @@ public class Main {
 
 ---
 
+# 배운 내용과 앞으로 학습해가야할 내용
+
+## 객체지향을 알아가려면
+
+우선은 아래 자료를 순서대로 한 번씩 보고 스스로 습득하는 것이 좋은 것이 되겠다.
+
+- 응집도 : 내부 요소들이 연관돼 있는 정도. 모듈 내 요소들이 하나의 목적을 위해 긴밀하게 협력 - 높은 응집도
+
+- 결합도 : 의존성의 정도. 다른 모듈에 대해 얼마나 많은 지식을 갖고있는지
+
+> 오브젝트보다 객체지향의 사실과 오해 먼저 읽는걸 추천!!
+
+1. 객체지향의 사실과 오해
+
+2. 오브젝트
+
+3. https://www.youtube.com/watch?v=dJ5C4qRqAgA
+
+- 디미터 법칙 (중요!)
+
+[이전에 작성한 코드](https://k-diger.github.io/posts/JSCODE-Java6/)
+
+지금 작성한 코드는 객체지향을 온전히 적용하기 좋은 예제는 아니였다.
+
+객체간의 메세지를 통해 협력 관계를 구축하는 것이 객체지향의 핵심이지만 요구사항이 객체지향을 원한 것은 아니였다.
+
+그래도 Starter.java의 코드 중
+
+29번째 라인인
+
+```java
+printAgent.executeInputPhoneNumber(phoneNumber.convertToPhoneNumber());
+```
+
+구문은 디미터의 법칙을 잘 적용시킨 사례이다.
+
+디미터의 법칙을 적용하지 않는다면 위 코드는 다음처럼 바뀔 수 있게 된다.
+
+```java
+printAgent.executeInputPhoneNumber("010-" + phoneNumber.getNumber() + "입니다.");
+```
+
+또한 책임과 역할이라는 용어를 너무 자세히 구분하지 않아도 되긴하다.
+
+한 객체에 너무 많은 책임 혹은 역할만 부여하지 않는다는 것이 중요하다.
+
+또한 다른 객체간의 **의존성 결합을 최소화**하되 그 객체 스스로가 처리할 수 있는 로직을 최대한 끌어내어
+
+**높은 응집도**를 가져가는 것이 좋은 객체지향 설계의 기반이 된다.
+
+그리고 객체지향의 원칙 중 SOLID원칙이 있는데 그 중에서도 DIP 원칙은 결합도를 낮추는데 효과적인 원칙으로 여겨지고 있다.
