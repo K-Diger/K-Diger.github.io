@@ -1,6 +1,6 @@
 ---
 
-title: @Async 애노테이션 조금 더 효율적으로 사용해보기
+title: '@Async' 애노테이션 조금 더 효율적으로 사용해보기
 author: 김도현
 date: 2023-02-26
 categories: [Spring, Async, Thread]
@@ -18,15 +18,15 @@ mermaid: true
 
 그런데, 이 비동기 메서드를 추가하자마자 Postman에서 최종적으로 클라이언트가 받는 요청에 대한 응답시간이 현저하게 늘어났다.
 
-![](../images/async/성능 개선 이전 첫 요청.jpg)
+![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/async/%EC%84%B1%EB%8A%A5%20%EA%B0%9C%EC%84%A0%20%EC%9D%B4%EC%A0%84%20%EC%B2%AB%20%EC%9A%94%EC%B2%AD.jpg?raw=true)
 
 
-![](../images/async/성능 개선 이전 두번째 요청.jpg)
+![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/async/%EC%84%B1%EB%8A%A5%20%EA%B0%9C%EC%84%A0%20%EC%9D%B4%EC%A0%84%20%EB%91%90%EB%B2%88%EC%A7%B8%20%EC%9A%94%EC%B2%AD.jpg?raw=true)
 
 
 - 서버가 켜진 즉시 첫 요청 시 응답시간 **1884ms**
 
-- 가장 빨랐던 요청 시 응답 시간 **658ms**
+- 평상시 요청 응답 시간 **658ms**
 
 비동기 메서드를 추가하기 전에는 100ms도 넘지 않았던 응답시간이 저렇게 급격하게 늘어나니 클라이언트단에서도
 
@@ -158,9 +158,9 @@ public class AsyncConfig implements AsyncConfigurer {
 위와 같은 설정을 Bean으로 등록해주면 끝이다! 이렇게 간단하게 해결할 수 있음에도 성능 차이는 엄청났다.
 
 
-![](../images/async/성능 개선 후 첫 요청.jpg)
+![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/async/%EC%84%B1%EB%8A%A5%20%EA%B0%9C%EC%84%A0%20%ED%9B%84%20%EC%B2%AB%20%EC%9A%94%EC%B2%AD.jpg?raw=true)
 
-![](../images/async/성능 개선 후 두번째 요청.jpg)
+![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/async/%EC%84%B1%EB%8A%A5%20%EA%B0%9C%EC%84%A0%20%ED%9B%84%20%EB%91%90%EB%B2%88%EC%A7%B8%20%EC%9A%94%EC%B2%AD.jpg?raw=true)
 
 - 서버가 켜진 즉시 첫 요청 시 응답시간 **1884ms** -> **581ms**
 
@@ -170,4 +170,17 @@ public class AsyncConfig implements AsyncConfigurer {
 
 서버가 켜진 즉시 첫 요청 응답 시간은 약 324%로 빨라졌고
 
-평상시 응답 시간은  539%로 빨라졌다.
+평상시 응답 시간은 539%로 빨라졌다.
+
+
+# 기억해둬야할 것 (스프링 부트의 기본 스레드 갯수)
+
+여기서 쓰레드를 설정해준다는 설정은 당연하게도 H/W의 쓰레드가 아니다.
+
+나는 처음에 H/W쓰레드를 설정한다는 것으로 이해해서 CPU 사양에 탑재된 쓰레드 만큼 셋팅을 하려 했으나
+
+익명의 멘토 개발자의 조언을 통해 논리적인 쓰레드를 설정한다는 것을 알게 되었다.
+
+즉, Tomcat 기본 설정에서 따로 건들지 않았다면 사용자 요청을 처리하기 위한 스레드를 담는
+
+스레드 풀에 200개의 스레드가 존재하고 그 중에서 DB 커넥션 스레드를 위해 10개의 스레드를 떼어 내준다.
