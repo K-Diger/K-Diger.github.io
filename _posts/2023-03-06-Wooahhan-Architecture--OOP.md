@@ -130,7 +130,7 @@ public class ReservationService {
 
         2. if (Rule 이 존재하면){
             Discount를 읽어 할인된 요금 계산
-        } else {
+        } else{
             Movie의 정가를 이용해 요금 계산
         }
         3. Reservation 생성 후 DB 저장
@@ -374,6 +374,7 @@ public interface Rule {
 ```java
 // 10회 째 상영되는 상영인지 확인 - 할인 규칙
 public class SequenceRule implements Rule {
+
     boolean isSatisfiedBy(Showing showing) {
         return showing.isSequence(sequence);
     }
@@ -452,6 +453,7 @@ public class ReservationService {
 ## 다시 한 번 비교해보자 Transaction Script vs Domain Model
 
 ### Transaction Script Service (Fat Service)
+
 ```java
 public class ReservationService {
 
@@ -483,6 +485,7 @@ public class ReservationService {
 실제로 로직이 긴 요구사항을 다룰 때에는 어디서 에러가 발생하는지 찾기 어려워진다.
 
 ### Domain Model Service (Thin Service)
+
 ```java
 public class ReservationService {
 
@@ -504,3 +507,182 @@ public class ReservationService {
 
 DB와 패러다임을 매핑할 수 있도록 도와주며 실제 자바 코드로써 도메인 로직을 처리할 수 있도록 도와준다.
 
+## Domain Model과 Transaction Script를 섞어 쓰면 안되나?
+
+안되는건 아니지만 그리 좋진 않다.
+
+Transaction Script 패턴을 도입한 이후부터, Data와 Process는 따로 놀게된다.
+
+위의 Transaction Script 코드를 보면 데이터를 Domain에서 직접 다루지 않고 Service 계층에서 조작하는 것이 그 예시이다.
+
+즉, 데이터 관점에서 보는 것이다. Transaction Script 에서는 Entity 객체를 데이터 덩어리로 밖에 여기지 않는다.
+
+| Domain Model                           | Transaction Script                             |
+|----------------------------------------|------------------------------------------------|
+| Presentation                           | Presentation                                   |
+| Service                                | Domain                                         |
+| Domain                                 | Domain                                         |
+| Data Source (+ Object Mapper(ex) JPA)) | Datasource (+ Table Data Gateway (ex) xxxDAO)) |
+
+결과적으로 두 패턴의 계층을 비교하면 위와 같다.
+
+# 비교도 간략하게 해봤는데, 도대체 어떤 패턴을 써야하는가?
+
+> "변하지 않는 것은 모든 것이 변한다는 것이다." 라는 말이 있다.
+
+## 영화 예매 예제에서 변화를 도입해보자 - 중복 할인 혜택 추가
+
+이전 예제에서는 할인 혜택이 고정금액/비율금액 둘 중 하나만 적용 되었지만 이번 예제에는 변화를 주기 위해서 여러 개의 할인 혜택을 적용한다고 해보자
+
+### Transaction Script로 변화 적용
+
+```java
+public class ReservationService {
+
+    @Transactional
+    public Reservation reserveShowing(int customerId, int showingId, int audienceCount) {
+
+        Showing showing = showingDAO.selectShowing(showingId);
+        Movie movie = movieDAO.selectMovie(showing.getMovieId());
+        List<Rule> rules = ruleDAO.selectRules(movie.getId());
+
+        Rule rule = findRule(showing, rules);
+        Money fee = movie.getFee();
+        if (rule != null) {
+            fee = calculateFee(movie);
+        }
+
+        Reservation result = makeReservation(customerId, showingId, audienceCount, fee);
+        reservationDAO.insert(result);
+
+        return result;
+    }
+
+    // 기존 할인 혜택이 하나만 적용 되었을 때
+    private Money calculateFee(Movie movie) {
+        Discount discount = discountDAO.selectDiscount(movie.getId());
+
+        Money discountFee = Money.ZERO;
+        if (discountFee != null) {
+            if (discountFee.isAmountType()) {
+                discountFee = Money.wons(discount.getFee());
+            } else if (discount.isPercentType()) {
+                discountFee = movie.getFee().times(discount.getPercent());
+            }
+        }
+        return movie.getFee().minus(discountFee);
+    }
+
+    // 중복 할인 혜택이 적용 될 때
+    private Money calculateFee(Movie movie) {
+        List<Discount> discounts = discountDAO.selectDiscounts(movie.getId());
+
+        Money discountFee = Money.ZERO;
+        for (Discount discount : discounts) {
+            if (discountFee != null) {
+                if (discountFee.isAmountType()) {
+                    discountFee = Money.wons(discount.getFee());
+                } else if (discount.isPercentType()) {
+                    discountFee = movie.getFee().times(discount.getPercent());
+                }
+            }
+        }
+        return movie.getFee().minus(discountFee);
+    }
+}
+```
+
+Transaction Script 패턴을 사용하게 되면 비즈니스 로직에서 호출하는 private 메서드 내의 로직 자체를 건들여버린다.
+
+기존 코드를 손대는 것으로 이게 잘 동작하는지도 알기 힘들다.
+
+### Domain Model로 변화 적용
+
+#### Composite 디자인 패턴을 통해 해결해도 좋다.
+
+Movie의 입장에서는 하나의 DiscountStrategy나 여러개의 DiscountStrategy나 동일하다.
+
+어차피 Movie가 할인 금액을 계산하는 것은 AmountStrategy라는 객체에게 메세지를 통해 책임을 위임하기 때문이다.
+
+```java
+public class OverlappedDiscountStrategy extends DiscountStrategy {
+    private List<DiscountStrategy> discountStrategies = new ArrayList<>();
+
+    public OverlappedDiscountStrategy(DiscountStrategy... discountStrategies) {
+        this.discountStrategies = Arrays.asList(discountStrategies);
+    }
+
+    @Override
+    protected Money getDiscountFee(Showing showing) {
+        Money result = Money.ZERO;
+
+        for (DiscountStrategy strategy : discountStrategies) {
+            result = result.plus(strategy.calulateDiscountFee(showing));
+        }
+        return result;
+    }
+}
+```
+
+기존 코드를 수정하지 않고 DiscountStrategy를 확장한 서브 클래스를 하나 더 만든 것 뿐이다.
+
+다시 말해서, 기존 코드의 변경을 닫은 채 확장에는 열어놓은 OCP 원칙이 적용된 것이다.
+
+이는 의존성의 방향이 추상화로 향하는 DIP의 원칙에 맞게 설계해놓은 덕이다.
+
+추상화에만 의존하고 있다면 사용하는 클라이언트 측은 구현체가 어떻게 바뀌던지 상관없다. 기존 코드를 하나도 손대지 않아도
+
+변경이 적용된 구현체의 기능을 사용할 수가 있게된다.
+
+### 갑자기 궁금한 점
+
+우리는 Spring Boot에서 생성자 기반으로 의존성 주입을 할 때 @RequiredArgsConstructor를 사용하여 간편하게 해결하는 경우가 많다.
+
+근데, 한 인터페이스에 대한 구현체가 여러 개라면 어떻게 의존성 주입을 할 수 있을까?
+
+```java
+
+@Qualifier("implementation1")
+public class Implementation1 implements ExampleInterface {
+
+}
+
+@Qualifier("implementation2")
+public class Implementation2 implements ExampleInterface {
+
+}
+
+@Qualifier("implementation3")
+public class Implementation3 implements ExampleInterface {
+
+}
+
+@Component
+@RequiredArgsConstructor
+public class ClientClass {
+    @Qualifier("implementation2")
+    private final ExampleInterface exampleInterface;
+}
+```
+
+위와 같이 생성자 주입을 기반으로 사용하려면 @Qualifier 애노테이션으로 특정 구현체의 bean 이름을 명시한 후 주입을 해주면 된다.
+
+# 그러면 어떤 것을 추상화 해야하는가?
+
+- 변경하기 어려운 것
+
+- 일찍, 올바르게 결정하고 싶은 것
+
+Domain Model 패턴에서는, Domain의 관련된 추상화를 뽑아내다 보면 그것이 Domain Layer의 Architecture가 된다.
+
+Domain Model은 If ... then ... else ... 와 같은 복잡한 로직을
+
+객체간의 협력 구조로 변경하는 것이다. 여기서 다형성, 연관관계가 적용된다.
+
+# 변경을 무서워하지 말자
+
+위에서 다뤘던 모든 내용이 실제 애플리케이션을 작성하는 코드에 적용한다해서 단번에 해결되진 않는다.
+
+변경과 리팩터링을 지속적으로 해야 이를 이루어낼 수 있고 이 행위가 반복되어야지 비로소 변경하기 쉬운 코드가 된다.
+
+그렇기 때문에 객체지향적으로 리팩터링할 수 있는 설계를 해놓은 후 리팩터링해가는 것을 연습해아한다.
