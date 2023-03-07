@@ -226,7 +226,7 @@ public class ReservationService {
 
 그래서 CRC Card를 통해 객체지향 설계 도구를 활용하면 조금 더 정리할 수 있다.
 
-![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/architecture-oop/img.png?raw=true)
+![](https://media.springernature.com/lw685/springer-static/image/chp%3A10.1007%2F978-1-4842-4206-3_23/MediaObjects/470826_1_En_23_Figa_HTML.jpg)
 
 - 상단 : 후보(역할/객체 를 의미한다.)
 
@@ -246,7 +246,7 @@ public class ReservationService {
 
 CRC Card를 통해 영화 예매 시나리오의 객체를 설계하면 다음과 같다.
 
-![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/architecture-oop/img1.png?raw=true)
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/architecture-oop/CRC.jpg?raw=true)
 
 #### Showing(상영)
 
