@@ -226,7 +226,7 @@ public class ReservationService {
 
 그래서 CRC Card를 통해 객체지향 설계 도구를 활용하면 조금 더 정리할 수 있다.
 
-![](../images/architecture-oop/img.png)
+![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/architecture-oop/img.png?raw=true)
 
 - 상단 : 후보(역할/객체 를 의미한다.)
 
@@ -246,7 +246,7 @@ public class ReservationService {
 
 CRC Card를 통해 영화 예매 시나리오의 객체를 설계하면 다음과 같다.
 
-![img.png](../images/architecture-oop/img1.png)
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/architecture-oop/img1.png?raw=true)
 
 #### Showing(상영)
 
@@ -391,3 +391,116 @@ public class TimeOfDayRule implements Rule {
     }
 }
 ```
+
+---
+
+# 객체지향적인 설계의 기초
+
+객체지향적으로 작성하는 방법은 책임을 수행할 적절한 객체에게 위임하는 것이 기본 철학이다.
+
+또한 DB연결, 네트워크 혹은 예를들어 AWS와 연결하는 로직 등 애플리케이션 전반적으로, 도메인과 관계없이 사용되는 로직을 애플리케이션 로직이라고 한다.
+
+그리고 우리가 설계하는 도메인 그 자체를 다루는 로직을 도메인 로직이라고 한다.
+
+우리는 이 도메인 로직을 외부로부터 영향받지 않게 철저한 캡슐화를 하여 사용해야한다.
+
+그것이 객체지향의 핵심 중 하나이다.
+
+그래서 등장하는 아키텍처 계층이 있다. 바로 서비스 계층이다.
+
+| Presentation   |
+|----------------|
+| Service        |
+| Domain         |
+| Infrastructure |
+
+이 Service 계층이 도메인 모델을 보호하는 역할이다.
+
+즉, 애플리케이션의 경계로써 애플리케이션 로직을 다루고, 도메인 로직의 재사용성을 높여준다.
+
+이 계층에서 트랜잭션이 시작되는 것이 일반적이다.
+
+서비스 계층의 이상적인 예시는 다음과 같다.
+
+```java
+public class ReservationService {
+
+    @Transactional
+    public Reservation reservationShowing(int reserveId, int showingId, int audiuenceCount) {
+        Customer customer = customerRepository.find(reserveId);
+        Showing showing = showingRepository.find(showingId);
+        Reservation reservation = showing.reserve(customer, audiuenceCount);
+
+        reservationRepository.save(reservation);
+        return reservation;
+    }
+}
+```
+
+- 필요한 데이터를 DB에서 읽는다.
+
+- 나머지 처리는 도메인 객체에 위임한다.
+
+- 처리 결과를 DB에 저장한다.
+
+이 흐름을 가진 것이 이상적인 Service Layer가 하는 일인데, 더 간단하게 요약하자면
+
+- 도메인 로직을 처리하기 위한 준비작업
+
+- 도메인 로직을 처리하는데에 발생하는 후 처리(예외, 반환 값 셋팅 등)
+
+## 다시 한 번 비교해보자 Transaction Script vs Domain Model
+
+### Transaction Script Service (Fat Service)
+```java
+public class ReservationService {
+
+    @Transactional
+    public Reservation reserveShowing(int customerId, int showingId, int audienceCount) {
+
+        Showing showing = showingDAO.selectShowing(showingId);
+        Movie movie = movieDAO.selectMovie(showing.getMovieId());
+        List<Rule> rules = ruleDAO.selectRules(movie.getId());
+
+        Rule rule = findRule(showing, rules);
+        Money fee = movie.getFee();
+        if (rule != null) {
+            fee = calculateFee(movie);
+        }
+
+        Reservation result = makeReservation(customerId, showingId, audienceCount, fee);
+        reservationDAO.insert(result);
+
+        return result;
+    }
+}
+```
+
+위 패턴으로 인해 reserveShowing이 수행하는 책임은 트랜잭션 관리, 애플리케이션 로직, 도메인 로직이 있다.
+
+위 로직을 처리하면서 어디선가 에러가 발생한다면? 위는 단편적인 간단한 예시이기 때문에 와닿지 않을 수 있겠지만
+
+실제로 로직이 긴 요구사항을 다룰 때에는 어디서 에러가 발생하는지 찾기 어려워진다.
+
+### Domain Model Service (Thin Service)
+```java
+public class ReservationService {
+
+    @Transactional
+    public Reservation reservationShowing(int reserveId, int showingId, int audiuenceCount) {
+        Customer customer = customerRepository.find(reserveId);
+        Showing showing = showingRepository.find(showingId);
+        Reservation reservation = showing.reserve(customer, audiuenceCount);
+
+        reservationRepository.save(reservation);
+        return reservation;
+    }
+}
+```
+
+반면에 도메인 모델은 각 객체마다 특정 책임을 맡고 있기 때문에 요구사항 처리 중 문제가 발생한 도메인에서
+
+오류를 쉽게 찾아낼 수 있다. ORM이 등장한 배경도 이와 아주 밀접하게 관련있다. ORM은 도메인 로직 처리를 위해
+
+DB와 패러다임을 매핑할 수 있도록 도와주며 실제 자바 코드로써 도메인 로직을 처리할 수 있도록 도와준다.
+
