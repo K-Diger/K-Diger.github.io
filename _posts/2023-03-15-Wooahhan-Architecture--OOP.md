@@ -40,7 +40,7 @@ mermaid: true
 일반적인 계층형 구조는 다음과 같다.
 
 
-![img_2.png](../images/architecture-oop/일반적인 계층형.png)
+![img_2.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/architecture-oop/%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8%20%EA%B3%84%EC%B8%B5%ED%98%95.png?raw=true)
 
 이렇게 유사한 관심사를 계층으로 분할하여 유연성/재사용성을 확보할 수 있다.
 
@@ -66,7 +66,7 @@ mermaid: true
 
 ## 3.1. 예제 - 영화 예매 시스템
 
-![img_1.png](../images/architecture-oop/영화 예매 시스템.png)
+![img_1.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/architecture-oop/%EC%98%81%ED%99%94%20%EC%98%88%EB%A7%A4%20%EC%8B%9C%EC%8A%A4%ED%85%9C.png?raw=true)
 
 ### 도메인 개념 - 영화
 
@@ -380,7 +380,7 @@ public class TimeOfDayRule implements Rule {
 
 그래서 등장하는 아키텍처 계층이 있다. 바로 서비스 계층이다.
 
-![img_1.png](../images/architecture-oop/4계층.png)
+![img_1.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/architecture-oop/4%EA%B3%84%EC%B8%B5.png?raw=true)
 
 이 **Service 계층이 도메인 모델을 보호**하는 역할이다.
 
@@ -652,10 +652,10 @@ DDL이나 실제 테이블을 만들기 위해서는 Hibernate가 제공하는 c
 
 이 특징 역시나 **비즈니스 로직에 집중**할 수 있게 유도하는 것이다.
 
-![img_1.png](../images/architecture-oop/도메인 주도 개발 플로우.png)
+![img_1.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/architecture-oop/%EB%8F%84%EB%A9%94%EC%9D%B8%20%EC%A3%BC%EB%8F%84%20%EA%B0%9C%EB%B0%9C%20%ED%94%8C%EB%A1%9C%EC%9A%B0.png?raw=true)
 
 
-![img_1.png](../images/architecture-oop/테이블 주도 개발 플로우.png)
+![img_1.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/architecture-oop/%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%A3%BC%EB%8F%84%20%EA%B0%9C%EB%B0%9C%20%ED%94%8C%EB%A1%9C%EC%9A%B0.png?raw=true)
 ---
 
 # 8. 결론
