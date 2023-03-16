@@ -39,34 +39,34 @@ mermaid: true
 
 일반적인 계층형 구조는 다음과 같다.
 
-| Presentation(화면조작/사용자 입력 처리) |
-|------------------------------|
-| Domain(비즈니스 로직/도메인 로직처리)     |
-| DataSource(데이터 조작)           |
+
+![img_2.png](../images/architecture-oop/일반적인 계층형.png)
 
 이렇게 유사한 관심사를 계층으로 분할하여 유연성/재사용성을 확보할 수 있다.
 
 계층형 구조에서 가장 중요한 점은 Domain 계층이다. Domain의 설계로 인해 다른 계층의 설계 구조 또한 변경되기 때문이다.
 
-## 2.1. 계층형 구조를 설계하는 방법 (패턴)
+## 2.1. 계층형 구조를 설계하는 방법
 
-- 절차지향 (Transaction Script)
+- Transaction Script 패턴 : 절차지향
 
-- 객체지향 (Domain Model)
+- Domain Model 패턴 : 객체지향
 
 이 두 가지가 가장 널리 사용되는 패턴이다.
 
 ## 2.2. 도메인 계층이 가장 중요하다!
 
-도메인 계층을 절차지향으로 작성할 것인지, 객체지향으로 작성할 것인지에 따라서
+그래서 도메인 계층을 절차지향으로 작성할 것인지, 객체지향으로 작성할 것인지에 따라서
 
-그 외의 계층들이 그에 맞게 작성하기로 결정된다.
+그 외의 계층들이 그에 맞게 작성하기로 결정되기 때문에 도메인 계층의 설계가 애플리케이션 전반적인 설계를 좌우한다.
 
 ---
 
 # 3. Transaction Script vs Domain Model
 
 ## 3.1. 예제 - 영화 예매 시스템
+
+![img_1.png](../images/architecture-oop/영화 예매 시스템.png)
 
 ### 도메인 개념 - 영화
 
@@ -114,19 +114,13 @@ mermaid: true
 
 - 예매 (Reservation)
 
-절차적인 방식은
+절차적인 방식은 **데이터를 어떻게** 다룰 지 **데이터를 다루는 방법을 어떻게** 활용할지를 철저하게 구분해서 사용한다.
 
-- 데이터를 어떻게 다룰 지
+예를 들면 **DB와 매핑하기 위한 엔티티 클래스와 DAO를 만들어 놓고 시작**하는 것이 그 예시이다.
 
-- 데이터를 다루는 방법을 어떻게 활용할지
+따라서 어떤 **비즈니스 로직을 처리하기 위한 서비스를 만든 이후**에, 그 **로직을 처리하기 위한 DAO들을 주입 받는 방식**이 된다.
 
-를 철저하게 구분해서 사용한다.
-
-예를 들면 DB와 매핑하기 위한 엔티티 클래스와 DAO를 만들어 놓고 시작하는 것이 그 예시이다.
-
-따라서 어떤 비즈니스 로직을 처리하기 위한 서비스를 만든 이후에, 그 로직을 처리하기 위한 DAO들을 주입 받는 방식이 된다.
-
-코드로 예를 들면 이렇게 된다.
+의사 코드로 예를 들면 이렇게 된다.
 
 ```java
 public class ReservationService {
@@ -213,7 +207,9 @@ public class ReservationService {
 }
 ```
 
-위와 같이 된다. 위 코드는 메서드를 쪼개긴 했지만 하나의 트랜잭션 안에서 모든 로직을 처리하도록 한다.
+위와 같이 된다. 위 코드는 메서드를 쪼개긴 했지만 서비스 계층에서
+
+모든 비즈니스로직을 제어하는 특징이 나타난다.
 
 그리고 이러한 특징이 Transaction Script 패턴의 특징인 것이다.
 
@@ -221,17 +217,15 @@ public class ReservationService {
 
 ---
 
-## 3.3. Transaction Scirpt를 Domain Model로 변환하기
+## 3.3 Transaction Scirpt를 Domain Model로 변환하기
 
-객체지향으로 작성한다는 것 == Process와 Data를 하나의 덩어리로 보는 것
+객체지향으로 작성한다는 것은 Process와 Data를 하나의 덩어리로 보는 것이다.
 
-데이터와 프로세스 볼 것이 아니라, 객체간의 협력 관계를 만들어야한다.
+데이터와 프로세스를 따로 볼 것이 아니라, 객체간의 협력 관계를 만들어야한다.
 
-그리고 협력 관계는 객체들 간 메세지를 전송하는 것으로 한다.
+그리고 **협력 관계**는 객체들 간 **메세지를 전송하는 것**으로 한다.
 
-이 표현들이 다소 추상적이다.
-
-그래서 CRC Card를 통해 객체지향 설계 도구를 활용하면 조금 더 정리할 수 있다.
+CRC Card를 활용하면 조금 더 정리할 수 있다.
 
 ![](https://media.springernature.com/lw685/springer-static/image/chp%3A10.1007%2F978-1-4842-4206-3_23/MediaObjects/470826_1_En_23_Figa_HTML.jpg)
 
@@ -241,7 +235,11 @@ public class ReservationService {
 
 - 우측 : 협력관계
 
-### 책임 할당을 잘 하기 위해선?
+CRC Card를 통해 영화 예매 시나리오의 객체를 설계하면 다음과 같다.
+
+![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/architecture-oop/CRC.jpg?raw=true)
+
+### 3.3.1 책임 할당을 잘 하기 위해선?
 
 객체지향에서 객체는 상태를 갖고 있으며 스스로 그 상태를 제어할 수 있어야한다.
 
@@ -249,43 +247,7 @@ public class ReservationService {
 
 책임을 부여하는 것이다. 이것이 책임할당 패턴 중 Creator 패턴으로 불리는 방식이다.
 
-### Domain Model 방식 개발 - CRC 작성
-
-CRC Card를 통해 영화 예매 시나리오의 객체를 설계하면 다음과 같다.
-
-![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/architecture-oop/CRC.jpg?raw=true)
-
-#### Showing(상영)
-
-- 상영 정보를 알고 있다.
-
-- 예매 정보를 생성한다.
-
-- Movie와 Customer와 협력한다.
-
-#### Movie(영화)
-
-- 영화 정보를 알고 있다.
-
-- 가격을 계산한다.
-
-- Discount Strategy와 협력한다.
-
-#### Discount Strategy(할인 정책)
-
-- 할인 정책을 알고있다.
-
-- 할인된 가격을 계산한다.
-
-- Rule과 협력한다.
-
-#### Rule(할인 규칙)
-
-- 할인 규칙을 알고있다.
-
-- 할인 여부를 판정한다.
-
-## Transaction Scirpt를 Domain Model로 변환하기 - 구현
+## 3.4 Transaction Scirpt를 Domain Model로 변환하기 - 구현
 
 ```java
 public class Showing {
@@ -400,9 +362,11 @@ public class TimeOfDayRule implements Rule {
 }
 ```
 
+적절한 책임을 위임하고 메세지를 통해 비즈니스 로직을 해결하고자 하는 도메인 모델 패턴의 방식이 위와 같다.
+
 ---
 
-# 객체지향적인 설계의 기초
+# 4. 객체지향적인 설계의 기초
 
 객체지향적으로 작성하는 방법은 책임을 수행할 적절한 객체에게 위임하는 것이 기본 철학이다.
 
@@ -410,21 +374,17 @@ public class TimeOfDayRule implements Rule {
 
 그리고 우리가 설계하는 도메인 그 자체를 다루는 로직을 도메인 로직이라고 한다.
 
-우리는 이 도메인 로직을 외부로부터 영향받지 않게 철저한 캡슐화를 하여 사용해야한다.
+우리는 이 **도메인 로직을 외부로부터 영향받지 않게 철저한 캡슐화**를 하여 사용해야한다.
 
 그것이 객체지향의 핵심 중 하나이다.
 
 그래서 등장하는 아키텍처 계층이 있다. 바로 서비스 계층이다.
 
-| Presentation   |
-|----------------|
-| Service        |
-| Domain         |
-| Infrastructure |
+![img_1.png](../images/architecture-oop/4계층.png)
 
-이 Service 계층이 도메인 모델을 보호하는 역할이다.
+이 **Service 계층이 도메인 모델을 보호**하는 역할이다.
 
-즉, 애플리케이션의 경계로써 애플리케이션 로직을 다루고, 도메인 로직의 재사용성을 높여준다.
+즉, **애플리케이션의 경계**로써 애플리케이션 로직을 다루고, 도메인 로직의 재사용성을 높여준다.
 
 이 계층에서 트랜잭션이 시작되는 것이 일반적이다.
 
@@ -457,7 +417,7 @@ public class ReservationService {
 
 - 도메인 로직을 처리하는데에 발생하는 후 처리(예외, 반환 값 셋팅 등)
 
-## 다시 한 번 비교해보자 Transaction Script vs Domain Model
+## 4.1 다시 한 번 비교해보자 Transaction Script vs Domain Model
 
 ### Transaction Script Service (Fat Service)
 
@@ -514,7 +474,7 @@ public class ReservationService {
 
 DB와 패러다임을 매핑할 수 있도록 도와주며 실제 자바 코드로써 도메인 로직을 처리할 수 있도록 도와준다.
 
-## Domain Model과 Transaction Script를 섞어 쓰면 안되나?
+## 4.2 Domain Model과 Transaction Script를 섞어 쓰면 안되나?
 
 안되는건 아니지만 그리 좋진 않다.
 
@@ -533,15 +493,17 @@ Transaction Script 패턴을 도입한 이후부터, Data와 Process는 따로 �
 
 결과적으로 두 패턴의 계층을 비교하면 위와 같다.
 
-# 비교도 간략하게 해봤는데, 도대체 어떤 패턴을 써야하는가?
+# 5. 비교도 간략하게 해봤는데, 도대체 어떤 패턴을 써야하는가?
 
 > "변하지 않는 것은 모든 것이 변한다는 것이다." 라는 말이 있다.
 
-## 영화 예매 예제에서 변화를 도입해보자 - 중복 할인 혜택 추가
+그렇다면 변화에 더 대응하기 좋은 패턴이 견고한 아키텍처에 더 적합할 것이다.
+
+## 5.1 영화 예매 예제에서 변화를 도입해보자 - 중복 할인 혜택 추가
 
 이전 예제에서는 할인 혜택이 고정금액/비율금액 둘 중 하나만 적용 되었지만 이번 예제에는 변화를 주기 위해서 여러 개의 할인 혜택을 적용한다고 해보자
 
-### Transaction Script로 변화 적용
+### 5.1.1 Transaction Script로 변화 적용
 
 ```java
 public class ReservationService {
@@ -603,11 +565,9 @@ Transaction Script 패턴을 사용하게 되면 비즈니스 로직에서 호�
 
 기존 코드를 손대는 것으로 이게 잘 동작하는지도 알기 힘들다.
 
-### Domain Model로 변화 적용
+### 5.1.2 Domain Model로 변화 적용
 
-#### Composite 디자인 패턴을 통해 해결해도 좋다.
-
-Movie의 입장에서는 하나의 DiscountStrategy나 여러개의 DiscountStrategy나 동일하다.
+Movie의 입장에서는 하나의 DiscountStrategy나 여러 개의 DiscountStrategy나 동일하다.
 
 어차피 Movie가 할인 금액을 계산하는 것은 AmountStrategy라는 객체에게 메세지를 통해 책임을 위임하기 때문이다.
 
@@ -641,40 +601,7 @@ public class OverlappedDiscountStrategy extends DiscountStrategy {
 
 변경이 적용된 구현체의 기능을 사용할 수가 있게된다.
 
-### 갑자기 궁금한 점
-
-우리는 Spring Boot에서 생성자 기반으로 의존성 주입을 할 때 @RequiredArgsConstructor를 사용하여 간편하게 해결하는 경우가 많다.
-
-근데, 한 인터페이스에 대한 구현체가 여러 개라면 어떻게 의존성 주입을 할 수 있을까?
-
-```java
-
-@Qualifier("implementation1")
-public class Implementation1 implements ExampleInterface {
-
-}
-
-@Qualifier("implementation2")
-public class Implementation2 implements ExampleInterface {
-
-}
-
-@Qualifier("implementation3")
-public class Implementation3 implements ExampleInterface {
-
-}
-
-@Component
-@RequiredArgsConstructor
-public class ClientClass {
-    @Qualifier("implementation2")
-    private final ExampleInterface exampleInterface;
-}
-```
-
-위와 같이 생성자 주입을 기반으로 사용하려면 @Qualifier 애노테이션으로 특정 구현체의 bean 이름을 명시한 후 주입을 해주면 된다.
-
-# 그러면 어떤 것을 추상화 해야하는가?
+# 6. 그러면 어떤 것을 추상화 해야하는가?
 
 - 변경하기 어려운 것
 
@@ -686,17 +613,11 @@ Domain Model은 If ... then ... else ... 와 같은 복잡한 로직을
 
 객체간의 협력 구조로 변경하는 것이다. 여기서 다형성, 연관관계가 적용된다.
 
-# 변경을 무서워하지 말자
-
-위에서 다뤘던 모든 내용이 실제 애플리케이션을 작성하는 코드에 적용한다해서 단번에 해결되진 않는다.
-
-변경과 리팩터링을 지속적으로 해야 이를 이루어낼 수 있고 이 행위가 반복되어야지 비로소 변경하기 쉬운 코드가 된다.
-
-그렇기 때문에 객체지향적으로 리팩터링할 수 있는 설계를 해놓은 후 리팩터링해가는 것을 연습해아한다.
-
 ---
 
-# 0. 테이블 주도 개발
+# 7. 아키텍처를 적용하기 위하여 어떻게 개발을 시작하는게 좋은가?
+
+## 7.1 테이블 주도 개발
 
 우리는 어떤 프로젝트를 시작할 때 다음과 같은 과정을 보편적으로 수행해왔다.
 
@@ -709,25 +630,41 @@ Domain Model은 If ... then ... else ... 와 같은 복잡한 로직을
 
 즉, **비즈니스 로직보다 DB 접근 로직 구현에 집중**하게 되는 것이다.
 
+또한, 엔티티 클래스는 그저 매핑을 위한 클래스의 역할밖에 하지 않는 모습이 빈번하게 나타난다.
+
 실제 프로젝트를 만들어내기 위해서는 비즈니스 로직이 가장 중요한 것은 분명하다.
 
 그렇기 때문에 보다 더 비즈니스 로직에 집중할 수 있는 방식으로 구현을 한다면 다음과 같다.
 
----
-
-# 1. 도메인 주도 개발
+## 7.2. 도메인 주도 개발
 
 1. 테이블 구조는 의식하지 않고 비즈니스 로직을 구현한다.
+   2. 이 때 테스트 코드를 활용하여 비즈니스 로직을 완성해두어도 좋다.
 2. 객체와 테이블을 매핑한다.
 
+객체와 테이블을 매핑하는 것은 여러 툴이 존재하기도 하며 주로 ORM을 사용하는게 일반적이다.
+
+DDL이나 실제 테이블을 만들기 위해서는 Hibernate가 제공하는 create 옵션으로 어느정도 테스트 환경까지는 감당할 수 있는 틀이 만들어진다.
+
+도메인 주도 개발 방식의 가장 큰 장점은 비즈니스 로직이 안정화 되었다는 확신이 있기 때문에 **객체 간의 관계와 비즈니스 로직에만 집중**하고 고민할 수 있게 되는 것이다.
+
+또한 **개발 도중 스키마를 변경**하게 되더라도 **DB와 싱크가 맞지 않아** 발생하는 불편함도 **간단하게 해결**할 수 있다.
+
+이 특징 역시나 **비즈니스 로직에 집중**할 수 있게 유도하는 것이다.
+
+![img_1.png](../images/architecture-oop/도메인 주도 개발 플로우.png)
 
 
+![img_1.png](../images/architecture-oop/테이블 주도 개발 플로우.png)
 ---
 
+# 8. 결론
 
----
+객체지향을 지향하려면 적절한 계층형 아키텍처에서 도메인 모델 패턴을 적용하는 것을 목표로하여
 
-# 결론
+도메인을 중심으로 개발을 시작하는 것이 좋은 방법이 될 수 있다.
+
+추가적으로,
 
 객체지향 설계 방식의 패턴을 **Domain Model Pattern**이라고 했다.
 
@@ -738,3 +675,4 @@ Domain Model은 If ... then ... else ... 와 같은 복잡한 로직을
 DDD를 구현하기 위해 **의존성**과 **추상화** 그리고 **아키텍처**를
 
 어떻게 가져가야할지는 직접 개발하는 것과 리팩터링하는 것을 통해 이루어내야한다.
+
