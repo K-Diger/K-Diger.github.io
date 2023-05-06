@@ -3,8 +3,8 @@
 title: 커서기반 페이징 및 MySQL 최적화 참고 내용
 author: 김도현
 date: 2023-05-03
-categories: [MySQL, Cusor, Paging]
-tags: [MySQL, Cusor, Paging]
+categories: [MySQL, Cursor, Paging]
+tags: [MySQL, Cursor, Paging]
 math: true
 mermaid: true
 
