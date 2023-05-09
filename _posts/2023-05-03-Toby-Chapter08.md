@@ -10,7 +10,7 @@ mermaid: true
 
 ---
 
-# 스프링이란?
+# 0. 스프링이란?
 
 스프링은 `자바 엔터프라이즈 개발을 편하게 해주는 오픈소스 경량급 애플리케이션 프레임워크` 이라고 한다.
 
@@ -95,7 +95,7 @@ EJB가 탄생했을 때도 이와 같은 문구를 장착했지만 서로 문제
 
 ---
 
-# 스프링 복잡함을 어떻게 해결한 걸까?
+# 1. 스프링 복잡함을 어떻게 해결한 걸까?
 
 스프링은 엔터프라이즈 기술을 적용했을 때 발생하는 복잡한 문제는 두 가지로 정의하고 해결한다.
 
@@ -125,7 +125,7 @@ EJB가 탄생했을 때도 이와 같은 문구를 장착했지만 서로 문제
 
 그러면 비즈니스 로직을 더 용이하게 작성할 수 있는 전략들은 제공하는건 뭐가 있을까?
 
-# 비즈니스 로직을 좀 더 쉽게 만들어봅시다. (DI)
+# 2. 비즈니스 로직을 좀 더 쉽게 만들어봅시다. (DI)
 
 스프링은 Java라는 언어의 객체지향의 특징을 살려서 객체지향 분석과 설계(OOAD)를 작성하는 좋은 도구를 사용한다.
 
@@ -145,7 +145,7 @@ DI를 잘 적용하다 보면 좋은 객체지향의 설계와 원칙을 지키�
 
 ---
 
-# POJO
+# 3. POJO
 
 스프링 개발자들이 작성한 Professional Spring Framework라는 책에서 말하길
 
@@ -153,7 +153,7 @@ DI를 잘 적용하다 보면 좋은 객체지향의 설계와 원칙을 지키�
 
 즉, 엔터프라이즈 서비스 기능은 스프링이 제공하며 이를 사용하는 개발자들은 POJO를 이쁘게 사용하기만 하면 된다는 것이다.
 
-![img_2.png](images/toby8/img_2.png)
+![img_2.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/toby8/img_2.png?raw=true)
 
 스프링의 기본구조는 위 그림으로 표현할 수 있다.
 
@@ -213,7 +213,7 @@ POJO가 될 수 있는 조건 그 자체가 장점이다.
 
 하이버네이트는 DB 접근 기술에 POJO를 적용할 수 있도록 만들어졌다.
 
-![img_3.png](images/toby8/img_3.png)
+![img_3.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/toby8/img_3.png?raw=true)
 
 위 그림처럼 스프링은 `비즈니스 로직의 복잡함`과 `엔터프라이즈 기술의 복잡함`을 분리하여 구성하게 한다.
 
@@ -223,13 +223,13 @@ POJO가 될 수 있는 조건 그 자체가 장점이다.
 
 ---
 
-# 스프링의 기술
+# 4. 스프링의 기술
 
 스프링은 그 어려운 엔터프라이즈 기술의 복잡함을 해결을 담당하고
 
-비즈니스 로직의 복잡함을 POJO로 해결할 수 있도록 제공하는 `세 가지 가능기술`이 있는데 그 기술이 IoC/DI, AOP, PSA이다.
+비즈니스 로직의 복잡함을 POJO로 해결할 수 있도록 제공하는 `세 가지 가능기술`이 있는데 그 기술이 `IoC/DI, AOP, PSA`이다.
 
-## Ioc/DI
+## 4.1. Ioc/DI
 
 스프링의 가장 기본이 되는 기술이자 핵심 개발 원칙이다. AOP와 PSA도 이 기술을 바탕으로 두고 있다.
 
@@ -245,5 +245,461 @@ A -> B 라는 의존관계를 갖는 구조가 있을 때 B는 자유롭게 확�
 
 이 현상은 B관점에서 유연하게 확장할 수 있음을 가리키고 A관점에서는 변경없이 재사용이 가능하다고 볼 수 있는 것이다.
 
-### DI의 활용 방법
+## DI의 활용 방법
 
+### 핵심기능 변경
+
+DI의 대표적 활용방법은 구현을 바꾸는 것이다. 스프링 개발자에게 더 알아듣기 쉬운 설명은 코드로 볼때 다음과 같다.
+
+```java
+
+@Service
+@Transactional
+@RequiredArgsConstrucotr
+public class UserService {
+
+    private final UserRepository userRepository;
+
+}
+
+```
+
+UserService -> UserRepository를 의존하고 있다.
+
+여기서 UserService가 UserRepository에 의존하는 것은 구체적으로 본다면 데이터베이스 접근 기술인 것이다.
+
+데이터베이스 접근 기술은 JPA가 있을 수도 있고, JDBC가 있을 수도 있고 하여튼 여러가지다.
+
+위와 같이 생성자 주입 방식으로 DI를 적용한다면 JPA로 바뀌든 JDBC로 바뀌든 상관없이 DB접근 기술을 사용할 수 있다.
+
+그리고 또 다른 활용처가 있다.
+
+### 핵심기능의 동적인 변경
+
+첫 번째와 비슷하게 의존 오브젝트의 기능 자체를 바꾸는 것이지만
+
+런타임 동안 핵심 기능을 동적으로 매번 다르게 변경할 수도 있다.
+
+일반적으로 DI도 런타임 시 동적으로 의존 객체를 연결해 주긴 하지만 DI 된 이후로는 바뀌지 않는다.
+
+즉, 동적으로 연결 후 정적인 관계가 맺어지는 것이다.
+
+하지만 DI를 동적인 관계를 맺을 수 있도록 활용할 수도 있다는 것이다.
+
+예를 들면 등급에 따라서 다른 DataSource를 사용하게 할 수 있다. 아래에 GPT가 작성해준 코드로 살펴보면 이해가 쉬웠다!
+
+```java
+@Component
+public class PremiumDataSource implements DataSource {
+    @Override
+    public List<String> getData() {
+        // Premium User에게만 제공되는 데이터를 반환하는 로직
+    }
+}
+
+@Component
+public class BasicDataSource implements DataSource {
+    @Override
+    public List<String> getData() {
+        // 모든 사용자에게 제공되는 데이터를 반환하는 로직
+    }
+}
+```
+
+```java
+@Service
+@Transactional
+@RequiredArgsConstrucotr
+public class UserService {
+    private final UserRepository userRepository;
+    private final DataSource dataSource;
+
+    public List<String> fetchData(String userId) {
+        // 사용자 등급을 판별하는 로직
+        boolean isPremiumUser = checkUserIsPremium(userId);
+
+        // 사용자 등급에 따라 다른 DataSource 주입
+        if (isPremiumUser) {
+            return dataSource.getData();
+        } else {
+            return new BasicDataSource().getData();
+        }
+    }
+
+    private boolean checkUserIsPremium(String userId) {
+        // 사용자 등급을 판별하는 로직
+    }
+}
+```
+
+DI의 활용처는 또 다른 것도 있다.
+
+### 부가기능의 추가 (이것도 OCP이다!)
+
+말 그대로 부가기능을 추가하는 것이다. 데코레이터 패턴에서, 인터페이스를 사용하도록 한 후 실제 사용할 오브젝트는 DI를 적용해두면 간편하게 데코레이터 패턴을 적용할 수 있다.
+
+데코레이터 + DI를 통해 부가적인 기능을 추가할 수 있게 된다.
+
+객체 구조는 다음과 같다.
+- Coffee 인터페이스
+  - Coffee의 구현체
+    - Americano
+    - CoffeeDecorator(추상 클래스)
+      - CoffeeDecorator를 상속받은 데코들
+        - WhipCream
+        - Syrup
+        - Shot
+- CoffeeService는 Coffee를 의존한다.
+
+```java
+public interface Coffee {
+    String getDescription();
+    double getPrice();
+}
+
+@Component
+public class Americano implements Coffee {
+    private final String description = "아메리카노";
+    private final double price = 3000;
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public double getPrice() {
+        return price;
+    }
+}
+
+public abstract class CoffeeDecorator implements Coffee {
+    private final Coffee coffee;
+
+    public CoffeeDecorator(Coffee coffee) {
+        this.coffee = coffee;
+    }
+
+    @Override
+    public String getDescription() {
+        return coffee.getDescription();
+    }
+
+    @Override
+    public double getPrice() {
+        return coffee.getPrice();
+    }
+}
+
+@Component
+public class WhipCream extends CoffeeDecorator {
+    private final String description = "휘핑 크림";
+    private final double price = 500;
+
+    public WhipCream(Coffee coffee) {
+        super(coffee);
+    }
+
+    @Override
+    public String getDescription() {
+        return super.getDescription() + ", " + description;
+    }
+
+    @Override
+    public double getPrice() {
+        return super.getPrice() + price;
+    }
+}
+
+@Component
+public class Syrup extends CoffeeDecorator {
+    private final String description = "시럽";
+    private final double price = 300;
+
+    public Syrup(Coffee coffee) {
+        super(coffee);
+    }
+
+    @Override
+    public String getDescription() {
+        return super.getDescription() + ", " + description;
+    }
+
+    @Override
+    public double getPrice() {
+        return super.getPrice() + price;
+    }
+}
+
+@Component
+public class Shot extends CoffeeDecorator {
+    private final String description = "샷";
+    private final double price = 400;
+
+    public Shot(Coffee coffee) {
+        super(coffee);
+    }
+
+    @Override
+    public String getDescription() {
+        return super.getDescription() + ", " + description;
+    }
+
+    @Override
+    public double getPrice() {
+        return super.getPrice() + price;
+    }
+}
+
+@Service
+public class CoffeeService {
+    private final Coffee coffee;
+
+    public CoffeeService(Coffee coffee) {
+        this.coffee = coffee;
+    }
+
+    public String getOrder() {
+        return "주문 내역: " + coffee.getDescription() + ", 가격: " + coffee.getPrice() + "원";
+    }
+}
+```
+
+다이어그램은 다음과 같다.
+
+```text
++-----------------+        +--------------+
+|     Coffee      |        | CoffeeDecorator |
++-----------------+        +--------------+
+|getDescription() |<-------|   coffee       |
+|getPrice()       |<-------|                |
++-----------------+        +--------------+
+         ^                         ^
+         |                         |
+         |                         |
+         |                         |
++-----------------+   +-----------------+   +-----------------+   +-----------------+
+|    Americano    |   |    WhipCream    |   |      Syrup      |   |      Shot       |
++-----------------+   +-----------------+   +-----------------+   +-----------------+
+|getDescription() |   |getDescription() |   |getDescription() |   |getDescription() |
+|getPrice()       |   |getPrice()       |   |getPrice()       |   |getPrice()       |
++-----------------+   +-----------------+   +-----------------+   +-----------------+
+                      |    Coffee()      |   |    Coffee()      |   |    Coffee()      |
+                      +-----------------+   +-----------------+   +-----------------+
+                                ^
+                                |
+                                |
+                                |
+                      +-----------------+
+                      |   CoffeeService  |
+                      +-----------------+
+                      |     coffee      |
+                      +-----------------+
+```
+
+여튼 이전 챕터들에서 살펴본 트랜잭션 기능을 추가했던 것이 DI를 활용한 `부가기능의 추가`의 예시가 될 수 있다.
+
+또한 이 방식의 타겟이 특정 객체가 아닌 다수의 일반화된 대상을 가리킨다면 이는 AOP가 되는 것이다.
+
+> DI덕분에 부가기능을 추가할 수 있게 되었고 OCP에 충실해질 수 있다.
+>
+> OCP가 말하는 확장에 열려 있다는 것은, 핵심 기능을 변경하는 것만이 아닌 기능을 추가할 수 도 있다는 점을 꼭 기억해야한다.
+
+---
+
+### 인터페이스의 변경
+
+`A -> C` 와 같은 의존성이 필요하다고 해보자.
+
+하지만 `A -> B`와 같이 A는 원래 B를 사용하도록 만들어져 있었고 C는 B를 구현하지 않았다.
+
+A가 B를 의존하도록 되어있다면, B를 구현하면서 내부에서 C를 호출하는 어댑터 오브젝트를 만들어 A에 DI해주면 된다.
+
+즉, `A -> B (C로 위임) -> C` 가 되는 것이다.
+
+A는 DI덕에 아무런 수정작업을 거치치 않아도 B와 C를 사용할 수 있게 되었다.
+
+이 상황에 DI와 함께 추상화를 적용할 수도 있는데
+
+인터페이스가 다른 구현체들을 같은 방식으로 사용하도록 중간에 인터페이스 어댑터 역할을 해주는 계층을 추가하는 방법도 있다.
+
+서비스 추상화 기법이 바로 이 방법을 말하는 것이다.
+
+예를 들어, `MessagingServiceClient`라는 클라이언트가 `MessagingService`를 사용하고 있지만
+
+`MessagingServiceClient`는 `MessagingService`를 의존하는 것으로 `EmailService`, `SMSService`를 모두 사용해야한다고 가정했을 때의 상황이다.
+
+```java
+public interface EmailService {
+    void sendEmail(String message);
+}
+
+public class EmailServiceImpl implements EmailService {
+    @Override
+    public void sendEmail(String message) {
+        // 이메일 전송 로직
+    }
+}
+```
+
+```java
+public interface SMSService {
+    void sendSMS(String message);
+}
+
+public class SMSServiceImpl implements SMSService {
+    @Override
+    public void sendSMS(String message) {
+        // SMS 전송 로직
+    }
+}
+```
+
+```java
+public interface MessagingService {
+    void sendMessage(String message);
+}
+
+@RequiredArgsConstructor
+public class MessagingServiceImpl implements MessagingService {
+    private final EmailServiceImpl emailService;
+    private final SMSServiceImpl smsService;
+
+    @Override
+    public void sendMessage(String message) {
+        emailService.sendEmail(message);
+        smsService.sendSMS(message);
+    }
+}
+```
+
+
+
+```java
+@Component
+@RequiredArgsConstructor
+public class MessagingServiceClient {
+
+    private final MessagingService messagingService;
+
+    public void sendMessage(String message) {
+        messagingService.sendMessage(message);
+    }
+}
+```
+
+### 프록시
+
+필요한 시점에서 실제 사용할 객체를 초기화하고 리소스를 준비하게 해주는 Lazy Loading을 적용하기 위해선 프록시가 필요하다.
+
+원격 오브젝트를 호출할 때 로컬에 존재하는 오브젝트처럼 접근하기 위한 원격 프록시를 적용할 때도 프록시가 필요하다.
+
+이 프록시들도 결국에는 DI를 통해 이루어진다.
+
+### 템플릿/콜백 패턴
+
+반복적이지만 고정적인 작업흐름 사이에 바뀌는 부분을 분리하여 템플릿/콜백으로 만들 수 있다.
+
+그리고 이 때 DI를 적용하면 반복되는 코드를 간결하게 작성할 수 있다.
+
+### 싱글톤/오브젝트 스코프
+
+DI가 필요한 이유 중 하나는, DI할 객체의 생명주기를 제어할 수 있다는 점이다.
+
+DI를 프레임워크로 이용한다는 것은 DI 대상 객체를 컨테이너가 관리한다는 의미로 그 객체의 스코프를 자유롭게 제어할 수 있게 하는 것이다.
+
+### 테스트
+
+객체를 테스트하는 방법은 가능한 다른 객체와 고립시키는 것이 효과적이다.
+
+다른 객체와의 협력을 모두 테스트하는 코드를 작성하기에는 부담이 커지기 때문에 테스트할 대상이 의존하는 객체를 테스트를 목적으로 만들어진 Mock 객체로 대체하면 유용하다.
+
+이때 수정자 메서드를 통한 DI를 통해 테스트 코드 내에서 수동으로 Mock객체를 주입할 수도 있다.
+
+---
+
+## 4.2. AOP
+
+AOP는 OOP처럼 독립적인 프로그래밍 패러다임이 아니며, AOP와 OOP는 배타적이 아니다.
+
+AOP는 OOP에 녹아들어 복잡해지는 요구사항들을 보조할 수 있는 역할을 한다.
+
+스프링의 목적인 POJO만으로 엔터프라이즈 애플리케이션을 만들기 위해선 반드시 필요하다.
+
+### AOP 적용 기법 - 다이나믹 프록시
+
+기존 코드를 영향을 주지 않고 부가기능을 적용하게 해주는 데코레이터 패턴을 응용
+
+스프링의 AOP구현 방법은 `다이나믹 프록시`를 이용하는 `프록시 AOP` 방식이다.
+
+### AOP 적용 기법 - AspectJ
+
+AspectJ는 프록시 방식의 AOP에서는 불가능한 여러 `조인 포인트`를 제공한다.
+
+- 메서드 호출
+- 필드 액세스
+- 특정 호출 경로를 가진 메서드 호출 등
+
+이 대상들에 부가기능을 제공할 수 있다.
+
+### AOP 적용 단계 - 1단계 : 미리 준비된 AOP
+
+일단 스프링이 미리 만들어둔 AOP기능을 그대로 쓰자 그 대표적인 예시는 트랜잭션이다.
+
+또한 @Configurable 애노테이션은 도메인 객체에 DI를 자동적용하는 AOP기술로
+
+순수 자바 객체에서 Spring Bean을 사용할 수 있도록 도와주는 AOP기능이다.
+
+이 두가지 애노테이션이 스프링이 지원하는 대표적인 애노테이션이다.
+
+### AOP 적용 단계 - 2단계 : AOP 담당자
+
+어떤 전체 조직의 개발자 모두가 AOP기능을 직접 이용하는 것은 적절하지 않다.
+
+AOP 기능이 수행하면 좋을 사례는 다음과 같다.
+
+- 비즈니스 로직을 가진 객체의 보안
+- 특정 계층의 객체에 대한 작업 기록을 남기는 로깅
+- 데이터 추적을 위한 트레이싱
+- 특정 구간의 성능 모니터링
+
+등 정책적으로 적용할 만한 기능에 AOP를 추가해야한다. 그리고 이 정책을 AOP 담당자에게 체계화 하는 것이 권장된다.
+
+AOP는 언제나 추가되고 제거될 수 있기 때문에 동적으로 동작하면서 개발 정책을 위반한 코드를 잡아내는데 유용하게 쓰일 수 있다.
+
+### AOP 적용 단계 - 3단계 : AOP의 자유로운 이용
+
+1단계, 2단계를 거쳐 AOP를 활용할 수 있는 수준이 된다면 직접 AOP를 다루면 된다.
+
+하지만 다른 팀이나 개발자들에게 인지되지 않는 기능을 수행하는 AOP기능을 만들어선 안된다.
+
+---
+
+## 4.3. 포터블 서비스 추상화 (PSA)
+
+POJO로 개발된 코드는 특정 환경/구현 방식에 종속되지 않아야 한다.
+
+스프링은 Java EE에 의존적이다. 그렇기 때문에 이 기술을 사용하지 않을 수는 없다.
+
+이때 서비스 추상화를 통해 POJO와 Java EE의 기술 간에 추상화 계층을 도입하여 분리하는 것이 그 목적이다.
+
+스프링은 이 때 다양한 `서비스 추상화 기능`을 제공하고 `AOP, 템플릿/콜백 패턴`과 결합되어 만들어져 있다.
+
+만약 스프링의 서비스 추상화 개념과 장점을 잘 이애하면 직접 서비스를 추상화해야 할 필요가 있다.
+
+굳이 스프링의 다음 버전에 서비스 추상화가 포함되는걸 기다리지 않더라도 `DI를 응용`하여 자연스럽게 `서비스 추상화`를 적용할 수 있게 된다.
+
+---
+
+# 요약
+
+```text
+스프링은 POJO로 엔터프라이즈 애플리케이션을 개발할 수 있도록 도와주는 개발 철학을 가지고 있다. 이 목표를 분명히 이해해야한다.
+```
+
+- 스프링은 애플리케이션 프레임워크이다.
+- 엔터프라이즈 애플리케이션의 복잡합은 (비즈니스 로직 + 엔터프라이즈 시스템 기술)의 결합으로 발생한다.
+  - 이 현상은 객체지향의 장점을 포기해야한다 문제를 야기한다.
+- POJO를 이용한 애플리케이션 개발은 이 점을 보완할 수 있다.
+- 스프링은 이 POJO를 이용할 수 있도록 도와주는 목적이 있다.
+- POJO 방식의 개발을 돕기 위해 `IoC/DI, AOP, PSA`라는 기술을 제공하고 프레임워크와 컨테이너라는 방식을 통해 제공한다.
