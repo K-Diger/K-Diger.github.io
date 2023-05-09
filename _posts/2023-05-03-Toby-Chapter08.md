@@ -525,9 +525,9 @@ A는 DI덕에 아무런 수정작업을 거치치 않아도 B와 C를 사용할 
 
 서비스 추상화 기법이 바로 이 방법을 말하는 것이다.
 
-예를 들어, `MessagingServiceClient`라는 클라이언트가 `MessagingService`를 사용하고 있지만
+예를 들어, `MessagingClient`라는 클라이언트가 `MessagingService`를 사용하고 있지만
 
-`MessagingServiceClient`는 `MessagingService`를 의존하는 것으로 `EmailService`, `SMSService`를 모두 사용해야한다고 가정했을 때의 상황이다.
+`MessagingClient`는 `MessagingService`를 의존하는 것으로 `EmailService`, `SMSService`를 모두 사용해야한다고 가정했을 때의 상황이다.
 
 ```java
 public interface EmailService {
@@ -573,12 +573,10 @@ public class MessagingServiceImpl implements MessagingService {
 }
 ```
 
-
-
 ```java
 @Component
 @RequiredArgsConstructor
-public class MessagingServiceClient {
+public class MessagingClient {
 
     private final MessagingService messagingService;
 
