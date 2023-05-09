@@ -21,7 +21,7 @@ timezone: Asia/Seoul
 
 title: 김도현                   # the main title
 
-tagline: K-Diger   # it will display as the sub-title
+tagline: Diger   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
   김도현의 백엔드 기록물 저장소
@@ -30,7 +30,7 @@ description: >-                        # used by seo meta and the atom feed
 url: 'https://k-diger.github.io'
 
 github:
-  username: K-diger             # change to your github username
+  username: diger             # change to your github username
 
 social:
   name: 'Diger'
