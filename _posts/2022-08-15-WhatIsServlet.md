@@ -802,6 +802,8 @@ Returns a boolean indicating whether this request was made using a secure channe
 
 ---
 
+## 서블릿 요청 - RequestDispatcher 반환
+
 ## ServletRequest - public RequestDispatcher getRequestDispatcher(String path)
 
 Returns a RequestDispatcher object that acts as a wrapper for the resource located at the given path.
@@ -818,21 +820,21 @@ This method returns null if the servlet container cannot return a RequestDispatc
 
 The difference between this method and ServletContext.getRequestDispatcher is that this method can take a relative path.
 
-<br>
+```text
+지정된 경로에 있는 리소스에 대한 래퍼 역할을 하는 RequestDispatcher 객체를 반환한다.
 
-> 지정된 경로에 있는 리소스에 대한 래퍼 역할을 하는 RequestDispatcher 객체를 반환한다.
->
-> RequestDispatcher 개체를 사용하여 요청을 리소스에 전달하거나 리소스를 응답에 포함할 수 있다.
->
-> 리소스는 동적이거나 정적일 수 있다.
->
-> 지정된 경로 이름은 상대적일 수 있지만 현재 서블릿 컨텍스트 외부로 확장할 수는 없다.
->
-> 경로가 "/"로 시작하면 현재 컨텍스트 루트에 상대적인 것으로 해석된다.
->
-> 이 메서드는 서블릿 컨테이너가 RequestDispatcher를 반환할 수 없는 경우 null을 반환.
->
-> 이 메서드와 ServletContext.getRequestDispatcher의 차이점은 이 메소드가 상대 경로를 사용할 수 있다.
+RequestDispatcher 개체를 사용하여 요청을 리소스에 전달하거나 리소스를 응답에 포함할 수 있다.
+
+리소스는 동적이거나 정적일 수 있다.
+
+지정된 경로 이름은 상대적일 수 있지만 현재 서블릿 컨텍스트 외부로 확장할 수는 없다.
+
+경로가 "/"로 시작하면 현재 컨텍스트 루트에 상대적인 것으로 해석된다.
+
+이 메서드는 서블릿 컨테이너가 RequestDispatcher를 반환할 수 없는 경우 null을 반환.
+
+이 메서드와 ServletContext.getRequestDispatcher의 차이점은 이 메소드가 상대 경로를 사용할 수 있다.
+```
 
 ---
 
@@ -840,40 +842,42 @@ The difference between this method and ServletContext.getRequestDispatcher is th
 
 ### ServletResponse.java
 
-    public interface ServletResponse {
+```java
+public interface ServletResponse {
 
-        public String getCharacterEncoding();
+    public String getCharacterEncoding();
 
-        public String getContentType();
+    public String getContentType();
 
-        public ServletOutputStream getOutputStream() throws IOException;
+    public ServletOutputStream getOutputStream() throws IOException;
 
-        public PrintWriter getWriter() throws IOException;
+    public PrintWriter getWriter() throws IOException;
 
-        public void setCharacterEncoding(String charset);
+    public void setCharacterEncoding(String charset);
 
-        public void setContentLength(int len);
+    public void setContentLength(int len);
 
-        public void setContentLengthLong(long length);
+    public void setContentLengthLong(long length);
 
-        public void setContentType(String type);
+    public void setContentType(String type);
 
-        public void setBufferSize(int size);
+    public void setBufferSize(int size);
 
-        public int getBufferSize();
+    public int getBufferSize();
 
-        public void flushBuffer() throws IOException;
+    public void flushBuffer() throws IOException;
 
-        public void resetBuffer();
+    public void resetBuffer();
 
-        public boolean isCommitted();
+    public boolean isCommitted();
 
-        public void reset();
+    public void reset();
 
-        public void setLocale(Locale loc);
+    public void setLocale(Locale loc);
 
-        public Locale getLocale();
-    }
+    public Locale getLocale();
+}
+```
 
 ---
 
@@ -894,9 +898,9 @@ If no character encoding has been specified, ISO-8859-1 is returned.
 
 See RFC 2047 (http://www.ietf.org/rfc/rfc2047.txt) for more information about character encoding and MIME.
 
-<br>
-
-> 응답 문자열 인코딩을 반환한다.
+```text
+응답 문자열 인코딩을 반환한다.
+```
 
 ---
 
@@ -912,9 +916,9 @@ If a content type has been specified and a character encoding has been explicitl
 
 If no character encoding has been specified, the charset parameter is omitted.
 
-<br>
-
-> 응답 컨텐츠 타입을 문자열 타입으로 반환한다.
+```text
+응답 컨텐츠 타입을 문자열 타입으로 반환한다.
+```
 
 ---
 
@@ -926,13 +930,13 @@ The servlet container does not encode the binary data.
 
 Calling flush() on the ServletOutputStream commits the response. Either this method or getWriter may be called to write the body, not both.
 
-<br>
+```text
+응답 데이터를 binary 로 쓰기가 가능한, 서블릿 출력 스트림 타입으로 반환한다.
 
-> 응답 데이터를 binary 로 쓰기가 가능한, 서블릿 출력 스트림 타입으로 반환한다.
->
-> 서블릿 컨테이너가 binary 데이터로 부호화하지 않는다.
->
-> flush() 라는 메서드를 호출하여 동일한 역할을 수행할 수 있지만, 둘 중 하나만 사용해야한다.
+서블릿 컨테이너가 binary 데이터로 부호화하지 않는다.
+
+flush() 라는 메서드를 호출하여 동일한 역할을 수행할 수 있지만, 둘 중 하나만 사용해야한다.
+```
 
 ---
 
@@ -944,9 +948,9 @@ The PrintWriter uses the character encoding returned by getCharacterEncoding.
 
 If the response's character encoding has not been specified as described in getCharacterEncoding (i.e., the method just returns the default value ISO-8859-1), getWriter updates it to ISO-8859-1.
 
-<br>
-
-> 클라이언트에 응답하기 위해 "응답한다"는 의미를 가진 객체를 가져온다.
+```text
+클라이언트에 응답하기 위해 "응답한다"는 의미를 가진 객체를 가져온다.
+```
 
 ---
 
@@ -964,9 +968,9 @@ This method has no effect if it is called after getWriter has been called or aft
 
 Containers must communicate the character encoding used for the servlet response's writer to the client if the protocol provides a way for doing so. In the case of HTTP, the character encoding is communicated as part of the Content-Type header for text media types. Note that the character encoding cannot be communicated via HTTP headers if the servlet does not specify a content type; however, it is still used to encode text written via the servlet response's writer.
 
-<br>
-
-> 응답의 문자열 인코딩을 지정한다.
+```text
+응답의 문자열 인코딩을 지정한다.
+```
 
 ---
 
@@ -976,11 +980,11 @@ Sets the length of the content body in the response
 
 In HTTP servlets, this method sets the HTTP Content-Length header.
 
-<br>
+```text
+응답 body의 길이를 지정한다. (정수형)
 
-> 응답 body의 길이를 지정한다. (정수형)
->
-> HTTP Servlet 에서는, HTTP Content-Length 를 지정하는 것과 같다.
+HTTP Servlet 에서는, HTTP Content-Length 를 지정하는 것과 같다.
+```
 
 ---
 
@@ -990,11 +994,11 @@ Sets the length of the content body in the response
 
 In HTTP servlets, this method sets the HTTP Content-Length header.
 
-<br>
+```text
+응답 body의 길이를 지정한다. (Long 형)
 
-> 응답 body의 길이를 지정한다. (Long 형)
->
-> HTTP Servlet 에서는, HTTP Content-Length 를 지정하는 것과 같다.
+HTTP Servlet 에서는, HTTP Content-Length 를 지정하는 것과 같다.
+```
 
 ---
 
@@ -1018,11 +1022,11 @@ Containers must communicate the content type and the character encoding used for
 
 In the case of HTTP, the Content-Type header is used.
 
-<br>
+```text
+응답 Content Type 을 지정한다. (예시 : text/html;charset=UTF-8.)
 
-> 응답 Content Type 을 지정한다. (예시 : text/html;charset=UTF-8.)
->
-> HTTP의 경우, Content-Type 의 헤더를 지정하는 것이다.
+HTTP의 경우, Content-Type 의 헤더를 지정하는 것이다.
+```
 
 ---
 
@@ -1040,23 +1044,23 @@ A smaller buffer decreases server memory load and allows the client to start rec
 
 This method must be called before any response body content is written; if content has been written or the response object has been committed, this method throws an IllegalStateException.
 
-<br>
+```text
+응답 body에 대한 기본 버퍼 크기를 설정한다.
 
-> 응답 body에 대한 기본 버퍼 크기를 설정한다.
->
-> 서블릿 컨테이너는 매개변수에 들어온 버퍼의 크기를 최소로 잡고 사용한다.
->
-> 사용된 실제 버퍼 크기는 getBufferSize를 사용하여 찾을 수 있다.
+서블릿 컨테이너는 매개변수에 들어온 버퍼의 크기를 최소로 잡고 사용한다.
 
-<br>
+사용된 실제 버퍼 크기는 getBufferSize를 사용하여 찾을 수 있다.
+```
 
-> 버퍼가 클수록 실제로 전송되기 전에 더 많은 내용을 작성할 수 있으므로 서블릿에 적절한 상태 코드와 헤더를 설정할 수 있는 시간이 더 많이 제공된다.
->
-> 버퍼가 작을수록 서버 메모리 로드가 줄어들고 클라이언트가 데이터 수신을 더 빨리 시작할 수 있다.
->
-> 이 메소드는 응답 본문 내용이 작성되기 전에 호출되어야 한다.
->
-> 내용이 작성되었거나 응답 객체가 커밋된 경우 이 메서드는 IllegalStateException 예외를 던진다.
+```text
+버퍼가 클수록 실제로 전송되기 전에 더 많은 내용을 작성할 수 있으므로 서블릿에 적절한 상태 코드와 헤더를 설정할 수 있는 시간이 더 많이 제공된다.
+
+버퍼가 작을수록 서버 메모리 로드가 줄어들고 클라이언트가 데이터 수신을 더 빨리 시작할 수 있다.
+
+이 메소드는 응답 본문 내용이 작성되기 전에 호출되어야 한다.
+
+내용이 작성되었거나 응답 객체가 커밋된 경우 이 메서드는 IllegalStateException 예외를 던진다.
+```
 
 ---
 
@@ -1066,11 +1070,11 @@ Returns the actual buffer size used for the response.
 
 If no buffering is used, this method returns 0.
 
-<br>
+```text
+응답에 사용될 버퍼의 실제 크기를 반환한다.
 
-> 응답에 사용될 버퍼의 실제 크기를 반환한다.
->
-> 버퍼가 사용되지 않는다면 0을 반환한다.
+버퍼가 사용되지 않는다면 0을 반환한다.
+```
 
 ---
 
@@ -1080,11 +1084,11 @@ Forces any content in the buffer to be written to the client.
 
 A call to this method automatically commits the response, meaning the status code and headers will be written.
 
-<br>
+```text
+버퍼의 모든 내용이 클라이언트에 보내질 수 있도록 커밋한다.
 
-> 버퍼의 모든 내용이 클라이언트에 보내질 수 있도록 커밋한다.
->
-> 즉, 응답 내용과 상태 코드와 헤더가 작성된다.
+즉, 응답 내용과 상태 코드와 헤더가 작성된다.
+```
 
 
 ---
@@ -1095,9 +1099,9 @@ Clears the content of the underlying buffer in the response without clearing hea
 
 If the response has been committed, this method throws an IllegalStateException.
 
-<br>
-
-> 헤더나 상태 코드를 지우지 않고 응답에서 기본 버퍼의 내용을 지운다.
+```text
+헤더나 상태 코드를 지우지 않고 응답에서 기본 버퍼의 내용을 지운다.
+```
 
 ---
 
@@ -1107,9 +1111,9 @@ Returns a boolean indicating if the response has been committed.
 
 A committed response has already had its status code and headers written.
 
-<br>
-
-> 응답이 커밋되었는지 여부를 나타낸다.
+```text
+응답이 커밋되었는지 여부를 나타낸다.
+```
 
 ---
 
@@ -1119,11 +1123,11 @@ Clears any data that exists in the buffer as well as the status code and headers
 
 If the response has been committed, this method throws an IllegalStateException.
 
-<br>
+```text
+버퍼에 있는 모든 데이터와 상태 코드 및 헤더를 지운다.
 
-> 버퍼에 있는 모든 데이터와 상태 코드 및 헤더를 지운다.
->
-> 이미 응답이 커밋되었으면, 예외를 던진다.
+이미 응답이 커밋되었으면, 예외를 던진다.
+```
 
 ---
 
@@ -1149,10 +1153,10 @@ In the case of HTTP, the locale is communicated via the Content-Language header,
 
 however, it is still used to encode text written via the servlet response's writer.
 
-<br>
+```text
+응답이 아직 커밋되지 않은 경우 응답의 지역(Locale) 을 설정한다.
 
-> 응답이 아직 커밋되지 않은 경우 응답의 지역(Locale) 을 설정한다.
->
-> HTTP의 경우 로케일은 텍스트 미디어 유형에 대한 Content-Type 헤더의 일부로 문자 인코딩인 Content-Language 헤더를 통해 전달된다.
+HTTP의 경우 로케일은 텍스트 미디어 유형에 대한 Content-Type 헤더의 일부로 문자 인코딩인 Content-Language 헤더를 통해 전달된다.
+```
 
 ---
