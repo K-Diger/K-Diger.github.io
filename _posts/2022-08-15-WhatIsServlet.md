@@ -10,33 +10,38 @@ mermaid: true
 
 ---
 
-### [What Is a Servlet?](https://docs.oracle.com/javaee/5/tutorial/doc/bnafe.html)
+# 참고 자료
 
-A servlet is a Java programming language class that is used to extend the capabilities of servers that host applications accessed by means of a request-response programming model. Although servlets can respond to any type of request, they are commonly used to extend the applications hosted by web servers. For such applications, Java Servlet technology defines HTTP-specific servlet classes.
+[Oracle Document](https://docs.oracle.com/javaee/5/tutorial/doc/bnafe.html)
 
-<br>
+# 서블릿이란?
 
-한줄로 요약하자면, Java 에서 HTTP 통신을 활용한 기능을 만들기 위한 클래스이다.
+`A servlet is a Java programming language class that is used to extend the capabilities of servers that host applications accessed by means of a request-response programming model. Although servlets can respond to any type of request, they are commonly used to extend the applications hosted by web servers. For such applications, Java Servlet technology defines HTTP-specific servlet classes.`
+
+Java 에서 HTTP 통신을 활용한 기능을 만들기 위한 클래스이다.
 
 실제로는 아래와 같은 인터페이스로 명시되어 있으며, 구현체가 따로 존재한다.
 
-# 서블릿은 서블릿 컨테이너에 의해 관리된다.
+또한 서블릿은 서블릿 컨테이너에 의해 관리된다.
 
-## 서블릿 컨테이너가 관리하는 서블릿의 생명주기
+# 서블릿 컨테이너가 관리하는 서블릿의 생명주기
 
-### 1. 서블릿의 인스턴스가 존재하지 않을 때
+## 1. 서블릿의 인스턴스가 존재하지 않을 때
 
-서블릿 클래스를 로딩한다.
+1. 서블릿 클래스를 로딩한다.
 
-서블릿 클래스의 인스턴스를 생성한다.
+2. 서블릿 클래스의 인스턴스를 생성한다.
 
-서블릿 클래스의 인스턴스를 init() 하여 서블릿을 초기화 한다.
+3. 서블릿 클래스의 인스턴스를 init() 하여 서블릿을 초기화 한다.
 
-### 2. Service 메서드가 수행됨으로써, 서블릿에서 수행할 메서드를 수행한다 (요청과 응답)
+## 2. Service 메서드가 수행됨으로써, 서블릿에서 수행할 메서드를 수행한다 (요청과 응답)
 
-> GET, POST, DELETE, PUT 등 HTTP 메서드를 매핑하는 코드가 구현체로 작성되어 있다.
+GET, POST, DELETE, PUT 등 HTTP 메서드를 매핑하는 코드가 구현체로 작성되어 있다.
 
-    protected void service(HttpServletRequest req, HttpServletResponse resp)
+아래 코드를 자세히 살펴보면 보인다!!
+
+```java
+protected void service(HttpServletRequest req, HttpServletResponse resp)
     throws ServletException, IOException {
 
             String method = req.getMethod();
@@ -100,12 +105,14 @@ A servlet is a Java programming language class that is used to extend the capabi
                 resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, errMsg);
             }
         }
+```
 
-### 3. 서블릿이 사용되지 않을 때 GC 에 의해 메모리 해제가 진행된다.
+
+## 3. 서블릿이 사용되지 않을 때 GC 에 의해 메모리 해제가 진행된다.
 
 ---
 
-## 서블릿 컨테이너가 관리하는 서블릿의 멀티쓰레딩
+# 서블릿 컨테이너가 관리하는 서블릿의 멀티쓰레딩
 
 ![](https://docs.oracle.com/javaee/5/tutorial/doc/figures/web-scopedAttributes.gif)
 
@@ -113,44 +120,43 @@ A servlet is a Java programming language class that is used to extend the capabi
 
 여러 개의 Web Component 가 Session 에 저장된 객체에 접근 가능하다.
 
-<br>
-
-> Web Context(Servlet Container) 가 멀티 쓰레드를 가졌기 때문에 여러개의 요청을 동시에 처리할 수 있게 되는 것이다.)
+Web Context(Servlet Container) 가 멀티 쓰레드를 가졌기 때문에 여러개의 요청을 동시에 처리할 수 있게 되는 것이다.
 
 ---
 
-# 들어가기 전에,
+# 들어가기 전에
 
 우리가 사용하는 Spring 에서는, MVC 패턴에서 확장된 RestController 가 주로 사용된다.
 
-이때 서버에 요청을 보내고, 서버에서 응답을 해줄때 서블릿이 사용되는데,
+이때 서버에 요청을 보내고, 서버에서 응답을 해줄때 서블릿이 사용되는데
 
 ![Filter](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbgl4od%2FbtrAeQhm9zB%2FuSYOombcuhv4jCcUlOnon0%2Fimg.png)
 
 ![Dispatcher-Servlet](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbImFbg%2FbtrGzZMTuu2%2FCkY4MiKvl5ivUJPoc5I3zk%2Fimg.png)
 
-위 그림과 같이, 필터 -> 디스패처 **서블릿** -> 인터셉터 -> 컨트롤러 순으로 처리된다.
+위 그림과 같이, 필터 -> 디스패처 서블릿 -> 인터셉터 -> 컨트롤러 순으로 처리된다.
 
-즉, Spring 기반 환경에서는, 디스패처 서블릿이 사용된다.
+즉, Spring 기반 환경에서는 디스패처 서블릿이 사용된다.
 
 ---
 
+## Servlet.java
 
-### Servlet.java
+```java
+public interface Servlet {
 
-    public interface Servlet {
+    public void init(ServletConfig config) throws ServletException;
 
-        public void init(ServletConfig config) throws ServletException;
+    public ServletConfig getServletConfig();
 
-        public ServletConfig getServletConfig();
+    public void service(ServletRequest req, ServletResponse res)
+        throws ServletException, IOException;
 
-        public void service(ServletRequest req, ServletResponse res)
-                throws ServletException, IOException;
+    public String getServletInfo();
 
-        public String getServletInfo();
-
-        public void destroy();
-    }
+    public void destroy();
+}
+```
 
 Servlet 인터페이스의 각 메서드들의 명세를 살펴보겠다.
 
@@ -158,32 +164,33 @@ Servlet 인터페이스의 각 메서드들의 명세를 살펴보겠다.
 
 # 서블릿, 인터페이스 명세로 알아보기
 
+## Servlet - 초기화
 
-## Servlet - public void init(ServletConfig config)
+`public void init(ServletConfig config)`
+
 Called by the servlet container to indicate to a servlet that the servlet is being placed into service.
 
 The servlet container calls the init method exactly once after instantiating the servlet. The init method must complete successfully before the servlet can receive any requests.
 
 The servlet container cannot place the servlet into service if the init method
 
-Throws a ServletException
-Does not return within a time period defined by the Web server
+Throws a ServletException Does not return within a time period defined by the Web server
 
-Parameter:
-config – a ServletConfig object containing the servlet's configuration and initialization parameters
+Parameter: config – a ServletConfig object containing the servlet's configuration and initialization parameters
 
-Throws:
-ServletException – if an exception has occurred that interferes with the servlet's normal operation
+Throws: ServletException – if an exception has occurred that interferes with the servlet's normal operation
 
-<br>
+```text
+서블릿을 애플리케이션에 등록하겠다고 하는 메서드이다. 서블릿 인스턴스가 생성되면 딱 한 번 수행되는 메서드이다.
 
-> **서블릿을 애플리케이션에 등록하겠다고 하는 메서드** 이다. **서블릿 인스턴스가 생성되면 딱 한 번 수행되는 메서드**이다.
->
-> **매개변수인 ServletConfig 타입의 config 는, 서블릿의 구성과 초기화 정보**를 담고 있다.
+매개변수인 ServletConfig 타입의 config 는, 서블릿의 구성과 초기화 정보를 담고 있다.
+```
 
 ---
 
-## Servlet - public ServletConfig getServletConfig()
+## Servlet - 설정 값 Get
+
+`public ServletConfig getServletConfig()`
 
 Returns a ServletConfig object, which contains initialization and startup parameters for this servlet.
 
@@ -191,13 +198,16 @@ The ServletConfig object returned is the one passed to the init method.
 
 Implementations of this interface are responsible for storing the ServletConfig object so that this method can return it. The GenericServlet class, which implements this interface, already does this.
 
-<br>
 
-> **Servlet 설정을 반환하는 메서드이다.**
+```text
+Servlet 설정을 반환하는 메서드이다.
+```
 
 ---
 
-## Servlet - void service(ServletRequest req, ServletResponse res)
+## Servlet - 요청/응답 허가
+
+`void service(ServletRequest req, ServletResponse res)`
 
 Called by the servlet container to allow the servlet to respond to a request.
 
@@ -207,29 +217,33 @@ The status code of the response always should be set for a servlet that throws o
 
 Servlets typically run inside multithreaded servlet containers that can handle multiple requests concurrently. Developers must be aware to synchronize access to any shared resources such as files, network connections, and as well as the servlet's class and instance variables. More information on multithreaded programming in Java is available in the Java tutorial on multi-threaded programming.
 
-<br>
+```text
+서블릿 컨테이너에 의해 호출되는 메서드이며, 서블릿에 요청과 응답에 대한 요청을 허가하기 위해 사용**된다.
 
-> **서블릿 컨테이너에 의해 호출되는 메서드이며, 서블릿에 요청과 응답에 대한 요청을 허가하기 위해 사용**된다.
->
-> **무조건 서블릿의 init() 메서드가 이전에 호출되어야 사용될 수** 있으며,
->
-> **이때 사용되는 서블릿은 여러 요청을 동시에 수행할 수 있는 다중 스레드 특징**을 가지고 있다.
+무조건 서블릿의 init() 메서드가 이전에 호출되어야 사용될 수 있으며,
+
+이때 사용되는 서블릿은 여러 요청을 동시에 수행할 수 있는 다중 스레드 특징을 가지고 있다.
+```
 
 ---
 
-## Servlet - public String getServletInfo()
+## Servlet - 서블릿 정보 확인
+
+`public String getServletInfo()`
 
 Returns information about the servlet, such as author, version, and copyright.
 
 The string that this method returns should be plain text and not markup of any kind (such as HTML, XML, etc.).
 
-<br>
-
-> **서블릿의 작성자, 버전, 저작권 등 서블릿에 대한 정보를 문자열**로 반환한다.
+```text
+서블릿의 작성자, 버전, 저작권 등 서블릿에 대한 정보를 문자열로 반환한다.
+```
 
 ---
 
-## Servlet - public void destory()
+## Servlet - 서블릿 제거
+
+`public void destory()`
 
 Called by the servlet container to indicate to a servlet that the servlet is being taken out of service. This method is only called once all threads within the servlet's service method have exited or after a timeout period has passed.
 
@@ -237,20 +251,21 @@ After the servlet container calls this method, it will not call the service meth
 
 This method gives the servlet an opportunity to clean up any resources that are being held (for example, memory, file handles, threads) and make sure that any persistent state is synchronized with the servlet's current state in memory.
 
-<br>
+```text
+서블릿 컨테이너에 의해 실행되는 메서드이며, 더 이상 해당 서블릿을 사용하지 않겠다는 표시로 사용된다.
 
-> **서블릿 컨테이너에 의해 실행되는 메서드이며, 더 이상 해당 서블릿을 사용하지 않겠다는 표시로 사용**된다.
->
-> **이 메서드가 최종적으로 완료되는 시점**은, **서블릿의 서비스 메서드의 모든 스레드가 종료되거나, 타임아웃이 된 시점이다.**
->
-> **서블릿이 사용하고 있던 모든 리소스를 반환**하며 **현재 메모리에 있는 서블릿과 동기화를 수행한다.** (메모리, 파일 핸들, 스레드)
+이 메서드가 최종적으로 완료되는 시점은, 서블릿의 서비스 메서드의 모든 스레드가 종료되거나, 타임아웃이 된 시점이다.
+
+서블릿이 사용하고 있던 모든 리소스를 반환하며 현재 메모리에 있는 서블릿과 동기화를 수행한다. (메모리, 파일 핸들, 스레드)
+```
 
 ---
 
 # ServletConfig, 인터페이스 명세로 알아보기
 
-### ServletConfig.java
+## ServletConfig.java
 
+```java
     public interface ServletConfig {
 
         public String getServletName();
@@ -261,34 +276,41 @@ This method gives the servlet an opportunity to clean up any resources that are 
 
         public Enumeration<String> getInitParameterNames();
     }
+```
 
 ---
 
-## ServletConfig - public String getServletName()
+## 서블릿 설정 - 서블릿 인스턴스의 이름 Get
+
+`public String getServletName()`
 
 Returns the name of this servlet instance. The name may be provided via server administration, assigned in the web application deployment descriptor, or for an unregistered (and thus unnamed) servlet instance it will be the servlet's class name.
 
 the name of the servlet instance
 
-<br>
-
-> 해당 서블릿 인스턴스의 이름을 반환한다.
+```text
+해당 서블릿 인스턴스의 이름을 반환한다.
+```
 
 ---
 
-## ServletConfig - public ServletContext getServletContext()
+## 서블릿 설정 - 서블릿 컨텍스트 반환
+
+`public ServletContext getServletContext()`
 
 Returns a reference to the ServletContext in which the caller is executing.
 
 a ServletContext object, used by the caller to interact with its servlet container
 
-<br>
-
-> 해당 서블릿 인스턴스가 관리되어지는 서블릿 컨텍스트를 반환한다.
+```text
+해당 서블릿 인스턴스가 관리되어지는 서블릿 컨텍스트를 반환한다.
+```
 
 ---
 
-## ServletConfig - public String getInitParameter(String name)
+## 서블릿 설정 - 서블릿 인스턴스의 이름을 가져오기
+
+`public String getInitParameter(String name)`
 
 Returns a String containing the value of the named initialization parameter, or null if the parameter does not exist.
 
@@ -296,28 +318,31 @@ name – a String specifying the name of the initialization parameter
 
 a String containing the value of the initialization parameter
 
-<br>
-
-> init 메서드로 초기화된 서블릿 인스턴스의 이름을 가져온다. (어떤 이름으로 서블릿 인스턴스가 생성 되었는지)
+```text
+init 메서드로 초기화된 서블릿 인스턴스의 이름을 가져온다. (어떤 이름으로 서블릿 인스턴스가 생성 되었는지)
+```
 
 ---
 
-## ServletConfig - public Enumeration<String> getInitParameterNames()
+## 서블릿 설정 - 서블릿 인스턴스의 이름을 가져오기 (열거형)
+
+```public Enumeration<String> getInitParameterNames()```
 
 Returns the names of the servlet's initialization parameters as an Enumeration of String objects, or an empty Enumeration if the servlet has no initialization parameters.
 
 an Enumeration of String objects containing the names of the servlet's initialization parameters
 
-<br>
-
-> geInitParameter() 메서드와 기능은 거의 같다. 다만 열거형으로 반환한다.
+```text
+getInitParameter() 메서드와 기능은 거의 같다. 다만 열거형으로 반환한다.
+```
 
 ---
 
 # ServletRequest, 인터페이스 명세로 알아보기
 
-### ServletRequest.java
+## ServletRequest.java
 
+```java
     public Object getAttribute(String name);
 
     public Enumeration<String> getAttributeNames();
@@ -394,10 +419,13 @@ an Enumeration of String objects containing the names of the servlet's initializ
     public AsyncContext getAsyncContext();
 
     public DispatcherType getDispatcherType();
+```
 
 ---
 
-## ServletRequest - public Object getAttribute(String name) [!]
+## 서블릿 요청 - 속성에 대한 객체 가져오기
+
+`public Object getAttribute(String name)`
 
 Returns the value of the named attribute as an Object, or null if no attribute of the given name exists.
 
@@ -409,29 +437,34 @@ name – a String specifying the name of the attribute
 
 an Object containing the value of the attribute, or null if the attribute does not exist
 
-<br>
 
-> 명명된 속성의 값을 Object로 반환하거나 지정된 이름의 속성이 없으면 null을 반환한다.
->
-> 즉, 파라미터에 해당하는 서블릿의 속성 이름을 찾아 Object 타입으로 반환한다.
+```text
+명명된 속성의 값을 Object로 반환하거나 지정된 이름의 속성이 없으면 null을 반환한다.
+
+즉, 파라미터에 해당하는 서블릿의 속성 이름을 찾아 Object 타입으로 반환한다.
+```
 
 ---
 
-## ServletRequest - public Enumeration<String> getAttributeNames() [!]
+## 서블릿 요청 - 속성에 대한 객체 가져오기 (열거형)
+
+`public Enumeration<String> getAttributeNames()`
 
 Returns an Enumeration containing the names of the attributes available to this request. This method returns an empty Enumeration if the request has no attributes available to it.
 
 an Enumeration of strings containing the names of the request's attributes
 
-<br>
+```text
+이 요청에 사용할 수 있는 속성의 이름을 포함하는 열거형을 반환한다.
 
-> 이 요청에 사용할 수 있는 속성의 이름을 포함하는 열거형을 반환한다.
->
-> 이 메서드는 요청에 사용할 수 있는 속성이 없는 경우 빈 열거형을 반환한다.
+이 메서드는 요청에 사용할 수 있는 속성이 없는 경우 빈 열거형을 반환한다.
+```
 
 ---
 
-## ServletRequest - public String getCharacterEncoding()
+## 서블릿 요청 - 인코딩 이름을 GET
+
+`public String getCharacterEncoding()`
 
 Returns the name of the character encoding used in the body of this request.
 
@@ -443,13 +476,15 @@ web application default via the deployment descriptor or ServletContext.setReque
 
 container default via container specific configuration
 
-<br>
-
-> 요청에 사용된 문자열 인코딩 이름을 반환한다. 문자열 인코딩이 지정되지 않은 경우에는 null을 반환한다.
+```text
+요청에 사용된 문자열 인코딩 이름을 반환한다. 문자열 인코딩이 지정되지 않은 경우에는 null을 반환한다.
+```
 
 ---
 
-## ServletRequest - public void getCharacterEncoding(String env)
+## 서블릿 요청 - 인코딩 이름을 GET
+
+`public void getCharacterEncoding(String env)`
 
 Overrides the name of the character encoding used in the body of this request.
 
@@ -457,59 +492,69 @@ This method must be called prior to reading request parameters or reading input 
 
 env – a String containing the name of the character encoding.
 
-<br>
-
-> 요청에 사용된 문자열 인코딩 방식을 재 지정한다. 매개변수에는 인코딩 방식을 문자열 타입으로 넣어준다.
+```text
+요청에 사용된 문자열 인코딩 방식을 재 지정한다. 매개변수에는 인코딩 방식을 문자열 타입으로 넣어준다.
+```
 
 ---
 
-## ServletRequest - public int getContentLength()
+## 서블릿 요청 - 요청 길이 GET
+
+`public int getContentLength()`
 
 Returns the length, in bytes, of the request body and made available by the input stream, or -1 if the length is not known. For HTTP servlets, same as the value of the CGI variable CONTENT_LENGTH.
 
 an integer containing the length of the request body or -1 if the length is not known or is greater than Integer.MAX_VALUE
 
-<br>
-
-> 들어온 요청의 길이를 바이트 단위로 가져온다. HTTP Servlet의 경우에는, CGI 변수 CONTENT_LENGTH와 같다.
+```text
+들어온 요청의 길이를 바이트 단위로 가져온다. HTTP Servlet의 경우에는, CGI 변수 CONTENT_LENGTH와 같다.
+```
 
 ---
 
-## ServletRequest - public long getContentLengthLong()
+## 서블릿 요청 - 요청 길이 GET (Return type is long)
+
+`public long getContentLengthLong()`
 
 Returns the length, in bytes, of the request body and made available by the input stream, or -1 if the length is not known. For HTTP servlets, same as the value of the CGI variable CONTENT_LENGTH.
 
-<br>
-
-> 들어온 요청의 길이를 바이트 단위로 가져온다. 이 메서드는 long 타입으로 반환한다. 마찬가지로 HTTP Servlet의 경우에는, CGI 변수 CONTENT_LENGTH와 같다.
+```text
+들어온 요청의 길이를 바이트 단위로 가져온다. 이 메서드는 long 타입으로 반환한다. 마찬가지로 HTTP Servlet의 경우에는, CGI 변수 CONTENT_LENGTH와 같다.
+```
 
 ---
 
-## ServletRequest - public String getContentType()
+## 서블릿 요청 - ContentType Get
+
+`public String getContentType()`
 
 Returns the MIME type of the body of the request, or null if the type is not known. For HTTP servlets, same as the value of the CGI variable CONTENT_TYPE.
 
 a String containing the name of the MIME type of the request, or null if the type is not known
 
-<br>
-
-> 들어온 요청의 ContentType을 문자열 타입으로 가져온다. HttpServlet의 경우 CGI변수의 CONTENT_TYPE 의 값과 같다.
+```text
+들어온 요청의 ContentType을 문자열 타입으로 가져온다. HttpServlet의 경우 CGI변수의 CONTENT_TYPE 의 값과 같다.
+```
 
 ---
 
-## ServletRequest - public ServletInputStream getInputStream()
+## 서블릿 요청 - Read request body
+
+`public ServletInputStream getInputStream()`
 
 Retrieves the body of the request as binary data using a ServletInputStream.
 
 Either this method or getReader may be called to read the body, not both.
 
-<br>
-
-> 들어온 요청을 binary 데이터로 검색한다. 즉, 들어온 요청의 body 를 읽는 방법이다. getReader() 메서드나 getInputStream() 메서드로 요청의 본문을 읽을 수 있다.
+```text
+들어온 요청을 binary 데이터로 검색한다. 즉, 들어온 요청의 body 를 읽는 방법이다. getReader() 메서드나 getInputStream() 메서드로 요청의 본문을 읽을 수 있다.
+```
 
 ---
 
-## ServletRequest - public String getParameter(String name)
+## 서블릿 요청 - Read request param
+
+`public String getParameter(String name)`
 
 Returns the value of a request parameter as a String, or null if the parameter does not exist. Request parameters are extra information sent with the request.
 
@@ -521,105 +566,121 @@ If you use this method with a multivalued parameter, the value returned is equal
 
 If the parameter data was sent in the request body, such as occurs with an HTTP POST request, then reading the body directly via getInputStream or getReader can interfere with the execution of this method.
 
-<br>
+```text
+요청에서 파라미터가 1개 일때 사용되는 메서드로, 해당하는 매개변수를 문자열로 반환한다. 만약 매개변수가 없다면 null 을 반환한다.
 
-> 요청에서 파라미터가 1개 일때 사용되는 메서드로, 해당하는 매개변수를 문자열로 반환한다. 만약 매개변수가 없다면 null 을 반환한다.
->
-> HTTP Servlet 에서는, 매개변수를 Query String 이나, Form data 를 취급한다.
+HTTP Servlet 에서는, 매개변수를 Query String 이나, Form data 를 취급한다.
+```
 
 ---
 
-## ServletRequest - public Enumeration<String> getParameterNames()
+## 서블릿 요청 - Read request param (열거형)
+
+`public Enumeration<String> getParameterNames()`
 
 Returns an Enumeration of String objects containing the names of the parameters contained in this request.
 
 If the request has no parameters, the method returns an empty Enumeration.
 
-<br>
-
-> 요청 파라미터를 열거형으로 반환한다.
+```text
+요청 파라미터를 열거형으로 반환한다.
+```
 
 ---
 
-## ServletRequest - public String [] getParameterValues(String name)
+## 서블릿 요청 - Read request param (Array)
+
+`public String [] getParameterValues(String name)`
 
 Returns an array of String objects containing all of the values the given request parameter has, or null if the parameter does not exist.
 
 If the parameter has a single value, the array has a length of 1.
 
-<br>
-
-> 요청 파라미터로 들어온 name 에 해당하는 값을 가진 객체를 배열로 반환한다.
+```text
+요청 파라미터로 들어온 name 에 해당하는 값을 가진 객체를 배열로 반환한다.
+```
 
 ---
 
-## ServletRequest - public Map<String, String[]> getParameterMap()
+## 서블릿 요청 - Read request param (Array)
+
+`public Map<String, String[]> getParameterMap()`
 
 Returns a java.util.Map of the parameters of this request. Request parameters are extra information sent with the request.
 
 For HTTP servlets, parameters are contained in the query string or posted form data.
 
-<br>
+```text
+요청 들어온 매개변수를 Map 타입으로 반환한다.
 
-> 요청 들어온 매개변수를 Map 타입으로 반환한다.
->
-> HTTP Servlet 에서는, 매개변수를 Query String 이나, Form data 를 취급한다.
+HTTP Servlet 에서는, 매개변수를 Query String 이나, Form data 를 취급한다.
+```
 
 ---
 
-## ServletRequest - public String getProtocol()
+## 서블릿 요청 - Read protocol
+
+`public String getProtocol()`
 
 Returns the name and version of the protocol the request uses in the form protocol/majorVersion.minorVersion,
 
 for example, HTTP/1.1. For HTTP servlets, the value returned is the same as the value of the CGI variable SERVER_PROTOCOL.
 
-<br>
+```text
+요청 들어온 프로토콜의 버전을 반환한다. (예시 : HTTP/1.1)
 
-> 요청 들어온 프로토콜의 버전을 반환한다. (예시 : HTTP/1.1)
->
-> HTTP Servlet 에서는, CGI 변수에 담긴, SERVER_PROTOCOL 값을 반환한다.
+HTTP Servlet 에서는, CGI 변수에 담긴, SERVER_PROTOCOL 값을 반환한다.
+```
 
 ---
 
-## ServletRequest - public String getScheme()
+## 서블릿 요청 - Read request scheme (Array)
+
+`public String getScheme()`
 
 Returns the name of the scheme used to make this request,
 
 for example, http, https, or ftp. Different schemes have different rules for constructing URLs, as noted in RFC 1738.
 
-<br>
-
-> 요청 들어온 스키마를 반환한다. (예시 : http, https, ftp ...)
+```text
+요청 들어온 스키마를 반환한다. (예시 : http, https, ftp ...)
+```
 
 ---
 
-## ServletRequest - public String getServerName()
+## 서블릿 요청 - Read request host server name
+
+`public String getServerName()`
 
 Returns the host name of the server to which the request was sent.
 
 It is the value of the part before ":" in the Host header value, if any, or the resolved server name, or the server IP address.
 
-<br>
+```text
+요청을 처리하고 있는 서버의 host 이름을 반환한다.
 
-> 요청을 처리하고 있는 서버의 host 이름을 반환한다.
->
-> 서버의 IP 주소 혹은, 도메인 주소
+서버의 IP 주소 혹은, 도메인 주소
+```
 
 ---
 
-## ServletRequest - public int getServerPort()
+## 서블릿 요청 - Read request host server port
+
+`public int getServerPort()`
 
 Returns the port number to which the request was sent.
 
 It is the value of the part after ":" in the Host header value, if any, or the server port where the client connection was accepted on.
 
-<br>
-
-> 요청을 처리하고 있는 서버의 포트 번호를 반환한다.
+```text
+요청을 처리하고 있는 서버의 포트 번호를 반환한다.
+```
 
 ---
 
-## ServletRequest - public BufferedReader getReader()
+## 서블릿 요청 - Read request body by BufferedReader
+
+`public BufferedReader getReader()`
 
 Retrieves the body of the request as character data using a BufferedReader.
 
@@ -627,17 +688,19 @@ The reader translates the character data according to the character encoding use
 
 Either this method or getInputStream may be called to read the body, not both.
 
-<br>
+```text
+BufferedReader를 사용하여 요청 body를 문자 데이터로 검색한다.
 
-> BufferedReader를 사용하여 요청 body를 문자 데이터로 검색한다.
->
-> 리더는 본문에 사용된 문자 인코딩에 따라 문자 데이터를 번역하며,
->
-> 이 메서드 또는 getInputStream 중 하나를 호출하여 body를 읽을 수 있다.
->
-> 둘 다 호출할 수는 없다.
+리더는 본문에 사용된 문자 인코딩에 따라 문자 데이터를 번역하며,
+
+이 메서드 또는 getInputStream 중 하나를 호출하여 body를 읽을 수 있다.
+
+둘 다 호출할 수는 없다.
+```
 
 ---
+
+## 서블릿 요청 - Read request client Ip Address OR Last Proxy Address
 
 ## ServletRequest - public String getRemoteAddr()
 
@@ -645,13 +708,15 @@ Returns the Internet Protocol (IP) address of the client or last proxy that sent
 
 For HTTP servlets, same as the value of the CGI variable REMOTE_ADDR.
 
-<br>
+```text
+클라이언트의 IP 주소나, 마지막 프록시 주소를 반환한다.
 
-> 클라이언트의 IP 주소나, 마지막 프록시 주소를 반환한다.
->
-> HTTP Servlet 에서는, CGI 변수의 REMOTE_ADDR 의 값과 같다.
+HTTP Servlet 에서는, CGI 변수의 REMOTE_ADDR 의 값과 같다.
+```
 
 ---
+
+## 서블릿 요청 - Read request Client IP Address OR REMOTE_HOST
 
 ## ServletRequest - public String getRemoteHost()
 
@@ -661,15 +726,17 @@ If the engine cannot or chooses not to resolve the hostname (to improve performa
 
 For HTTP servlets, same as the value of the CGI variable REMOTE_HOST.
 
-<br>
+```text
+클라이언트의 Name 혹은 마지막 프록시의 Name을 반환한다.
 
-> 클라이언트의 Name 혹은 마지막 프록시의 Name을 반환한다.
->
-> HTTP Servlet 에서는, CGI 변수의 REMOTE_HOST 와 같다.
->
-> 만약, 브라우저 엔진이 호스트 이름을 숨기도록 되어있다면, IP 주소를 반환한다.
+HTTP Servlet 에서는, CGI 변수의 REMOTE_HOST 와 같다.
+
+만약, 브라우저 엔진이 호스트 이름을 숨기도록 되어있다면, IP 주소를 반환한다.
+```
 
 ---
+
+## 서블릿 요청 - Set request Attribute
 
 ## ServletRequest - public void setAttribute(String name, Object o)
 
@@ -678,7 +745,6 @@ Stores an attribute in this request.
 Attributes are reset between requests.
 
 This method is most often used in conjunction with RequestDispatcher.
-
 
 Attribute names should follow the same conventions as package names.
 
@@ -690,43 +756,49 @@ If the object passed in is null, the effect is the same as calling removeAttribu
 
 It is warned that when the request is dispatched from the servlet resides in a different web application by RequestDispatcher, the object set by this method may not be correctly retrieved in the caller servlet.
 
-<br>
-
-> 해당 요청에 대한 속성을 저장한다.
+```text
+해당 요청에 대한 속성을 저장한다.
+```
 
 ---
 
-## ServletRequest - public Locale getLocale()
+## 서블릿 요청 - read request Client's Locale
+
+`public Locale getLocale()`
 
 Returns the preferred Locale that the client will accept content in, based on the Accept-Language header.
 
 If the client request doesn't provide an Accept-Language header, this method returns the default locale for the server.
 
-<br>
-
-> 클라이언트가 수용할 수 있는 물리적인 지역을 나타내는 Locale 을 반환한다. (Accept-Language Header 를 까보는 것이다.)
+```text
+클라이언트가 수용할 수 있는 물리적인 지역을 나타내는 Locale 을 반환한다. (Accept-Language Header 를 까보는 것이다.)
+```
 
 ---
 
-## ServletRequest - public Enumeration<Locale> getLocales()
+## 서블릿 요청 - read request Client's Locale (열거형)
+
+`public Enumeration<Locale> getLocales()`
 
 Returns an Enumeration of Locale objects indicating, in decreasing order starting with the preferred locale, the locales that are acceptable to the client based on the Accept-Language header.
 
 If the client request doesn't provide an Accept-Language header, this method returns an Enumeration containing one Locale, the default locale for the server.
 
-<br>
-
-> 클라이언트가 수용할 수 있는 물리적인 지역을 나타내는 Locale 을 열거형으로 반환한다. (Accept-Language Header 를 까보는 것이다.)
+```text
+클라이언트가 수용할 수 있는 물리적인 지역을 나타내는 Locale 을 열거형으로 반환한다. (Accept-Language Header 를 까보는 것이다.)
+```
 
 ---
 
-## ServletRequest - public boolean isSecure()
+## 서블릿 요청 - is request secured
+
+`public boolean isSecure()`
 
 Returns a boolean indicating whether this request was made using a secure channel, such as HTTPS.
 
-<br>
-
-> 요청이 HTTPS 와 같이 보안 인증이 되어있는지 여부를 확인한다.
+```text
+요청이 HTTPS 와 같이 보안 인증이 되어있는지 여부를 확인한다.
+```
 
 ---
 
