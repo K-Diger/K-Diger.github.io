@@ -1158,5 +1158,3 @@ however, it is still used to encode text written via the servlet response's writ
 
 HTTP의 경우 로케일은 텍스트 미디어 유형에 대한 Content-Type 헤더의 일부로 문자 인코딩인 Content-Language 헤더를 통해 전달된다.
 ```
-
----

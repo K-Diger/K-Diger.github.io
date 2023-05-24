@@ -10,23 +10,27 @@ mermaid: true
 
 ---
 
+# 참고 자료
+
+![Spring Docs](https://spring.io/guides/topicals/spring-security-architecture/)
+
+---
+
 # 들어가기 전
 
-### 인증(Authentication) vs 인가(Authorization)
+## 인증(Authentication) vs 인가(Authorization)
 
-> 인증(Authentication) : 요청한 유저가 누구인지 확인하는 과정
+`인증(Authentication) : 요청한 유저가 누구인지 확인하는 과정`
 
-<br>
+`인가(Authorization) : 인증된 유저가 권한이 있는지 확인하는 과정`
 
-> 인가(Authorization) : 인증된 유저가 권한이 있는지 확인하는 과정
+## Principal + Credentials
 
-### Principal + Credentials
-
-> Principal 은 요청의 주체를 의미한다. 즉 인증을 수행하고, 인가를 수행해야하는 요청의 주체를 말한다.
+`Principal`은 요청의 주체를 의미한다. 즉 인증을 수행하고, 인가를 수행해야하는 요청의 주체를 말한다.
 
 주로 ID, Email 등 이 쓰인다.
 
-> Credentials 은 Principal 의 자격을 증명할 수 있는 요소를 가리킨다.
+`Credentials`은 Principal 의 자격을 증명할 수 있는 요소를 가리킨다.
 
 주로 비밀번호가 쓰이며, 이 요소는 변경이 가능하다.
 
@@ -63,22 +67,14 @@ UsernamePasswordAuthenticationToken 은 Authentication 이라는 인터페이스
 
 ![](https://www.javainuse.com/series-2-9-min.JPG)
 
-
 이전 단계에서 생성된 인증객체(Authentication Object) 를 통해 Authentication Manager 인증 관련 메서드를 호출할 수 있게 된다.
 
 ![](https://www.javainuse.com/series-2-13-min.JPG)
 
-**Authentication Manager** 는 **인터페이스**이며
+`Authentication Manager` 는 인터페이스 이며 이를 구현하는 실체는 `Provider Manager` 가 담당한다.
 
-이를 구현하는 실체는 **Provider Manager** 가 담당한다.
-
-<br>
-
-이 때, **Authentication Manager** 에게 입력되는 객체도
-
-**Authentication Object** 로 들어올 뿐 만 아니라 인증을 수행한 뒤에도
-
-반환 타입은 **Authentication Object** 이다.
+이 때, `Authentication Manager` 에게 입력되는 객체도 `Authentication Object` 로 들어올 뿐 만 아니라 인증을 수행한 뒤에도 반환
+타입은 `Authentication Object` 이다.
 
 ![](https://www.javainuse.com/series-3-2-min.JPG)
 
@@ -121,8 +117,3 @@ username 이 String 형태로 오면, UserDetailsService 의 구현체로부터 
 Credentials 를 담고있는 user 객체를 가지고 있으며, 사용자의 Role (Spring Context 에서 사용하는 Role 임)을 가진다.
 
 ---
-
-# 머릿속에 그려둬야 할 Spring Security 구조
-
-![](https://media-exp1.licdn.com/dms/image/C4E12AQGV1dvmP2MVoA/article-inline_image-shrink_1500_2232/0/1615134053416?e=1666828800&v=beta&t=-VFQTo3l3nhyrHBSQlYz1vX5d623msjIiQduXRraeFo)
-
