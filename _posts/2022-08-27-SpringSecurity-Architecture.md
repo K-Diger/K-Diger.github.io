@@ -12,7 +12,7 @@ mermaid: true
 
 # 참고 자료
 
-![Spring Docs](https://spring.io/guides/topicals/spring-security-architecture/)
+[Spring Docs](https://spring.io/guides/topicals/spring-security-architecture/)
 
 ---
 
