@@ -106,7 +106,7 @@ Content-Type: application/json
 
 아래 그림이 잘 설명해주는 예시이다.
 
-![애플리케이션 상태의 전이](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/awesome-uri/img_2.png)
+![애플리케이션 상태의 전이](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/awesome-uri/img_2.png?raw=true)
 
 위 표현을 JSON으로 나타내면 다음과 같다.
 

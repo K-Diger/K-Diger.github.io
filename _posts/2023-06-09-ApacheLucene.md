@@ -28,8 +28,7 @@ Lucene이 수행하는 단계는 다음과 같은 두 가지가 있다.
 
 2. 구문 분석 쿼리, 인덱스 탐색 후 결과 반환
 
-![img_2.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/lucene/lucene-diagram.png)
-
+![img_2.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/lucene/lucene-diagram.png?raw=true)
 ---
 
 # Inverted Index
