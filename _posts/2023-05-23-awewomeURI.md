@@ -248,7 +248,7 @@ Link: </todos>; rel="collcetion"
 위 두가지 제약조건이라도 잘 지키자.
 
 - Self-Descriptive Message
-- Hypermedia as The Engine of Application State(HAETOS)
+- Hypermedia as The Engine of Application State(HAETOAS)
 
 이건 너무 어렵긴하다. HTTP API라고 부르는게 맞긴하지만 이미 Well Known으로 퍼져있는 개념이 되어버려서 REST API라고 불러도 상관없다.
 

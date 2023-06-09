@@ -1,10 +1,10 @@
 ---
 
-title: SRP, OCP, LSP, ISP, DIP
+title: ArrayList vs MutableList in Kotlin
 author: 김도현
-date: 2023-05-23
-categories: [SOLID, SRP, OCP, LSP, ISP, DIP]
-tags: [SOLID, SRP, OCP, LSP, ISP, DIP]
+date: 2023-06-09
+categories: [Kotlin]
+tags: [Kotlin]
 math: true
 mermaid: true
 
