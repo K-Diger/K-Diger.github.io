@@ -27,10 +27,10 @@ REST란 아키텍처 접근 방식 중 하나이다. 분산 하이퍼미디어 �
 # REST 제약조건
 
 - uniform interface
-  - Identification of Resources(리소스가 URI로 식별되면 된다.)
-  - Manipulation of Resources Through Representation(HTTP 메서드로 행위를 명시하면 된다.)
-  - Self-Descriptive Message
-  - Hypermedia as The Engine of Application State(HAETOAS)
+    - Identification of Resources(리소스가 URI로 식별되면 된다.)
+    - Manipulation of Resources Through Representation(HTTP 메서드로 행위를 명시하면 된다.)
+    - Self-Descriptive Message
+    - Hypermedia as The Engine of Application State(HAETOAS)
 - client-server
 - stateless
 - cache
@@ -256,3 +256,158 @@ Link: </todos>; rel="collcetion"
 
 # URI 기깔나게 설계하기
 
+## HTTP Method
+
+### GET
+
+요청한 URI에 대한 자원을 `가져온다.`
+
+응답 Body에는 요청한 리소스에 관한 메세지 및 세부적인 결과값을 담고 있다.
+
+### POST
+
+요청한 URI에 대한 자원을 `생성한다.`
+
+요청 Body에는 새롭게 생성될 자원에 대한 메세지가 담겨있어야한다.
+
+POST는 보편적으로 자원 생성 뿐만 아니라 다른 행위에도 사용되는 메서드이기도 하다.
+
+### PUT
+
+요청한 URI에 대한 자원을 `생성하거나 변경한다.`
+
+요청 Body에는 생성될 혹은 변경될 자원에 대한 구체적인 메세지가 들어있다.
+
+### PATCH
+
+요청한 URI에 대한 자원을 `부분적으로 수정한다.`
+
+요청 Body에는 해당 리소스의 변경사항에 대한 메세지가 담겨있다.
+
+### DELETE
+
+요청한 URI에 대한 자원을 `제거한다.`
+
+## Http Method - Put vs Patch
+
+```text
+PUT requests must be idempotent.
+If a client submits the same PUT request multiple times, the results should always be the same (the same resource will be modified with the same values).
+POST and PATCH requests are not guaranteed to be idempotent.
+```
+
+PUT 요청은 멱등적이여야 한다.
+
+`멱등적`이란, 만약 Client가 동일한 PUT 요청을 반복해서 보낸다면 결과는 항상 같아야 한다는 것이다.
+
+같은 자원이 동일한 값으로 수정된다는 것이다.
+
+POST, PATCH 요청은 멱등성이 보장되지 않기 때문에 해당 메서드로 같은 요청을 반복하여 보내면 해당 자원이 그 횟수만큼 생성될 수 있다.
+
+## Http Request Example
+
+| Resource            | POST                              | GET                                 | PUT                                           | DELETE                           |
+|---------------------|-----------------------------------|-------------------------------------|-----------------------------------------------|----------------------------------|
+| /customers          | Create a new customer             | Retrieve all customers              | Bulk update of customers                      | Remove all customers             |
+| /customers/1        | Error                             | Retrieve the details for customer 1 | Update the details of customer 1 if it exists | Remove customer 1                |
+| /customers/1/orders | Create a new order for customer 1 | Retrieve all orders for customer 1  | Bulk update of orders for customer 1          | Remove all orders for customer 1 |
+
+## Http Method 정의
+
+### GET
+
+GET 메서드 요청이 성공하면 일반적으로 `Status 200` 을 반환한다.
+
+자원을 찾을 수 없을 경우 `Status 404`
+
+요청이 수행되었지만 응답 Body가 없는 경우 `Status 204`를 반환해야한다.
+
+위 204 Status가 적절한 상황은 검색 요청 시 검색조건에 맞는 자원이 없을 때를 예시로 들 수 있다.
+
+### POST
+
+POST 메서드 요청이 성공하면 `Status 201`를 반환한다.
+
+생성된 자원의 URI는 Response의 `Location Header`에 포함해야한다. (HAETOAS)
+
+메서드가 새로운 리소스를 생성하지 않는 경우에 POST를 사용할 경우 `Status 200`을 반환하고 결과를 Response Body에 넣어 응답한다.
+
+클라이언트가 잘못된 데이터를 요청하면 `Status 400`을 반환해야한다. 이 때 Response Body에는 오류에 대한 자세한 정보를 제공하는 URI 링크가 포함되면 좋다. (HAETOAS)
+
+### PUT
+
+PUT 메서드가 새 리소스를 생성하면 `Status 201`를 반환한다.
+
+메서드가 기존 리소스를 업데이트 하는 경우는 `Status 200`을 반환하거나 `Status 204`를 반환한다.
+
+만약 업데이트 요청이 실패하면 `Status 409`를 반환한다.
+
+컬렉션의 벌크 업데이트를 수행할 때는 PUT을 사용하는게 더 적합하다. 이 때 컬렉션의 URI를 지정해야하고 요청 본문은 수정할 리소스에 대한 정보를 담아야한다.
+
+### PATCH
+
+PATCH는 기본적으로 Patch Document라는 형식으로 통신이 오고간다.
+
+원활한 통신을 위해선 Media Type을 지정해줘야 하며 전체 자원을 설명하지 않고 변경 사항에 대한 내용만 메세지에 담는다.
+
+예를 들면 다음과 같다.
+
+아래와 같은 기존 자원이 있다고 가정했을 때
+```json
+{
+    "name": "diger",
+    "category": "widget",
+    "color": "blue",
+    "price": 1Billion
+}
+```
+
+위 자원 중 color, price를 변경하고, name, category를 제거하고 싶다면
+
+```json
+{
+    "color": "green",
+    "price": 10Billion
+}
+```
+
+위와 같은 형태로 PATCH Method에 담아 보내면 된다.
+
+만약 모든 데이터를 유지하고 특정 항목만 수정하고 싶다면
+
+```json
+{
+    "name": "diger",
+    "category": "person",
+    "color": "green",
+    "price": 10Billion
+}
+```
+
+이런식으로 보내면 되는 것이다.
+
+### DELETE
+
+DELETE 요청이 성공적으로 수행되면 `Status 204`를 반환해야한다.
+
+삭제 대상의 자원이 존재하지 않는다면 `Status 404`를 반환하면 된다.
+
+## Http Method + Filtering (Path Variable + Query Param)
+
+GET 요청은 기본적으로 여러 개의 자원을 반환할 수 있으므로 이를 필터링해서 받는 방법이 있다.
+
+Query Paramter를 활용하여 아래와 같이 요청한다면 응답에 대한 필터링을 적용할 수 있다.
+
+```http request
+/orders/1?limit=25&offset=50
+```
+
+또한 아래와 같이 Query Parameter에 특정 자원의 식별자를 넣고 요청이 가능하긴하지만
+
+```http request
+/orders?1&limit=25&offset=50
+```
+
+Query Param에는 요청할 자원에 대한 필터링 및 부가 옵션이 더 적절하고
+
+특정 자원을 가져오겠다는 것을 명시할 수 있는 Path Variable에 자원의 식별자를 넣는게 더 적합하다.
