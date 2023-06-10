@@ -1,6 +1,6 @@
 ---
 
-title: URI 기깔나게 설계하기 (그런 REST API로 괜찮은가)
+title: URI 힙하게 설계하기 (그런 REST API로 괜찮은가)
 author: 김도현
 date: 2023-05-23
 categories: [URI, URL]
@@ -398,16 +398,16 @@ GET 요청은 기본적으로 여러 개의 자원을 반환할 수 있으므로
 
 Query Paramter를 활용하여 아래와 같이 요청한다면 응답에 대한 필터링을 적용할 수 있다.
 
-```http request
+```text
 /orders/1?limit=25&offset=50
 ```
 
 또한 아래와 같이 Query Parameter에 특정 자원의 식별자를 넣고 요청이 가능하긴하지만
 
-```http request
+```text
 /orders?1&limit=25&offset=50
 ```
 
-Query Param에는 요청할 자원에 대한 필터링 및 부가 옵션이 더 적절하고
+**Query Param에는 요청할 자원에 대한 필터링 및 부가 옵션이 더 적절하고
 
-특정 자원을 가져오겠다는 것을 명시할 수 있는 Path Variable에 자원의 식별자를 넣는게 더 적합하다.
+특정 자원을 가져오겠다는 것을 명시할 수 있는 Path Variable에 자원의 식별자를 넣는게 더 적합하다.**
