@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-05-19
 categories: [Spring, Design-Pattern]
 tags: [Spring, Design-Pattern]
+layout: post
+toc: true
 math: true
 mermaid: true
 

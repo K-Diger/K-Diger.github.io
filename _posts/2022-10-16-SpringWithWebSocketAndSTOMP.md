@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-10-16
 categories: [Java, Spring, WebSocket, STOMP]
 tags: [Java, Spring, WebSocket, STOMP]
+layout: post
+toc: true
 math: true
 mermaid: true
 

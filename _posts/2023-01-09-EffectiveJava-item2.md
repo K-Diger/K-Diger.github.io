@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-01-09
 categories: [Effective-Java]
 tags: [Constructor, Builder]
+layout: post
+toc: true
 math: true
 mermaid: true
 

@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-08-15
 categories: [Java, Spring, Servlet]
 tags: [Java, Spring, Servlet]
+layout: post
+toc: true
 math: true
 mermaid: true
 

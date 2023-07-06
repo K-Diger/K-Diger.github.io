@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-09-06
 categories: [Java, Spring, Annotation]
 tags: [Java, Spring, Annotation]
+layout: post
+toc: true
 math: true
 mermaid: true
 

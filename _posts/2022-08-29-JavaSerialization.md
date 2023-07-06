@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-08-29
 categories: [Java, Serialization]
 tags: [Java, Serialization]
+layout: post
+toc: true
 math: true
 mermaid: true
 

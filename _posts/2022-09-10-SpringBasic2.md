@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-09-10
 categories: [Spring, Singleton]
 tags: [Singleton, SingletonContainer]
+layout: post
+toc: true
 math: true
 mermaid: true
 

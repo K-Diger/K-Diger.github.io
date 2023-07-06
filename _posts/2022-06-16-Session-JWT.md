@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-06-16
 categories: [Session, Token]
 tags: [Session, Token]
+layout: post
+toc: true
 math: true
 mermaid: true
 

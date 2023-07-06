@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-09-27
 categories: [MySQL]
 tags: [DataType]
+layout: post
+toc: true
 math: true
 mermaid: true
 

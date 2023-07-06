@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-05-06
 categories: [Spring, Toby]
 tags: [Spring, Toby]
+layout: post
+toc: true
 math: true
 mermaid: true
 

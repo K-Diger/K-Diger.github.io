@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-05-23
 categories: [URI, URL]
 tags: [URI, URL]
+layout: post
+toc: true
 math: true
 mermaid: true
 

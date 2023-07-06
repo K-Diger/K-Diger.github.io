@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-11-04
 categories: [프리코스]
 tags: [프리코스]
+layout: post
+toc: true
 math: true
 mermaid: true
 

@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-04-18
 categories: [Spring, JPA]
 tags: [JPA]
+layout: post
+toc: true
 math: true
 mermaid: true
 

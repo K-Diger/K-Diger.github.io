@@ -5,6 +5,8 @@ author: Diger
 date: 2023-01-03
 categories: [Java, Spring, Spring Data JPA]
 tags: [Java, Spring, Spring Data JPA]
+layout: post
+toc: true
 math: true
 mermaid: true
 

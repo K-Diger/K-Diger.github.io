@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-08-15
 categories: [Effective-Java]
 tags: [Finalizer, Cleaner]
+layout: post
+toc: true
 math: true
 mermaid: true
 

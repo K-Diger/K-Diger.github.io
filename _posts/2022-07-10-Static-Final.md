@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-07-10
 categories: [Java]
 tags: [Static, Final]
+layout: post
+toc: true
 math: true
 mermaid: true
 

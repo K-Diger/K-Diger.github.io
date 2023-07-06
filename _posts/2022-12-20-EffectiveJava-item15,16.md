@@ -5,6 +5,8 @@ author: Diger
 date: 2022-12-20
 categories: [Effective-Java]
 tags: [hashCode]
+layout: post
+toc: true
 math: true
 mermaid: true
 

@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-05-02
 categories: [MySQL, Transaction]
 tags: [MySQL, Transaction]
+layout: post
+toc: true
 math: true
 mermaid: true
 

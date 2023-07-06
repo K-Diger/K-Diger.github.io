@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-05-03
 categories: [MySQL, Cursor, Paging]
 tags: [MySQL, Cursor, Paging]
+layout: post
+toc: true
 math: true
 mermaid: true
 

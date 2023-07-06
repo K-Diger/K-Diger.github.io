@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-09-02
 categories: [Effective-Java]
 tags: [LocalVariable]
+layout: post
+toc: true
 math: true
 mermaid: true
 

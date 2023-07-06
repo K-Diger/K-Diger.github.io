@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-01-10
 categories: [Spring, MVC]
 tags: [Spring, MVC]
+layout: post
+toc: true
 math: true
 mermaid: true
 

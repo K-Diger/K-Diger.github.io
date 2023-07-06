@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-09-23
 categories: [Spring, Bean, BeanScope]
 tags: [Spring, Bean, BeanScope]
+layout: post
+toc: true
 math: true
 mermaid: true
 

@@ -5,6 +5,8 @@ author: Diger
 date: 2023-01-09
 categories: [Effective-Java]
 tags: [Constructor, FactoryMethod]
+layout: post
+toc: true
 math: true
 mermaid: true
 

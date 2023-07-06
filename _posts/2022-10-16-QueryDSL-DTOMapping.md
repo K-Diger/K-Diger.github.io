@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-10-16
 categories: [QueryDSL]
 tags: [DTO, Constructor, Bean, Setter]
+layout: post
+toc: true
 math: true
 mermaid: true
 

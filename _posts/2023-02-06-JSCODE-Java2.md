@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-02-06
 categories: [Java, Study]
 tags: [Java, Study]
+layout: post
+toc: true
 math: true
 mermaid: true
 

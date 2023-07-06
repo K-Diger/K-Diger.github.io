@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-08-31
 categories: [Ubuntu, Nginx, Certbot]
 tags: [Ubuntu, Nginx, Certbot]
+layout: post
+toc: true
 math: true
 mermaid: true
 

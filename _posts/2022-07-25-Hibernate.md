@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-07-25
 categories: [Spring, Hibernate]
 tags: [Hibernate]
+layout: post
+toc: true
 math: true
 mermaid: true
 

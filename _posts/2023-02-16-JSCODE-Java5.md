@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-02-16
 categories: [Git]
 tags: [Git, Branch]
+layout: post
+toc: true
 math: true
 mermaid: true
 

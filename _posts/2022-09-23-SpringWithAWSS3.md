@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-09-23
 categories: [Java, Spring, AWS, S3]
 tags: [Java, Spring, AWS, S3]
+layout: post
+toc: true
 math: true
 mermaid: true
 

@@ -5,6 +5,8 @@ author: Diger
 date: 2022-12-28
 categories: [Java, Spring, JPA]
 tags: [Java, Spring, JPA]
+layout: post
+toc: true
 math: true
 mermaid: true
 

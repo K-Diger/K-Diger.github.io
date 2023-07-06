@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-07-04
 categories: [Spring, MySQL]
 tags: [Spring, MySQL]
+layout: post
+toc: true
 math: true
 mermaid: true
 

@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-01-17
 categories: [Effective-Java]
 tags: [Object]
+layout: post
+toc: true
 math: true
 mermaid: true
 

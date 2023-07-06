@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-02-07
 categories: [Effective-Java]
 tags: [Comparable]
+layout: post
+toc: true
 math: true
 mermaid: true
 

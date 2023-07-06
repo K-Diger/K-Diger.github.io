@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-09-16
 categories: [Spring, Component, ComponentScan]
 tags: [Spring, Component, ComponentScan]
+layout: post
+toc: true
 math: true
 mermaid: true
 

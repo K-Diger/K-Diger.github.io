@@ -5,6 +5,8 @@ author: Diger
 date: 2022-12-11
 categories: [Cloud, AWS]
 tags: [Cloud, AWS]
+layout: post
+toc: true
 math: true
 mermaid: true
 

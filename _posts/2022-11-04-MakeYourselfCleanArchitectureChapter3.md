@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-11-04
 categories: [Architecture]
 tags: [Book]
+layout: post
+toc: true
 math: true
 mermaid: true
 

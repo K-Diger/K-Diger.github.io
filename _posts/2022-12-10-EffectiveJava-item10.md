@@ -5,6 +5,8 @@ author: Diger
 date: 2022-12-10
 categories: [Effective-Java]
 tags: [Equals]
+layout: post
+toc: true
 math: true
 mermaid: true
 

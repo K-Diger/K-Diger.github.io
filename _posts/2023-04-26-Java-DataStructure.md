@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-04-26
 categories: [Java, DataStructure]
 tags: [Java]
+layout: post
+toc: true
 math: true
 mermaid: true
 

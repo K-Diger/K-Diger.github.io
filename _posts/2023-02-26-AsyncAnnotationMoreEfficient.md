@@ -5,6 +5,8 @@ author: 김도현
 date: 2023-02-26
 categories: [Spring, Async, Thread]
 tags: [Spring, Async, Thread]
+layout: post
+toc: true
 math: true
 mermaid: true
 

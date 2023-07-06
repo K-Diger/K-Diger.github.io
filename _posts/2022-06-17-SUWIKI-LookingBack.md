@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-06-17
 categories: [Project, SUWIKI]
 tags: [SUWIKI]
+layout: post
+toc: true
 math: true
 mermaid: true
 

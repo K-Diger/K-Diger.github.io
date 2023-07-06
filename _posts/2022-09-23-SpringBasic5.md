@@ -5,6 +5,8 @@ author: 김도현
 date: 2022-09-23
 categories: [Spring, Bean]
 tags: [Spring, Bean, LifeCycle, Callback]
+layout: post
+toc: true
 math: true
 mermaid: true
 
