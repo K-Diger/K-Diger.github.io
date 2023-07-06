@@ -1,10 +1,11 @@
 ---
 
 title: Thread Local
-author: 김도현
 date: 2023-07-05
 categories: [Spring, ThreadLocal]
 tags: [Spring, ThreadLocal]
+layout: post
+toc: true
 math: true
 mermaid: true
 
