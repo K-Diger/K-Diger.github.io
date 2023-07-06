@@ -19,6 +19,10 @@
     .gp { color: #818c96; }
   }
 
+    strong {
+        color: #03b303;
+    }
+
   /* syntax highlight colors from https://raw.githubusercontent.com/jwarby/pygments-css/master/monokai.css */
 
   .highlight pre { background-color: var(--highlight-bg-color); }
