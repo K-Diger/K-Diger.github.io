@@ -1,7 +1,7 @@
 ---
 
 title: 만들면서 배우는 클린 아키텍처 CHAPTER 3. 코드 구성하기
-author: 김도현
+
 date: 2022-11-04
 categories: [Architecture]
 tags: [Book]

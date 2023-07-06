@@ -1,7 +1,7 @@
 ---
 
 title: JIT 컴파일러에 관하여
-author: 김도현
+
 date: 2022-08-13
 categories: [Java, JIT]
 tags: [Java, JIT]

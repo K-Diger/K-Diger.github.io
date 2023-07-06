@@ -1,7 +1,7 @@
 ---
 
 title: SUWIKI 마무리 전 고민거리
-author: 김도현
+
 date: 2022-06-17
 categories: [Project, SUWIKI]
 tags: [SUWIKI]

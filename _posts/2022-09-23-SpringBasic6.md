@@ -1,7 +1,7 @@
 ---
 
 title: Spring 핵심원리 기본편 - 6. Bean 스코프
-author: 김도현
+
 date: 2022-09-23
 categories: [Spring, Bean, BeanScope]
 tags: [Spring, Bean, BeanScope]

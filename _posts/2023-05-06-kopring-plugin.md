@@ -1,7 +1,7 @@
 ---
 
 title: 멀티모듈 코프링과 플러그인
-author: 김도현
+
 date: 2023-05-06
 categories: [Spring, Toby]
 tags: [Spring, Toby]

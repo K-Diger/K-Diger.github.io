@@ -1,7 +1,7 @@
 ---
 
 title: Spring Web MVC - 웹 서버, 웹 애플리케이션서버, 서블릿, 멀티 쓰레드
-author: 김도현
+
 date: 2023-01-09
 categories: [Spring, MVC]
 tags: [Spring, MVC]

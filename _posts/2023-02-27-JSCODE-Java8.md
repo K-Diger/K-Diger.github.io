@@ -1,7 +1,7 @@
 ---
 
 title: JSCODE - 자바 스터디 8회차 - 회고
-author: 김도현
+
 date: 2023-02-27
 categories: [Java]
 tags: [Java]

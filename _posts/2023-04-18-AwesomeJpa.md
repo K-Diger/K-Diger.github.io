@@ -1,7 +1,7 @@
 ---
 
 title: JPA 애노테이션 해쳐모여
-author: 김도현
+
 date: 2023-04-18
 categories: [Spring, JPA]
 tags: [JPA]

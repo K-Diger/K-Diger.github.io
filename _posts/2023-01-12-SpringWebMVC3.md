@@ -1,7 +1,7 @@
 ---
 
 title: Spring Web MVC - 서블릿 및 구조
-author: 김도현
+
 date: 2023-01-12
 categories: [Spring, MVC]
 tags: [Spring, MVC]

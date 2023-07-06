@@ -1,7 +1,7 @@
 ---
 
 title: Spring Web MVC - 서블릿이란? MVC 패턴이란??
-author: 김도현
+
 date: 2023-01-10
 categories: [Spring, MVC]
 tags: [Spring, MVC]

@@ -1,7 +1,7 @@
 ---
 
 title: JSCODE - 자바 스터디 2회차 (입출력, 변수, 연산자, 형변환, 조건문) + 심화 미션(JVM, GC)
-author: 김도현
+
 date: 2023-02-06
 categories: [Java, Study]
 tags: [Java, Study]

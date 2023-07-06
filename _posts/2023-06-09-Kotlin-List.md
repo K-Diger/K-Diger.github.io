@@ -1,7 +1,7 @@
 ---
 
 title: ArrayList vs MutableList in Kotlin
-author: 김도현
+
 date: 2023-06-09
 categories: [Kotlin]
 tags: [Kotlin]

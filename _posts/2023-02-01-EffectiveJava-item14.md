@@ -1,7 +1,7 @@
 ---
 
 title: Effective-Java Item 14. Comparable을 구현할지 고려하라
-author: 김도현
+
 date: 2023-02-01
 categories: [Effective-Java]
 tags: [Comparable]

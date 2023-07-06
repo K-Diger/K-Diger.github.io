@@ -1,7 +1,7 @@
 ---
 
 title: Effective-Java Item 2. 생성자에 매개변수가 많을때는 빌더를 고려하자
-author: 김도현
+
 date: 2023-01-09
 categories: [Effective-Java]
 tags: [Constructor, Builder]

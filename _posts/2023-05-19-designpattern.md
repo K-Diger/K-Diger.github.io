@@ -1,7 +1,7 @@
 ---
 
 title: Spring과 핵심 디자인 패턴 (with 토비의 스프링, 스프링 핵심원리 고급편)
-author: 김도현
+
 date: 2023-05-19
 categories: [Spring, Design-Pattern]
 tags: [Spring, Design-Pattern]

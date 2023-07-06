@@ -1,7 +1,7 @@
 ---
 
 title: Spring Security 구조
-author: 김도현
+
 date: 2022-08-27
 categories: [Spring, Spring-Security]
 tags: [Spring, Spring-Security]

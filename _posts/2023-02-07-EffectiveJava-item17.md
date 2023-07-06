@@ -1,7 +1,7 @@
 ---
 
 title: Effective-Java Item 17. 변경 가능성을 최소화하라
-author: 김도현
+
 date: 2023-02-07
 categories: [Effective-Java]
 tags: [Comparable]

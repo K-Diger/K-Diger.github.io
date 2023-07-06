@@ -1,7 +1,7 @@
 ---
 
 title: Item 60. 정확한 답이 필요하다면 float와 double은 피하라
-author: 김도현
+
 date: 2022-09-02
 categories: [Effective-Java]
 tags: [Float, Double, BigDecimal]

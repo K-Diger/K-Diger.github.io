@@ -1,7 +1,7 @@
 ---
 
 title: Effective JVM
-author: 김도현
+
 date: 2023-07-07
 categories: [Java, JVM]
 tags: [Java, JVM]

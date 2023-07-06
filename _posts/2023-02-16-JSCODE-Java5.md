@@ -1,7 +1,7 @@
 ---
 
 title: JSCODE - 자바 스터디 5회차 (GitHub) + 심화 미션(Git Flow + rebase)
-author: 김도현
+
 date: 2023-02-16
 categories: [Git]
 tags: [Git, Branch]

@@ -1,7 +1,7 @@
 ---
 
 title: JSCODE - 자바 스터디 1회차
-author: 김도현
+
 date: 2023-01-30
 categories: [Java, Study]
 tags: [Java, Study]

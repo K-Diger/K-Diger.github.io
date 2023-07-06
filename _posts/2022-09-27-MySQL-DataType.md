@@ -1,7 +1,7 @@
 ---
 
 title: MySQL 자료형에 관하여
-author: 김도현
+
 date: 2022-09-27
 categories: [MySQL]
 tags: [DataType]

@@ -1,7 +1,7 @@
 ---
 
 title: 직렬화에 관하여
-author: 김도현
+
 date: 2022-08-29
 categories: [Java, Serialization]
 tags: [Java, Serialization]

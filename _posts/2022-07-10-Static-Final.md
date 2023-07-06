@@ -1,7 +1,7 @@
 ---
 
 title: Static, Final 에 관하여
-author: 김도현
+
 date: 2022-07-10
 categories: [Java]
 tags: [Static, Final]

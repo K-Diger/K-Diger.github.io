@@ -1,7 +1,7 @@
 ---
 
 title: JPA에 익숙한 사용자에게 대량의 데이터를 삽입하는 효율적인 방법
-author: 김도현
+
 date: 2023-07-04
 categories: [Spring, MySQL]
 tags: [Spring, MySQL]

@@ -1,7 +1,7 @@
 ---
 
 title: Spring Web MVC - HTTP 응답, ArgumentResolver, ReturnValueHandler, Http Message Converter
-author: 김도현
+
 date: 2023-01-19
 categories: [Spring, MVC]
 tags: [Spring, MVC]

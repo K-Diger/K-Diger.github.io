@@ -1,7 +1,7 @@
 ---
 
 title: Chapter 4-1. MySQL 엔진 아키텍처
-author: 김도현
+
 date: 2022-12-10
 categories: [MySQL]
 tags: [MySQL-Architecture]

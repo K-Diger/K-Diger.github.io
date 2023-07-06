@@ -1,7 +1,7 @@
 ---
 
 title: URI 힙하게 설계하기 (그런 REST API로 괜찮은가)
-author: 김도현
+
 date: 2023-05-23
 categories: [URI, URL]
 tags: [URI, URL]

@@ -1,7 +1,7 @@
 ---
 
 title: Git 로컬 저장소와 원격 저장소 연결
-author: 김도현
+
 date: 2022-07-16
 categories: [Git]
 tags: [Git, Branch]

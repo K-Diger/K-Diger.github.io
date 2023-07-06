@@ -1,7 +1,7 @@
 ---
 
 title: Spring 핵심원리 기본편 - 1. 스프링 컨테이너와 Bean
-author: 김도현
+
 date: 2022-09-09
 categories: [Spring]
 tags: [Bean, BeanFactory, ApplicationContext]

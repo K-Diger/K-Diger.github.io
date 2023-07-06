@@ -1,7 +1,7 @@
 ---
 
 title: Spring Web MVC - Spring MVC
-author: 김도현
+
 date: 2023-01-17
 categories: [Spring, MVC]
 tags: [Spring, MVC]

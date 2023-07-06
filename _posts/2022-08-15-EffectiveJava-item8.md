@@ -1,7 +1,7 @@
 ---
 
 title: Item 8. finalizer 와 cleaner 사용을 피하라
-author: 김도현
+
 date: 2022-08-15
 categories: [Effective-Java]
 tags: [Finalizer, Cleaner]

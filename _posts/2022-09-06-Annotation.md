@@ -1,7 +1,7 @@
 ---
 
 title: Annotation 이란?
-author: 김도현
+
 date: 2022-09-06
 categories: [Java, Spring, Annotation]
 tags: [Java, Spring, Annotation]

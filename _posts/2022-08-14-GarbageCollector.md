@@ -1,7 +1,7 @@
 ---
 
 title: Garbage Collector(GC)
-author: 김도현
+
 date: 2022-08-14
 categories: [Java, GC]
 tags: [Java, GC]

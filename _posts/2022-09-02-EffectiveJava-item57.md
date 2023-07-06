@@ -1,7 +1,7 @@
 ---
 
 title: Item 57. 지역변수의 범위를 최소화하라
-author: 김도현
+
 date: 2022-09-02
 categories: [Effective-Java]
 tags: [LocalVariable]

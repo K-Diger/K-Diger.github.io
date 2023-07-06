@@ -1,8 +1,6 @@
 ---
 
-title: Ubuntu/Nginx/Certbot 서버 리버스 프록시 셋팅
-author: 김도현
-date: 2022-08-31
+title: Ubuntu/Nginx/Certbot 서버 리버스 프록시 셋팅date: 2022-08-31
 categories: [Ubuntu, Nginx, Certbot]
 tags: [Ubuntu, Nginx, Certbot]
 layout: post

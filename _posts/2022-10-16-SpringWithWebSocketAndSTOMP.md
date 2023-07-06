@@ -1,7 +1,7 @@
 ---
 
 title: WebSocket In Spring (+STOMP)
-author: 김도현
+
 date: 2022-10-16
 categories: [Java, Spring, WebSocket, STOMP]
 tags: [Java, Spring, WebSocket, STOMP]

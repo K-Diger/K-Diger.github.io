@@ -1,7 +1,7 @@
 ---
 
 title: QueryDSL 조회 값 DTO 와 매핑하기
-author: 김도현
+
 date: 2022-10-16
 categories: [QueryDSL]
 tags: [DTO, Constructor, Bean, Setter]

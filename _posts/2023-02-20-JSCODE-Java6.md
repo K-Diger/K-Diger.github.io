@@ -1,7 +1,7 @@
 ---
 
 title: JSCODE - 자바 스터디 6회차 예외(Exception, try-catch), 심화 미션 (Call By Ref, Call By Value, Equals And HashCode)
-author: 김도현
+
 date: 2023-02-16
 categories: [Java]
 tags: [Exception, Try-Catch]

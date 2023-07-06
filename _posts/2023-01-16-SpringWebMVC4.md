@@ -1,7 +1,7 @@
 ---
 
 title: Spring Web MVC - 핸들러 매핑, 핸들러 어댑터, 뷰 리졸버, Spring MVC
-author: 김도현
+
 date: 2023-01-16
 categories: [Spring, MVC]
 tags: [Spring, MVC]

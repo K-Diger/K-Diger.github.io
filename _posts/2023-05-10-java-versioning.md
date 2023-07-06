@@ -1,7 +1,7 @@
 ---
 
 title: Java 8 vs Java 11 vs Java 17
-author: 김도현
+
 date: 2023-05-10
 categories: [Spring, Toby]
 tags: [Spring, Toby]

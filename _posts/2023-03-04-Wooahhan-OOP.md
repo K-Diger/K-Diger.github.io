@@ -1,7 +1,7 @@
 ---
 
 title: 우아한 객체지향
-author: 김도현
+
 date: 2023-03-04
 categories: [OOP]
 tags: [OOP]

@@ -1,7 +1,7 @@
 ---
 
 title: Spring 핵심원리 기본편 - 4. 의존성 주입
-author: 김도현
+
 date: 2022-09-16
 categories: [Spring, DI]
 tags: [Spring, DI]

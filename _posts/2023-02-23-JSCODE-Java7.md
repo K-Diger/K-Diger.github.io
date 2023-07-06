@@ -1,7 +1,7 @@
 ---
 
 title: JSCODE - 자바 스터디 7회차 (헬스장 회원 관리 프로그램)
-author: 김도현
+
 date: 2023-02-23
 categories: [Java]
 tags: [Java]

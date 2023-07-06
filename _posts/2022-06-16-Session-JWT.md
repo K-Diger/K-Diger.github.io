@@ -1,7 +1,7 @@
 ---
 
 title: Server Side Session vs Token
-author: 김도현
+
 date: 2022-06-16
 categories: [Session, Token]
 tags: [Session, Token]

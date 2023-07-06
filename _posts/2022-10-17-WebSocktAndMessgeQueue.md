@@ -1,7 +1,7 @@
 ---
 
 title: WebSocket + MessageQueue -> ChattingServer
-author: 김도현
+
 date: 2022-10-16
 categories: [Java, Spring, WebSocket, MessageQueue, ChattingServer]
 tags: [Java, Spring, WebSocket, MessageQueue, ChattingServer]

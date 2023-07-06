@@ -1,7 +1,7 @@
 ---
 
 title: Effective-Java Item 4. 인스턴스화를 막으려거든 private 생성자를 사용하라
-author: 김도현
+
 date: 2023-01-17
 categories: [Effective-Java]
 tags: [Object]

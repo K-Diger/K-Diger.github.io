@@ -1,7 +1,7 @@
 ---
 
 title: Spring Web MVC - Logging, Spring MVC 기본 기능, HTTP 요청 받기(RequestParam, ModelAttribute)
-author: 김도현
+
 date: 2023-01-18
 categories: [Spring, MVC]
 tags: [Spring, MVC]

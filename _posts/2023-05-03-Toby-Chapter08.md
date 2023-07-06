@@ -1,7 +1,7 @@
 ---
 
 title: 토비의 스프링 8장
-author: 김도현
+
 date: 2023-05-03
 categories: [Spring, Toby]
 tags: [Spring, Toby]

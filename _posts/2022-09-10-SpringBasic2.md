@@ -1,7 +1,7 @@
 ---
 
 title: Spring 핵심원리 기본편 - 2. 스프링 컨테이너와 싱글톤 컨테이너
-author: 김도현
+
 date: 2022-09-10
 categories: [Spring, Singleton]
 tags: [Singleton, SingletonContainer]

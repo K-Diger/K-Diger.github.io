@@ -1,7 +1,7 @@
 ---
 
 title: Git 기본 개념과 환경설정에 관하여
-author: 김도현
+
 date: 2022-07-16
 categories: [Git]
 tags: [Git, GitConfig]

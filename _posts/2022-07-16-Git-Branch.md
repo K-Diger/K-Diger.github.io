@@ -1,8 +1,6 @@
 ---
 
-title: Branch 전략, 명령어 정리
-author: 김도현
-date: 2022-07-16
+title: Branch 전략, 명령어 정리date: 2022-07-16
 categories: [Git]
 tags: [Git, Branch]
 layout: post

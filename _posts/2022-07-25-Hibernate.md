@@ -1,7 +1,7 @@
 ---
 
 title: Hibernate 란 무엇일까?
-author: 김도현
+
 date: 2022-07-25
 categories: [Spring, Hibernate]
 tags: [Hibernate]

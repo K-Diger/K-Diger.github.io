@@ -1,7 +1,7 @@
 ---
 
 title: Interface 명세로 알아보는 Servlet
-author: 김도현
+
 date: 2022-08-15
 categories: [Java, Spring, Servlet]
 tags: [Java, Spring, Servlet]

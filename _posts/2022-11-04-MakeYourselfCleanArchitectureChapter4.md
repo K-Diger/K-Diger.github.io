@@ -1,7 +1,7 @@
 ---
 
 title: 만들면서 배우는 클릭 아키텍처 CHAPTER 4. 유스케이스 확인하기
-author: 김도현
+
 date: 2022-11-04
 categories: [Architecture]
 tags: [Book]

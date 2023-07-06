@@ -1,7 +1,7 @@
 ---
 
 title: 비동기 애노테이션 @Async 조금 더 효율적으로 사용해보기
-author: 김도현
+
 date: 2023-02-26
 categories: [Spring, Async, Thread]
 tags: [Spring, Async, Thread]

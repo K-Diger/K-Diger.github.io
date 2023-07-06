@@ -1,7 +1,7 @@
 ---
 
 title: Effective-Java Item 6. 불필요한 객체 생성을 피하라
-author: 김도현
+
 date: 2023-01-17
 categories: [Effective-Java]
 tags: [Object]

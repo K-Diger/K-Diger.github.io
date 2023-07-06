@@ -1,7 +1,7 @@
 ---
 
 title: 우아한테크코스 5기 프리코스 1주차 회고
-author: 김도현
+
 date: 2022-11-04
 categories: [프리코스]
 tags: [프리코스]

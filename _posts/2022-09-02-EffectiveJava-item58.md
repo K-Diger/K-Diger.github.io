@@ -1,7 +1,7 @@
 ---
 
 title: Item 58. 전통적인 for 문 보다는 for-each 문을 사용하라
-author: 김도현
+
 date: 2022-09-02
 categories: [Effective-Java]
 tags: [For-Loop, For-Each]

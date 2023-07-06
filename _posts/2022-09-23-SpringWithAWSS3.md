@@ -1,7 +1,7 @@
 ---
 
 title: Spring 과 AWS S3, REST API 이미지 업로드
-author: 김도현
+
 date: 2022-09-23
 categories: [Java, Spring, AWS, S3]
 tags: [Java, Spring, AWS, S3]

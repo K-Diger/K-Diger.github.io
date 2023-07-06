@@ -1,7 +1,7 @@
 ---
 
 title: Spring 핵심원리 기본편 - 3. 컴포넌트 스캔
-author: 김도현
+
 date: 2022-09-16
 categories: [Spring, Component, ComponentScan]
 tags: [Spring, Component, ComponentScan]

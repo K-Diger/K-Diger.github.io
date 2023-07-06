@@ -1,7 +1,7 @@
 ---
 
 title: 트랜잭션과 잠금
-author: 김도현
+
 date: 2023-05-02
 categories: [MySQL, Transaction]
 tags: [MySQL, Transaction]

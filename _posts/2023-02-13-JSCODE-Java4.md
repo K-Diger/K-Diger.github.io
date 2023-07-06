@@ -1,7 +1,7 @@
 ---
 
 title: JSCODE - 자바 스터디 4회차 (클래스, 다중생성자, 오버로딩) + 심화 미션(static을 지양하는 이유, Call By Reference, Call By Value)
-author: 김도현
+
 date: 2023-02-13
 categories: [Java, Study]
 tags: [Java, Study]

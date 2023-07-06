@@ -1,7 +1,7 @@
 ---
 
 title: 객체지향의 사실과 오해 - 역할, 책임, 협력
-author: 김도현
+
 date: 2023-01-24
 categories: [OOP]
 tags: [OOP]

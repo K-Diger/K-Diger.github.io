@@ -1,7 +1,7 @@
 ---
 
 title: Effective-Java Item 19. 상속을 고려하여 설계하고 문서화 그렇지 않으면 상속을 금지하기
-author: 김도현
+
 date: 2023-02-13
 categories: [Effective-Java]
 tags: [Comparable]
