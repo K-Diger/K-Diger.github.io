@@ -1,9 +1,9 @@
 ---
 
-title: OAuth 1.0 && 2.0
-date: 2023-07-20
-categories: [OAuth]
-tags: [OAuth]
+title: IntellJ Shortcut
+date: 2023-07-26
+categories: [Shortcut]
+tags: [Shortcut]
 layout: post
 toc: true
 math: true
