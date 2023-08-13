@@ -364,7 +364,7 @@ class Order {
 
 - 의존관계는 협력을 위해 필요한 일시적인 요소 (파라미터, 리턴타입, 지역변수)
 
-![img.png](img.png)
+![img.png](../images/index/img.png)
 
 객체지향 설계를 처음부터 완벽하게 할 수는 없다.
 
