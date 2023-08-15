@@ -14,31 +14,27 @@ mermaid: true
 
 # 문제 상황
 
-클라이언트에 푸쉬 알림을 전송하기 위해 FCM 서버에 요청하는 로직을 @Async 애노테이션을 활용하여
-
-비동기로 처리할 수 있도록 하였다.
-
-그런데, 이 비동기 메서드를 추가하자마자 Postman에서 최종적으로 클라이언트가 받는 요청에 대한 응답시간이 현저하게 늘어났다.
+클라이언트에 푸쉬 알림을 전송하기 위해 FCM 서버에 요청하는 로직을 추가했더니 아래와 같이 1884ms가 소요되는 현상이 발생했다.
 
 ![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/async/%EC%84%B1%EB%8A%A5%20%EA%B0%9C%EC%84%A0%20%EC%9D%B4%EC%A0%84%20%EC%B2%AB%20%EC%9A%94%EC%B2%AD.jpg?raw=true)
 
-
 ![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/async/%EC%84%B1%EB%8A%A5%20%EA%B0%9C%EC%84%A0%20%EC%9D%B4%EC%A0%84%20%EB%91%90%EB%B2%88%EC%A7%B8%20%EC%9A%94%EC%B2%AD.jpg?raw=true)
-
 
 - 서버가 켜진 즉시 첫 요청 시 응답시간 **1884ms**
 
 - 평상시 요청 응답 시간 **658ms**
 
-비동기 메서드를 추가하기 전에는 100ms도 넘지 않았던 응답시간이 저렇게 급격하게 늘어나니 클라이언트단에서도
+이 메서드를 추가하기 전에는 100ms도 넘지 않았던 응답시간이 저렇게 급격하게 늘어나니 클라이언트단에서도
 
 응답을 기다리느라 사용자 경험을 해치는 상황이 발생하게 되었다.
 
 # 어떻게 속도를 빠르게 할 수 있을까?
 
-"Spring boot @Async optimization" 이라고 검색하면 가장 많이 나오는 내용이
+외부 서버를 호출하는 로직을 비동기로 처리하면 어떨까? 굳이 외부 서버로 던진 요청이 완료된 것을 확인받은 후에 다른 비즈니스 로직을 처리해야할까?
 
-**ThreadPoolTaskExecutor**에 관한 내용이 등장한다.
+그래서 비동기 메서드를 적용해보기로 했다.
+
+`Spring boot Async Processing`이라고 검색하면 가장 많이 나오는 내용이 **ThreadPoolTaskExecutor**에 관한 내용이 등장한다.
 
 뭔가 해결을 위한 단서가 나온 것 같다!
 
@@ -46,9 +42,12 @@ mermaid: true
 
 [Asynchronous calls in spring](https://www.linkedin.com/pulse/asynchronous-calls-spring-boot-using-async-annotation-omar-ismail/)
 
-Spring에서 백그라운드 작업을 처리하려면 그 처리를 담당하는 스레드 풀을 관리해줘야한다.
+Spring에서 비동기 작업을 처리하려면 다음 두 가지를 관리해야한다.
 
-그리고 스레드 풀을 관리하기 위한 Bean을 등록하기 위해 다음 인터페이스의 구현체를 셋팅해줘야 하는 것이다.
+- @Asnyc 애노테이션으로 비동기 메서드를 지정한다. 
+- 비동기 메서드의 처리를 담당하는 스레드 풀을 관리해줘야한다.
+
+스레드 풀을 관리하기 위한 Bean을 등록하기 위해서는 아래의 인터페이스의 구현체를 셋팅해줘야 한다.
 
 ```java
 public interface AsyncConfigurer {
@@ -91,8 +90,6 @@ public interface AsyncConfigurer {
 
 스레드를 생성하는 비용은 어떤 스레드이던 그리 만만한 작업이 아니기 때문에 시간이 다소 걸리기 때문이다.
 
-또한 비동기 메서드를 실행하는 스레드는 Spring에서 관리하는 스레드 풀에서 가져오는 것이다.
-
 ```java
 public class ThreadPoolTaskExecutor extends ExecutorConfigurationSupport
 		implements AsyncListenableTaskExecutor, SchedulingTaskExecutor {
@@ -118,11 +115,11 @@ public class ThreadPoolTaskExecutor extends ExecutorConfigurationSupport
 
 해당 클래스의 프로퍼티를 보면,
 
-- 초기 Thread Size는 1
+- `corePoolSize` : 초기 Thread Size는 1
 
-- 최대 Thread Pool Size는 약 21억
+- `maxPoolSize` : 최대 Thread Pool Size는 약 21억
 
-- Queue 용량은 약 21억
+- `queueCapacity` : Queue 용량은 약 21억
 
 으로 설정되어있다.
 
@@ -132,9 +129,11 @@ public class ThreadPoolTaskExecutor extends ExecutorConfigurationSupport
 
 # 다시 돌아와서, 뭐가 문제였나?
 
-나는 위에서 본 ThreadPoolTaskExecutor와 같이 스레드 풀을 관리해주는 설정을 Bean으로 등록하지 않았다.
+- @Asnyc 애노테이션을 활용하여 비동기 메서드를 지정하지 않았던 점
 
-그러니까 쓰레드 하나로 비동기 메서드까지 처리하려하니 동기로 실행한 것이랑 다를 바가 없었고 느려질 수 밖에 없었다.
+- ThreadPoolTaskExecutor와 같이 스레드 풀을 관리해주는 설정을 Bean으로 등록하지 않은 점
+
+이 두 가지를 적용하지 않았기 때문에 응답에 지연이 생긴 것으로 볼 수 있다.
 
 # 해결 방안 및 성능 개선 결과
 
@@ -157,7 +156,7 @@ public class AsyncConfig implements AsyncConfigurer {
 }
 ```
 
-위와 같은 설정을 Bean으로 등록해주면 끝이다! 이렇게 간단하게 해결할 수 있음에도 성능 차이는 엄청났다.
+위와 같은 설정을 Bean으로 등록해주고 비동기로 처리할 메서드에 `@Async`애노테이션을 붙여주면 끝이다! 이렇게 간단하게 해결할 수 있음에도 성능 차이는 엄청났다.
 
 
 ![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/async/%EC%84%B1%EB%8A%A5%20%EA%B0%9C%EC%84%A0%20%ED%9B%84%20%EC%B2%AB%20%EC%9A%94%EC%B2%AD.jpg?raw=true)
@@ -170,19 +169,43 @@ public class AsyncConfig implements AsyncConfigurer {
 
 으로 개선되었으며
 
-서버가 켜진 즉시 첫 요청 응답 시간은 약 324%로 빨라졌고
+평균 응답 시간이 81%로 빨라졌다.
 
-평상시 응답 시간은 539%로 빨라졌다.
+# @Async 애노테이션을 사용할 때 기억해둬야할 것
 
-
-# 기억해둬야할 것 (스프링 부트의 기본 스레드 갯수)
+## 쓰레드와 큐의 사이즈를 지정할 때 신중해야한다.
 
 여기서 쓰레드를 설정해준다는 설정은 당연하게도 H/W의 쓰레드가 아니다.
 
 나는 처음에 H/W쓰레드를 설정한다는 것으로 이해해서 CPU 사양에 탑재된 쓰레드 만큼 셋팅을 하려 했으나
 
-익명의 멘토 개발자의 조언을 통해 논리적인 쓰레드를 설정한다는 것을 알게 되었다.
+여기서 다루는 쓰레드는 `논리적인 쓰레드를`말한다.
 
-즉, Tomcat 기본 설정에서 따로 건들지 않았다면 사용자 요청을 처리하기 위한 스레드를 담는
+앞서 살짝 언급했듯이 쓰레드를 생성하는 비용은 꽤나 엄청난 작업이다. 그렇기 때문에 아래 속성을 정의할 때 주의해야한다.
 
-스레드 풀에 200개의 스레드가 존재하고 그 중에서 DB 커넥션 스레드를 위해 10개의 스레드를 떼어 내준다.
+주로 실제 부하 테스트를 통해 측정해보면 정확하게 지정할 수 있겠으나 나는 그 부분까지는 수행하진 못했다.
+
+- `corePoolSize` : 초기 Thread Size는 1
+
+- `maxPoolSize` : 최대 Thread Pool Size는 약 21억
+
+- `queueCapacity` : Queue 용량은 약 21억
+
+## @Async가 달린 비동기 메서드는 반환 값이 없어야한다.
+
+당연하게도 비동기로 처리할 로직에는 반환 값이 없어야한다.
+
+반환 값이 있다는 것은 그 모든 리소스를 반환할 때 까지 다음 메서드를 수행하지 못하기 때문에 당연히 비동기 작업에는 반환값이 없어야 하는 것이다.
+
+만약 언젠가 처리가 끝나고나서 그 반환값을 사용하고자 한다면 `CompetableFuture`타입으로 반환해야한다.
+
+## @Async가 달린 비동기 메서드는 private하면 안된다.
+
+[참고자료 - 왜 @Async 애노테이션이 달린 메서드는 private하면 안되나?](https://dzone.com/articles/effective-advice-on-spring-async-part-1)
+
+@Async 애노테이션은 AOP기반으로 동작한다. 따라서 해당 애노테이션이 붙은 메서드를 감싸는 프록시 객체를 생성하는 것인데
+
+이 프록시 객체는 실제 비동기 작업을 처리할 때 사용된다. 프록시 객체로 동작한다는 것이 그 이유이다.
+
+## AOP란?
+
