@@ -14,15 +14,11 @@ mermaid: true
 
 # 문제 상황
 
-클라이언트에 푸쉬 알림을 전송하기 위해 FCM 서버에 요청하는 로직을 추가했더니 아래와 같이 1884ms가 소요되는 현상이 발생했다.
-
-![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/async/%EC%84%B1%EB%8A%A5%20%EA%B0%9C%EC%84%A0%20%EC%9D%B4%EC%A0%84%20%EC%B2%AB%20%EC%9A%94%EC%B2%AD.jpg?raw=true)
+클라이언트에 푸쉬 알림을 전송하기 위해 FCM 서버에 요청하는 로직을 추가했더니 아래와 같이 658ms가 소요되는 현상이 발생했다.
 
 ![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/async/%EC%84%B1%EB%8A%A5%20%EA%B0%9C%EC%84%A0%20%EC%9D%B4%EC%A0%84%20%EB%91%90%EB%B2%88%EC%A7%B8%20%EC%9A%94%EC%B2%AD.jpg?raw=true)
 
-- 서버가 켜진 즉시 첫 요청 시 응답시간 **1884ms**
-
-- 평상시 요청 응답 시간 **658ms**
+- 응답 시간 **658ms**
 
 이 메서드를 추가하기 전에는 100ms도 넘지 않았던 응답시간이 저렇게 급격하게 늘어나니 클라이언트단에서도
 
@@ -30,15 +26,13 @@ mermaid: true
 
 # 어떻게 속도를 빠르게 할 수 있을까?
 
-외부 서버를 호출하는 로직을 비동기로 처리하면 어떨까? 굳이 외부 서버로 던진 요청이 완료된 것을 확인받은 후에 다른 비즈니스 로직을 처리해야할까?
-
-그래서 비동기 메서드를 적용해보기로 했다.
+외부 서버를 호출하는 로직을 비동기로 처리하면 어떨까? 굳이 외부 서버로 던진 요청이 완료된 것을 확인받은 후에 다른 비즈니스 로직을 처리해야할까? 를 고민하다가 직접 비동기 메서드를 적용해보기로 했다.
 
 `Spring boot Async Processing`이라고 검색하면 가장 많이 나오는 내용이 **ThreadPoolTaskExecutor**에 관한 내용이 등장한다.
 
 뭔가 해결을 위한 단서가 나온 것 같다!
 
-## ThreadPoolTaskExecutor와 @Async
+# ThreadPoolTaskExecutor와 @Async
 
 [Asynchronous calls in spring](https://www.linkedin.com/pulse/asynchronous-calls-spring-boot-using-async-annotation-omar-ismail/)
 
@@ -76,7 +70,7 @@ public interface AsyncConfigurer {
 
 하지만 꼭 위 인터페이스를 구현체로 등록하지 않아도 되긴하다. 그냥 ThreadPoolTaskExecutor를 반환하는 메서드를 Bean으로 등록해주면 되는 것일 뿐이다.
 
-## @Async 애노테이션이 어떻게 동작하는건가?
+# @Async 애노테이션이 어떻게 동작하는건가?
 
 - @Async 애노테이션이 붙은 메서드가 실행될 때, 프록시가 해당 호출을 가로채고 Task Executor에 전달한다.
 
@@ -121,9 +115,7 @@ public class ThreadPoolTaskExecutor extends ExecutorConfigurationSupport
 
 - `queueCapacity` : Queue 용량은 약 21억
 
-으로 설정되어있다.
-
-위 설정을 그대로 사용해도 좋지만 애플리케이션 환경과 서버의 하드웨어 스펙에 따라 조정해 줄 필요는 있을 것 같다.
+으로 설정되어있다. 위 설정을 그대로 사용해도 좋지만 애플리케이션 환경과 서버의 하드웨어 스펙에 따라 조정해 줄 필요는 있을 것 같다.
 
 ---
 
@@ -158,18 +150,11 @@ public class AsyncConfig implements AsyncConfigurer {
 
 위와 같은 설정을 Bean으로 등록해주고 비동기로 처리할 메서드에 `@Async`애노테이션을 붙여주면 끝이다! 이렇게 간단하게 해결할 수 있음에도 성능 차이는 엄청났다.
 
-
-![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/async/%EC%84%B1%EB%8A%A5%20%EA%B0%9C%EC%84%A0%20%ED%9B%84%20%EC%B2%AB%20%EC%9A%94%EC%B2%AD.jpg?raw=true)
-
 ![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/async/%EC%84%B1%EB%8A%A5%20%EA%B0%9C%EC%84%A0%20%ED%9B%84%20%EB%91%90%EB%B2%88%EC%A7%B8%20%EC%9A%94%EC%B2%AD.jpg?raw=true)
 
-- 서버가 켜진 즉시 첫 요청 시 응답시간 **1884ms** -> **581ms**
+- 응답 시간 **658ms** -> **122ms**
 
-- 평상시 응답 시간 **658ms** -> **122ms**
-
-으로 개선되었으며
-
-평균 응답 시간이 81%로 빨라졌다.
+응답 시간이 81%로 빨라졌다.
 
 # @Async 애노테이션을 사용할 때 기억해둬야할 것
 
@@ -206,6 +191,3 @@ public class AsyncConfig implements AsyncConfigurer {
 @Async 애노테이션은 AOP기반으로 동작한다. 따라서 해당 애노테이션이 붙은 메서드를 감싸는 프록시 객체를 생성하는 것인데
 
 이 프록시 객체는 실제 비동기 작업을 처리할 때 사용된다. 프록시 객체로 동작한다는 것이 그 이유이다.
-
-## AOP란?
-
