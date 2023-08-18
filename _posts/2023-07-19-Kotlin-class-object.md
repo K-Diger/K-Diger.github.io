@@ -724,6 +724,8 @@ fun main(args: Array<String>) {
 
 위 처럼 익명객체를 만들기위해 활용 또한 가능하다.
 
+---
+
 ## companion object
 
 위에서 알아본 object는 static으로 동작한다고 했다.
@@ -765,7 +767,11 @@ fun main(args: Array<String>) {
 }
 ```
 
+해당 클래스의 인스턴스 없이도 접근할 수 있는 멤버를 정의하는 것으로 Java의 static 멤버와 유사한 역할을 한다. 그리고 클래스 내에 하나의 companion object만 정의할 수 있다.
+
 **매번 object 클래스에 접근하여 해당 메서드를 호출하는 것**이 아니라 **해당 메서드나 변수에 직접 접근**이 가능하게 되었다.
+
+---
 
 ### object vs companion object 구성의 차이점
 
@@ -849,9 +855,15 @@ class ClassForTest {
    }
 ```
 
+## object vs companion object 요약
+
 - `companion object`는 해당 클래스 외부(부모 클래스 내부)에 선언되고 초기화된다.
 
 - `object`는 해당 클래스 내부에 static 블록을 통해 초기화된다.
 
 
-위와 같은 차이점을 가졌기 때문에 기존 잘못 생각될 수 있는 `static == companion object 라는 사고방식을 고쳐야한다.`
+object는 단일 인스턴스를 나타내는데 사용되며, 클래스의 내용과 함께 정의된다.
+
+companion object는 클래스 내에서 정적 멤버와 유사한 역할을 하며, 해당 클래스와 밀접한 관련이 있는 기능을 구현하는 데 사용된다.
+
+만약 특정 클래스와 강하게 연결된 정적 멤버를 정의하려면 companion object를 사용하고, 클래스와 무관한 독립적인 싱글턴 객체를 만들고자 한다면 object를 사용하는 것이 좋다.
