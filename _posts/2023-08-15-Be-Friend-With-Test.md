@@ -11,6 +11,10 @@ mermaid: true
 
 ---
 
+[마틴 파울러 번역](https://sites.google.com/a/jabberstory.net/testing/mocksArentStubs)
+
+---
+
 # 테스트 대역
 
 `Mock`은 테스트 대상(SUT)과 그 협력자 사이의 상호작용을 검사할 수 있는 테스트 대역이다.
