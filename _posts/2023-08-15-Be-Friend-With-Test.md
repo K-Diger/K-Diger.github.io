@@ -35,7 +35,97 @@ mermaid: true
 
 ---
 
+
 # Mock vs Stub
+
+JPA를 활용해서 user를 데이터베이스에 저장하는 로직을 Stub과 Mock을 활용해서 테스트를 작성해보겠다.
+
+## Mock을 코드로 알아보기
+
+```kotlin
+@SpringBootTest
+class UserServiceTest {
+
+    @Autowired
+    private lateinit var userService: UserService
+
+    @MockBean
+    private lateinit var userRepository: UserRepository
+
+    @Test
+    fun testSaveUser() {
+        // 사용자 정보 생성
+        val user = User(username = "johndoe", email = "johndoe@example.com")
+
+        // userRepository.save 메서드를 호출할 때 목(Mock) 객체를 사용
+        Mockito.`when`(userRepository.save(user)).thenReturn(user)
+
+        // 사용자 저장
+        val savedUser = userService.saveUser(user)
+
+        // 저장된 사용자와 원래 사용자 정보가 같은지 검증
+        Assertions.assertEquals(user, savedUser)
+
+        // userRepository.save 메서드가 한 번 호출되었는지 검증
+        Mockito.verify(userRepository, Mockito.times(1)).save(user)
+    }
+}
+```
+
+---
+
+## Stub을 코드로 알아보기
+
+```kotlin
+@Repository
+class UserRepositoryStub {
+
+    private val users: MutableList<User> = mutableListOf()
+
+    fun save(user: User): User {
+        user.id = (users.size + 1).toLong() // 간단한 ID 생성 로직
+        users.add(user)
+        return user
+    }
+
+    fun findById(id: Long): User? {
+        return users.find { it.id == id }
+    }
+
+    fun findAll(): List<User> {
+        return users.toList()
+    }
+}
+
+@SpringBootTest
+class UserServiceTest {
+
+    @Autowired
+    private lateinit var userService: UserService
+
+    @Autowired
+    private lateinit var userRepositoryStub: UserRepositoryStub
+
+    @Test
+    fun testSaveUser() {
+        // 사용자 정보 생성
+        val user = User(username = "johndoe", email = "johndoe@example.com")
+
+        // 사용자 저장
+        val savedUser = userService.saveUser(user)
+
+        // 저장된 사용자와 원래 사용자 정보가 같은지 검증
+        Assertions.assertEquals(user, savedUser)
+
+        // userRepositoryStub에서 사용자를 찾아와서 확인
+        val retrievedUser = userRepositoryStub.findById(savedUser.id!!)
+        Assertions.assertEquals(savedUser, retrievedUser)
+    }
+}
+```
+
+---
+
 
 ### Mock, Spy
 
