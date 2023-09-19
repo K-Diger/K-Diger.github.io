@@ -19,7 +19,7 @@ CI/CD는 구글링하면 뻔한 이야기를 많이 해놓았기 때문에 그�
 
 # 깃헙 액션으로 CI 돌려보기
 
-```text
+```yml
 name: Sulasang CI/CD with Gradle, Github Actions, Docker
 
 on:
@@ -70,7 +70,7 @@ develop, feature 까지도 추가해도 좋을 것 같다.
 
 # 깃헙 액션으로 CD 돌려보기
 
-```text
+```yml
       - name: API 빌드 파일 복사
         uses: appleboy/scp-action@master
         with:
