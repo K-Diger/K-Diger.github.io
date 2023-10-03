@@ -100,7 +100,7 @@ develop, feature 까지도 추가해도 좋을 것 같다.
           source: "sulasang-crawler/build/libs/sulasang-crawler-0.0.1-SNAPSHOT.jar"
           target: "/home/ubuntu"
 
-      - name: API EC2 인스턴스 접속 및 애플리케이션 실행
+      - name: Crawler EC2 인스턴스 접속 및 애플리케이션 실행
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
