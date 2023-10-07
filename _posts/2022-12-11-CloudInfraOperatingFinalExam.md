@@ -1,6 +1,6 @@
 ---
 
-title: 클라우드 인프라 운영
+title: VPC, Auto Scaling, ELB, Route 53, Bastion Host, IAM, Cloud Watch
 author: Diger
 date: 2022-12-11
 categories: [Cloud, AWS]
