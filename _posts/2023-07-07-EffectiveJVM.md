@@ -32,7 +32,7 @@ Java Code 나 Application 을 실행시키기 위한 런타임 환경을 제공�
 
 Java 코드를 .class파일(ByteCode)로 변환해준다.
 
-JVM 은 Java Runtime Environment(JRE)의 일부이다.
+JVM은 Java Runtime Environment(JRE)의 일부이다.
 
 다른 언어의 컴파일러와는 다르게, Java 컴파일러는 JVM 이 인식할 수 있는 코드를 생성해낸다.
 
@@ -52,7 +52,7 @@ Class Loader -> Byte Code Verifier -> Execution Engine
 
 # JVM 구조
 
-![JVM: Architecture](https://www.javainterviewpoint.com/java-virtual-machine-architecture-in-java/jvm-architecture/)
+![JVM: Architecture](https://techvidvan.com/tutorials/wp-content/uploads/sites/2/2020/06/JVM-Model.jpg)
 
 크게 분류하자면 `Class Loader`, `Runtime Data Areas`, `Execution Engine`으로 나눌 수 있다.
 
