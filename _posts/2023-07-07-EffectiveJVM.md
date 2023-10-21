@@ -18,8 +18,242 @@ mermaid: true
 
 [Gmarket Tech Blog](https://dev.gmarket.com/62)
 
+# 참고 자료
 
-# 문제 상황
+[Jdk-17 Specification](https://blogs.oracle.com/javamagazine/post/java-jdk-17-generally-available)
+
+[DZone](https://dzone.com/articles/jvm-architecture-explained)
+
+---
+
+# JVM 이란?
+
+Java Code 나 Application 을 실행시키기 위한 런타임 환경을 제공해주는 엔진이다.
+
+Java 코드를 .class파일(ByteCode)로 변환해준다.
+
+JVM 은 Java Runtime Environment(JRE)의 일부이다.
+
+다른 언어의 컴파일러와는 다르게, Java 컴파일러는 JVM 이 인식할 수 있는 코드를 생성해낸다.
+
+---
+
+# JVM 기능
+
+- Java 코드를 ByteCode 로 변환한다. (변환된 ByteCode는 인터프리팅 된다.)
+- JVM은 메모리 공간 할당을 담당한다.
+- Java Code <-> JVM <-> System
+
+# Java 코드가 실행되는 플로우
+
+Class Loader -> Byte Code Verifier -> Execution Engine
+
+---
+
+# JVM 구조
+
+![JVM: Architecture](https://www.javainterviewpoint.com/java-virtual-machine-architecture-in-java/jvm-architecture/)
+
+크게 분류하자면 `Class Loader`, `Runtime Data Areas`, `Execution Engine`으로 나눌 수 있다.
+
+각 요소가 어떤 역할을 하는지 알아보자
+
+---
+
+# Class Loader
+
+![Class Loader](https://javatutorial.net/wp-content/uploads/2017/11/jvm-featured-image.png)
+
+클래스 파일을 로딩하기 위한 하위 시스템이다.
+
+Class Loader는 세 가지 주요 기능이 있다.
+
+- `Loading`
+- `Linking`,
+- `Initialization`
+
+---
+
+## Class Loader - Loading
+
+클래스 로더는 .class 파일을 읽고, 바이너리 데이터를 생성하여 메소드 영역에 저장한다.
+
+클래스 로더의 종류로는 세 가지가 있으며 각 역할이 부여되어있다.
+
+- `BootStrap` : 시스템 클래스 및 Java 표준 라이브러리에 대한 클래스를 로딩한다. (jre/lib 폴더의 rt.jar에 위치한 클래스들을 로딩한다.)
+- `Extension Class Loader` : jre/lib/ext 폴더 내의 클래스를 로딩한다.
+- `Application Class Loader` : 작성한 코드에 대한 클래스, 환경 변수를 로딩한다.
+
+또한 각 .class 파일 마다 JVM은 아래의 세 가지 정보를 `메서드 영역에 저장`한다.
+
+1. `로드된 클래스`와 그 모든 `연관 부모 클래스`
+
+2. .class 파일이 `Class` or `Interface` or `Enum`어떤 것으로 작성된 것인지?
+
+3. `수정자`, `변수`와 `메서드 정보` 등
+
+우리는 흔히 `getClass()`메서드로 class를 코드 관점에서도 사용이 가능하다. 클래스 로더가 하는 역할이 덕분인데,
+
+.class 를 로딩을 마친 후에, JVM 은 `Heap 영역에 이 파일들을 나타내기 위해` Class 유형의 객체를 생성한다.
+
+---
+
+## Class Loader - Linking
+
+`Verification`, `Preparation`, `Resolution` 을 수행한다.
+
+### Class Loader - Linking : Verification
+
+.class 파일이 올바른 형식으로 지정되고, 유효한 컴파일러에 의해 생성되었는지 확인한다.
+
+확인에 실패 했을 때 `RuntimeException` 혹은 `java.lang.VerifyError` 가 발생한다.
+
+이 과정이 끝났다면, 클래스 파일을 컴파일 할 준비가 완료 된 것이다.
+
+### Class Loader - Linking : Preparation
+
+클래스 변수에 메모리를 할당하고 메모리를 기본값으로 초기화한다.
+
+### Class Loader - Linking : Resolution
+
+간접 참조 방식을 직접 참조 방식으로 바꾸는 과정이다. 참조된 엔티티를 찾기 위하여 `메서드 영역을 검색`한다.
+
+---
+
+## Class Loader - Initialization
+
+모든 static 변수가 코드 및 static block 에 정의된 값으로 할당된다. (static 키워드가 들어간 요소들 메모리 할당)
+
+부모에서 자식 순으로 수행된다.
+
+--> static 요소들 메모리 할당 --> 부모 클래스 메모리 할당 --> 자식 클래스 메모리 할당 --> 기타 요소들 할당
+
+---
+
+# Runtime Data Area
+
+## Method Area
+
+`클래스 구조(클래스 이름, 부모 클래스 이름, 메서드 및 변수 정보)` 등 클래스 수준의 모든 정보를 담고 있다.
+
+`static 변수`를 가지고 있다.
+
+JVM 당 하나의 메서드 영역을 가지고 있고, `공유 될 수 있는` 영역이다.
+
+---
+
+## Heap
+
+모든 `객체 및 연관된 인스턴스 변수/배열`이 저장되는 장소이다.
+
+이 공간은 `공유될 수` 있으며 추후 `GC 의 대상`이 되는 동적인 영역이다.
+
+Heap 영역은 조금 더 깊게 들어가면 다음 도식화 같이 구성되어있다.
+
+![Java 7 vs Java 8 Heap](https://miro.medium.com/v2/resize:fit:513/0*rKZvTnuUkEc5LoXW.jpg)
+
+위 그림으로 대강 틀을 잡고 아래 그림과 설명을 보면 이해가 쉬웠다.
+
+![](https://itzsrv.com/static/55998773d3933af1327d3560a71ff975/083f8/jvm-mem.png)
+
+### Young Generation (새로운 객체가 할당되는 공간)
+
+- Young Generation은 새로운 객체들이 할당되는 영역이다.
+- Eden 영역과 두 개의 Survivor 영역(S0, S1)으로 구성된다.
+- 새로운 객체들은 Eden 영역에 할당된다.
+
+### Eden 영역
+
+- 새로운 객체가 할당되는 초기 영역이다.
+- Eden 영역에 있는 객체들 중 일부는 살아남아서 Survivor 영역으로 이동한다.
+
+### Survivor 영역 (S0, S1)
+
+- Eden 영역에서 일정 기간 동안 살아남은 객체들 중 일부가 여기로 이동한다.
+- 이동한 객체들 중 살아남은 객체는 다음 번 GC 사이클에서 다른 Survivor 영역으로 이동한다.
+- 여러 번의 이동을 거치면서 살아남은 객체들은 Old Generation으로 이동할 수 있다.
+
+### Old Generation (오랫동안 유지되는 객체가 할당되는 공간)
+
+- Old Generation은 Young Generation에서 오랫동안 살아남은 객체들이 할당되는 공간이다.
+- Old Generation 영역에 있는 객체들은 장기간 메모리를 점유하게 되며, 가비지 컬렉션 시에 주요 대상이 된다.
+
+---
+
+## Threads Area(Stack Area)
+
+JVM은 `모든 쓰레드`에, `각 하나의 런타임 스택`을 제공한다.
+
+각 스택의 모든 블럭은 `메서드 호출`이 발생하면 이를 `스택에 저장`하고 `지역 변수`가 이곳에 저장되며 `공유 가능`한 영역이다
+
+---
+
+## PC Register
+
+스레드가 `현재 실행중인 JVM 명령의 주소`를 저장한다. `각 스레드 별로 별도의 PC 레지스터`가 있다.
+
+---
+
+### Native Internal Threads (Native Method Stacks)
+
+Java 가 아닌 다른 언어(C, C++)로 작성된 Native Code 의 명령을 저장한다.
+
+---
+
+## Runtime Area 요약
+
+### Method 영역 (공유 가능)
+1. static 키워드로 선언된 요소들
+2. 클래스 이름, 부모클래스, 클래스 메서드, 클래스 변수 등
+
+### Heap (공유 가능)
+1. 인스턴스
+2. 인스턴스 변수
+
+GC가 참조 되지 않은 메모리를 확인하고 제거하는 영역
+
+### Thread (Stack) (공유 가능)
+1. 메서드 내에서 사용되는 값들을 저장(매개변수, 메서드에서 선언한 변수, 리턴값 등)
+2. 지역변수(메서드에 의한 변수)
+
+---
+
+# Execution Engine
+
+`JIT Compiler` 와 `GC`가 존재하는 영역으로 Native Code (타 언어로 만들어진 메서드 등)을 다루는 영역이다.
+
+실행 엔진은 .class 파일을 실행시켜준다.
+
+또한 byte 코드를 각 행마다 읽어들이며(인터프리터에 의해) 메모리 공간에 존재하는 데이터와 정보들을 이용하며 명령어를 실행시켜준다.
+
+실행 엔진은 `세 부분으로 분류` 할 수 있다.
+
+## Execution Engine - Interpreter
+
+바이트 코드를 한줄 씩 해석한 다음 실행한다.
+
+인터프리터의 단점으로는, `하나의 메서드를 여러 번` 호출 할 경우, `매 번 해석`을 해줘야 하는 것으로 CPU, Memory를 더 잡아먹게 된다.
+
+## Execution Engine - Just-In-Time Compiler(JIT)
+
+인터프리터의 효율을 증가시키기 위해 사용된다.
+
+`전체 바이트 코드를 컴파일`하여 `네이티브 코드(기계어)`로 변경하므로 인터프리터가 반복되는 메서드 호출을 하지 않아도
+
+JIT 에서 해당 부분에 관한 네이티브 코드를 제공하므로
+
+재 해석이 필요하지 않아 효율을 증가 시켜주는 방법이다.
+
+[자세한 내용](https://k-diger.github.io/posts/JITCompiler/)
+
+## Execution Engine - Garbage Collector
+
+참조되지 않은 객체를 정리해준다.
+
+[자세한 내용](https://k-diger.github.io/posts/GarbageCollector/)
+
+
+# JVM 튜닝 - 문제 상황
 
 프로젝트를 진행하면서 크롤러를 돌리는 중 아래와 같은 에러가 뜨고 있었다.
 
