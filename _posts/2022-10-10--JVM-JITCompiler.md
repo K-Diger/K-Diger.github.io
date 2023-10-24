@@ -1,7 +1,7 @@
 ---
 
 title: JVM - JIT Compiler
-date: 2023-10-10
+date: 2022-10-10
 categories: [JIT-Compiler]
 tags: [JIT-Compiler]
 layout: post
