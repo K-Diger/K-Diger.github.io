@@ -224,7 +224,7 @@ Call By Value는 `파라미터`로 전달되는 값이 실제 값이 아닌 `복
 
 ---
 
-# 7. Sync-Async, Blocking - Non-Blocking
+# 6. Sync-Async, Blocking - Non-Blocking
 
 - 예를들어, IO(입출력)를 처리할 때 Sync와 Async의 차이는 요청한 순서가 지켜지는가 아닌가에 있고
 
@@ -248,7 +248,7 @@ A 함수가 B 함수를 호출 할 때, B 함수의 결과를 B 함수가 처리
 
 ---
 
-# 8. CPU 스케쥴링 기법
+# 7. CPU 스케쥴링 기법
 
 ## 선점형 알고리즘
 
