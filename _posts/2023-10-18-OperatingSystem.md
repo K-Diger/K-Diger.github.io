@@ -248,6 +248,105 @@ A 함수가 B 함수를 호출 할 때, B 함수의 결과를 B 함수가 처리
 
 ---
 
+## Sync-Blocking
+
+```java
+public class SyncNonBlocking {
+
+    public static void main(String[] args) throws InterruptedException {
+        // waitOneSecond 함수 호출 후 바로 다음 코드가 실행된다.
+        System.out.println("Sync-nonBlocking 시작");
+        waitOneSecond();
+        System.out.println("Sync-nonBlocking 종료");
+    }
+
+    private static void waitOneSecond() throws InterruptedException {
+        Thread.sleep(1000);
+    }
+}
+```
+
+## Sync-NonBlocking
+
+```java
+public class SyncNonBlocking {
+
+    public static void main(String[] args) throws InterruptedException {
+        // waitOneSecond 함수 호출 후 바로 다음 코드가 실행된다.
+        System.out.println("Sync-nonBlocking 시작");
+        waitOneSecond();
+        System.out.println("Sync-nonBlocking 종료");
+    }
+
+    private static void waitOneSecond() throws InterruptedException {
+        Thread.sleep(1000);
+    }
+}
+```
+
+## Async-Blocking
+
+```java
+public class AsyncBlocking {
+
+    public static void main(String[] args) throws InterruptedException {
+        // 1초 동안 대기하는 함수
+        private static void waitOneSecond() throws InterruptedException {
+            Thread.sleep(1000);
+        }
+
+        // Async-Blocking 코드
+        // 함수 호출 후 다음 코드가 실행되기 전까지 대기한다.
+        // 함수의 결과는 나중에 콜백 함수에서 처리한다.
+        System.out.println("Async-Blocking 시작");
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        CompletionStage<Void> future = executorService.submit(() -> {
+            try {
+                waitOneSecond();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        });
+        future.get();
+        System.out.println("Async-Blocking 종료");
+        executorService.shutdown();
+    }
+}
+
+```
+
+## Async-NonBlocking
+
+```java
+public class AsyncNonBlocking {
+
+    public static void main(String[] args) throws InterruptedException {
+        // 1초 동안 대기하는 함수
+        private static void waitOneSecond() throws InterruptedException {
+            Thread.sleep(1000);
+        }
+
+        // Async-nonBlocking 코드
+        // 함수 호출 후 바로 다음 코드가 실행된다.
+        // 함수의 결과는 나중에 콜백 함수에서 처리한다.
+        System.out.println("Async-nonBlocking 시작");
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> {
+            try {
+                waitOneSecond();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        System.out.println("Async-nonBlocking 종료");
+        executorService.shutdown();
+    }
+}
+```
+
+---
+
 # 7. CPU 스케쥴링 기법
 
 ## 선점형 알고리즘
