@@ -86,3 +86,66 @@ public class ResponseForm<T> {
 직렬화 할 때 JVM 내부적으로 Getter메서드를 활용한다는 점을 깜빡하고 Getter를 추가하지 않았기 때문에 직렬화가 이루어지지 않게 되었다.
 
 직렬화 대상을 다룰땐 Getter를 고려해야한다는 점을 잊지 않도록 주의하자!
+
+---
+
+# MongoRepository는 Dirty Checking이 없다.
+
+당연하게도 JPA와 딱히 관련이 없는 MongoDB는 Dirty Checking 기능이 존재하지 않는다.
+
+즉, 아래와 같은 코드가 있을 때
+
+```java
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class UserAuthenticator {
+
+    private final UserRepository userRepository;
+
+    public void execute(LoginId loginId, Password password) {
+        User user = userRepository.findByLoginIdAndPassword(
+                loginId,
+                password
+        );
+
+        user.updateAuthority(Authority.NORMAL);
+    }
+}
+```
+
+흔히 쓰던 JPA기반의 RDBMS였으면 Dirty Checking이 발동되어 save()메서드를 호출하지 않아도 자동으로 변경사항이 반영된다.
+
+하지만 NoSQL은 영속성 컨텍스트를 사용하는 방식이 아니기 때문에 아래와 같이 직접 save()메서드를 호출해줘야한다.
+
+또한 @Transactioanl 애노테이션도 딱히 필요가 없다. 만약 MongoDB가 지원하는 트랜잭션을 사용하고 싶다면 별도의 설정을 해줘야한다.
+
+```java
+@Service
+@RequiredArgsConstructor
+public class UserAuthenticator {
+
+    private final UserRepository userRepository;
+
+    public void execute(LoginId loginId, Password password) {
+        User user = userRepository.findByLoginIdAndPassword(
+                loginId,
+                password
+        );
+
+        user.updateAuthority(Authority.NORMAL);
+        userRepository.save(user);
+    }
+}
+```
+
+```java
+@Configuration
+public class MongoTransactionConfig {
+
+    @Bean
+    public MongoTransactionManager specifyTransactionManager(MongoDatabaseFactory mongoDatabaseFactory) {
+        return new MongoTransactionManager(mongoDatabaseFactory);
+    }
+}
+```
