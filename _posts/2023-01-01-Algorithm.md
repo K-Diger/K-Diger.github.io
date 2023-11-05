@@ -1,7 +1,6 @@
 ---
 
 title: Algorithm
-
 date: 2023-01-01
 categories: [Algorithm]
 tags: [Algorithm]
@@ -12,177 +11,54 @@ mermaid: true
 
 ---
 
-# DataStructure
+# Java 지원 자료형
 
-## 괄호 - boj.kr/9012
+## List
 
-```kotlin
-import java.io.BufferedReader
-import java.io.BufferedWriter
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
-import java.util.*
+| 연산      | ArrayList                  | LinkedList         |
+|---------|----------------------------|--------------------|
+| 끝에 삽입   | O(1), O(N)[리스트 크기를 늘려야할 때] | O(1)               |
+| 중간에 삽입  | O(N)                       | O(N)[탐색], O(1)[삭제] |
+| 끝에서 삭제  | O(1)                       | O(1)               |
+| 중간에서 삭제 | O(N)                       | O(N)[탐색], O(1)[삭제] |
+| 조회      | O(1)                       | O(N)               |
 
-private val br = BufferedReader(InputStreamReader(System.`in`))
-private val bw = BufferedWriter(OutputStreamWriter(System.out))
+### ArrayList
 
-fun main() {
-    val t = br.readLine().toInt()
+동적 배열이다.
 
-    repeat(t) {
-        val input = br.readLine()
-        val stack: Stack<String> = Stack()
+### LinkedList
 
-        repeat(input.length) {
-            val current = input.substring(it, it + 1)
+이중 연결 리스트(Head, Tail을 가짐)이다.
 
-            if (current == "(") {
-                stack.push(current)
-            } else if (current == ")") {
-                if (stack.isNotEmpty()) {
-                    if (stack.peek() == "(") {
-                        stack.pop()
-                    }
-                } else {
-                    stack.push(current)
-                }
-            }
-        }
+---
 
-        if (stack.isEmpty()) {
-            println("YES")
-        } else {
-            println("NO")
-        }
-    }
-}
-```
+## Map
 
-## 균형잡힌 세상 - boj.kr/4949
+모든 구현체의 연산의 시간 복잡도가 O(1)이다.
 
-```kotlin
-import java.io.BufferedReader
-import java.io.BufferedWriter
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
-import java.util.*
+### HashMap (기본 Map)
 
-private val br = BufferedReader(InputStreamReader(System.`in`))
-private val bw = BufferedWriter(OutputStreamWriter(System.out))
+Key-Value를 가지는 일반적인 Map이다. 순서를 보장하지 않는다.
 
-fun main() {
+### LinkedHashMap (순서 보장 Map)
 
-    while (true) {
-        val input = br.readLine()
-        if (input == ".") break
+Key-Value를 가지는 Map이다. 순서를 보장한다.
 
-        val stack = Stack<Char>()
-        var isBalanced = true
+### TreeMap (특정 조건에 따른 정렬 Map)
 
-        for (char in input) {
-            when (char) {
-                '(', '[' -> stack.push(char)
-                ')' -> {
-                    if (stack.isEmpty() || stack.pop() != '(') {
-                        isBalanced = false
-                        break
-                    }
-                }
+값에 따라 순서를 정렬한다. 내부적으로 `Red-Black Tree`로 구현되어있고 정렬 순서를 임의로 지정할 수 있다.
 
-                ']' -> {
-                    if (stack.isEmpty() || stack.pop() != '[') {
-                        isBalanced = false
-                        break
-                    }
-                }
-            }
-        }
+---
 
-        if (isBalanced && stack.isEmpty()) {
-            println("yes")
-        } else {
-            println("no")
-        }
-    }
-}
-```
+## 크고 정밀한 숫자를 위한 자료형
 
-## 덱 - boj.kr/10866
+### BigInteger
 
-```kotlin
-import java.io.BufferedReader
-import java.io.BufferedWriter
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
+무한대의 숫자를 표기할 수 있다. 이로 인해 정밀한 수까지도 표현이 가능한 자료형이다.
 
-private val br = BufferedReader(InputStreamReader(System.`in`))
-private val bw = BufferedWriter(OutputStreamWriter(System.out))
+모든 숫자를 이 자료형을 사용하게되면 성능 저하가 있으니 꼭 필요시 사용해야한다.
 
-fun main() {
-    val n = br.readLine().toInt()
-    val deque = ArrayDeque<Int>()
+`add()`, `subtract()`, `multiply()`, `divide()`, `remainder()`
 
-    repeat(n) {
-        val input = br.readLine().split(" ")
-        when (input[0]) {
-            "push_back" -> deque.addLast(input[1].toInt())
-            "pop_back" -> bw.write(if (deque.isEmpty()) "-1\n" else "${deque.removeLast()}\n")
-            "push_front" -> deque.addFirst(input[1].toInt())
-            "pop_front" -> bw.write(if (deque.isEmpty()) "-1\n" else "${deque.removeFirst()}\n")
-            "front" -> bw.write(if (deque.isEmpty()) "-1\n" else "${deque.first()}\n")
-            "back" -> bw.write(if (deque.isEmpty()) "-1\n" else "${deque.last()}\n")
-            "size" -> bw.write("${deque.size}\n")
-            "empty" -> bw.write(if (deque.isEmpty()) "1\n" else "0\n")
-        }
-    }
-    br.close()
-    bw.close()
-}
-```
-
-## 수찾기 - boj.kr/1920
-
-```kotlin
-import java.io.BufferedReader
-import java.io.BufferedWriter
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
-
-private val br = BufferedReader(InputStreamReader(System.`in`))
-private val bw = BufferedWriter(OutputStreamWriter(System.out))
-
-
-fun main() {
-    val n = br.readLine().toInt()
-    val array = br.readLine().split(" ").map { it.toInt() }.toHashSet()
-
-    val m = br.readLine().toInt()
-    val target = br.readLine().split(" ").map { it.toInt() }
-
-    for (value in target) {
-        if (value in array) {
-            println(1)
-        } else {
-            println(0)
-        }
-    }
-}
-```
-
-# String
-
-# BruteForce
-
-# Implementation
-
-# Greedy
-
-# Back-Tracking
-
-# Graph
-
-# Dijkstra
-
-# Divide And Conquer
-
-# DP
+---
