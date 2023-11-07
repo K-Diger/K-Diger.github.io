@@ -149,3 +149,49 @@ public class MongoTransactionConfig {
     }
 }
 ```
+
+---
+
+# 컬렉션 조회 시 이상현상
+
+아래와 같이 게시글 엔티티를 정의했다.
+
+### Board.java
+
+```java
+@Getter
+@AllArgsConstructor
+@Builder
+@Document("board")
+public class Board extends BaseDocument {
+
+    private Title title;
+    private TextContent textContent;
+    private StaticContent staticContent;
+    private String writer;
+}
+```
+
+### StaticContent.java
+
+```java
+@Getter
+@Document(collection = "staticContent")
+public class StaticContent {
+    private final List<String> links = new ArrayList<>();
+
+    public StaticContent(List<String> value) {
+        links.addAll(value);
+    }
+
+    public void validate(String value) {
+        if (value.isBlank()) {
+            throw new IllegalArgumentException("Content Link Must Not Be Blank");
+        }
+    }
+}
+```
+
+위와 같은 List를 가지고 있는 값 타입으로 래핑해서 사용하고 있는 것인데, 이 객체를 가지고 있는 Board를 조회하려고하면 매핑 문제가 발생한다.
+
+이 원인과 해결방법에 대해선 조금 더 알아보기로한다.
