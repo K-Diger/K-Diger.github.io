@@ -194,4 +194,11 @@ public class StaticContent {
 
 위와 같은 List를 가지고 있는 값 타입으로 래핑해서 사용하고 있는 것인데, 이 객체를 가지고 있는 Board를 조회하려고하면 매핑 문제가 발생한다.
 
+```text
+Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.data.mapping.MappingException: No property value found on entity class com.diger.notonlysqlboard.core.board.domain.StaticContent to bind constructor parameter to] with root cause```
+
+org.springframework.data.mapping.MappingException: No property value found on entity class com.diger.notonlysqlboard.core.board.domain.StaticContent to bind constructor parameter to
+
+```
+
 이 원인과 해결방법에 대해선 조금 더 알아보기로한다.
