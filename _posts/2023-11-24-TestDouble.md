@@ -11,7 +11,17 @@ mermaid: true
 
 ---
 
+# 참고 자료
+
+[마틴 파울러 - 테스트 대역](https://martinfowler.com/bliki/TestDouble.html)
+
+[JesusValera](https://jesusvalerareales.com/the-importance-of-tests-in-our-software/)
+
+---
+
 # 테스트 대역이 왜 필요한가?
+
+![](https://jesusvalerareales.com/images/2020-06-11/2.png)
 
 테스트하고자 하는 대상이 있을 때 이 로직이 다른 객체와 의존관계가 있을 때 의존관계의 로직 결함으로 인해 테스트가 실패할 수 있다.
 
@@ -25,18 +35,22 @@ mermaid: true
 
 # 테스트 대역 - Dummy
 
-Dummy는 인스턴스화된 객체만 필요하고 기능까지는 필요하지 않을 때, 주로 파라미터를 전달하기 위해 사용된다.
+더미는 SUT가 의존하는 객체이지만 테스트 시 사용되지 않는다. 테스트 범위와 관련이 없기 때문에 신경 쓰지 않아야하기 때문이다.
 
 ```java
-// 실제 객체
-public interface Logger {
-    void log();
+class Service {
+    public static final String OUTPUT = 'something';
+
+    public String format(Dependency dependency) {
+        return OUTPUT;
+    }
 }
 
-// 테스트 대역 - Dummy
-public class DummyLogger implements Logger {
-    @Override
-    void log() {}
+class ServiceTest extends TestCase {
+    public void testFormat() {
+        String result = (new Service()).format(null);
+        self.assertSame(Service.OUTPUT, result);
+    }
 }
 ```
 
@@ -49,28 +63,21 @@ Fake는 실제 동작하는 구현을 가지고 있지만, 실제 코드에 사�
 예를들어, 실제 데이터베이스에 접근해서 테이블을 조회한 값을 꺼내오는 동작이 있을 때, 이를 인-메모리 저장소를 활용해서 동작하도록 말 그대로 가짜 기능을 구현한 것이다.
 
 ```java
-// 실제 DB에 접근하여 테이블을 조회하는 객체
-public class UserRepository {
+interface UserRepositoryInterface {
+    User findByUserId(Long userId);
+}
 
-    public void findByUserId(Long userId) {
-        String query = String.format(
-                "SELECT * FROM USER WHERE USER.id = ?"
-        );
-        jdbcTemplate.select() ...
-
-        return ...
+class RealUserRepository implements UserRepositoryInterface {
+    @Override
+    public User getUserById(Long userId) {
+        return jdbcTemplate.query(userId) ... ;
     }
 }
 
-// 실제 DB가 아닌 인 메모리에서 해당 동작을 수행하는 객체
-public class UserRepository {
-
-    private final Map<Long, String> fakeUserDatabase = new HashMap<>();
-
-    public void findByUserId(Long userId) {
-        fakeUserDatabase.get(userId);
-
-        return ...
+class FakeUserRepository implements UserRepositoryInterface {
+    @Override
+    public User getUserById(Long userId) {
+        return new User(uuid, 'Jesus', "['ADMIN_ROLE']");
     }
 }
 ```
@@ -79,26 +86,27 @@ public class UserRepository {
 
 # 테스트 대역 - Stub
 
-Stub은 미리 반환할 데이터가 정의되어 있고, 메서드를 호출했을 때 그 결과를 반환하는 역할만 수행한다.
+Stub은 가짜 데이터를 반환하는 객체이다. 미리 반환할 데이터가 정의되어 있고, 메서드를 호출했을 때 그 결과를 반환하는 역할만 수행한다.
+
+SUT의 의존대상으로부터 어떠한 리턴값이 필요한 경우 사용된다.
 
 ```java
-// 실제 랜덤 정수를 반환하는 메서드를 가진 객체
-public class RandomRandomNumber {
-    private static final int[] randomNumbers = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-
-    public int generateNumber(int min, int max) {
-        long seed = System.currentTimeMillis();
-        Random random = new Random(seed);
-
-        return ...
+class ServiceTest {
+    public void testDoSomething() {
+        String uuid = new Service().testTarget(new UserStubService());
+        assertThat.isEqualTo("0000-000-000-00001", uuid);
     }
 }
 
-// 미리 정해진 랜덤 정수를 반환하는 메서드를 가진 객체
-public class StubRandomNumberGenerator {
+class UserRealService {
+    public String getUuid(User user) {
+        return user.getId();
+    }
+}
 
-    public int generateNumber(int min, int max) {
-        return 123;
+class UserStubService {
+    public String getUuid(User user) {
+        return '0000-000-000-00001';
     }
 }
 ```
@@ -109,6 +117,33 @@ public class StubRandomNumberGenerator {
 
 `Spy`는 실제 객체를 부분적으로 Stubbing하고, 메서드 호출 여부, 메서드 호출 횟수 등의 정보를 기록하는 객체다.
 
+```java
+interface LoggerInterface {
+    void log(String message);
+}
+
+class LoggerSpy implements LoggerInterface {
+    public Array<String> messages = new String[9999999];
+
+    public void log(String message) {
+        this.messages.add(message);
+    }
+}
+
+class UserNotifier {
+
+    private final LoggerInterface loggerInterface;
+
+    public UserNotifier(LoggerInterface loggerInterface) {
+        this.loggerInterface = loggerInterface;
+    }
+
+    public void registerUser(UserModelInterface user) {
+        this.logger.log("Notifying the user: {user.name()}");
+    }
+}
+```
+
 ---
 
 # 테스트 대역 - Mock
@@ -116,29 +151,47 @@ public class StubRandomNumberGenerator {
 `Mock`은 테스트 대상이 의존 객체의 어떤 메서드를 호출하는 것에 대한 기대를 명세할 수 있다.
 
 ```java
-@Test
-void createPost() {
-    // ...
+class ShoppingService {
+    public Float calculateAmount(Lines lines) {
+        Float amount = 0;
 
-    // 의존 객체인 UserService 객체를 모킹하는 부분
-    given(userService.findById(1L)).willReturn(new User(1L));
+        /** 이 부분을 테스트 하기 어려워 목으로 대체한다. */
+        List<Line> linesTransformed = this.getShoppingCart(lines);
+        for (Line line : linesTransformed) {
+            amount += line.price();
+        }
 
-    Object actual = postCreator.execute(request);
+        return amount;
+    }
 
-    Assertions.assertAll(
-            () -> assertThat(actual.getId()).isOne(),
-            () -> assertThat(actual.getTitle()).isEqualTo(title),
-            () -> assertThat(actual.getContent()).isEqualTo(content)
-    );
+    protected List<Line> getShoppingCart(Lines lines) {
+        return Collections.asList(lines);
+    }
+}
+
+
+class LoggerTest extends TestCase {
+    public void testMovieBudgetFactory() {
+        MockShoppingService service = this.createMock(ShoppingService::class);
+        service
+            .method('getShoppingCart') // Overriding the method.
+            .willReturn([100, 200, 300]);
+
+        Lines stubLines = new Lines(null);
+        Float totalAmount = service.calculateAmount(stubLines);
+
+        self.assertEquals(600, totalAmount);
+    }
 }
 ```
 
 ---
 
-# 각 테스트 대역 한 줄 요약
+# 각 테스트 대역 요약
+
+- `Fake`는 실제 동작하는 구현을 가지고 있지만, 실제 코드에 사용되지 않는 객체이다. 예를들어, 실제 데이터베이스에 접근해서 테이블을 조회한 값을 꺼내오는 동작이 있을 때, 이를 인-메모리 저장소를 활용해서 동작하도록 말 그대로 가짜 기능을 구현한 것이다.
 
 - `Dummy`는 인스턴스화된 객체만 필요하고 기능까지는 필요하지 않을 때, 주로 파라미터를 전달하기 위해 사용된다.
-- `Fake`는 실제 동작하는 구현을 가지고 있지만, 실제 코드에 사용되지 않는 객체이다. 예를들어, 실제 데이터베이스에 접근해서 테이블을 조회한 값을 꺼내오는 동작이 있을 때, 이를 인-메모리 저장소를 활용해서 동작하도록 말 그대로 가짜 기능을 구현한 것이다.
 - `Stub`은 미리 반환할 데이터가 정의되어 있고, 메서드를 호출했을 때 그 결과를 반환하는 역할만 수행한다.
 - `Spy`는 실제 객체를 부분적으로 Stubbing하고, 메서드 호출 여부, 메서드 호출 횟수 등의 정보를 기록하는 객체다.
 - `Mock`은 테스트 대상이 의존 객체의 어떤 메서드를 호출하는 것에 대한 기대를 명세할 수 있다.
@@ -165,13 +218,41 @@ void createPost() {
 
 Java 진영에서는 `Junit5, Mock`을 활용하여 작성한다.
 
+```java
+public class ExampleTest {
+    @Test
+    @DisplayName("단위 테스트")
+    void testExample() {
+
+        // given
+
+        // when
+
+        // then
+        assertThat(object.getXXX()).isEqualTo(xxx);
+    }
+}
+```
+
 ---
 
 ## 테스트 피라미드 - 통합 테스트
 
-단위 테스트를 통해 로직이 정상적임을 확인했으면, 실제 비즈니스 로직 코드와의 이질감을 줄이기 위해 외부 라이브러리 등 과의 소통도 검증해야한다. (DB접근 등)
+통합 테스트는 단위테스트 보다 조금 더 큰 범주를 커버한다.
 
-Java 진영에서는 `@SpirngBootTest`을 활용하여 작성한다.
+`HTTP 요청`, `데이터베이스 연결`, `캐시 작업` 및 `일부 애플리케이션 로드`(20%-40%)가 필요한 기타 작업과 같은 복잡한 작업에 중점을 둔다.
+
+```java
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@ExtendWith(SpringExtension.class)
+public class ExampleTest {
+    @Test
+    @DisplayName("통합 테스트")
+    void testExample() {
+
+    }
+}
+```
 
 ---
 
@@ -182,3 +263,24 @@ Java 진영에서는 `@SpirngBootTest`을 활용하여 작성한다.
 즉, 실제 API를 사용하는 시나리오에 맞추어 해당 시나리오를 검증하는 것을 말한다.
 
 Java 진영에서는 `RestAssured`, `MockMvc`와 같은 도구를 활용한다.
+
+```java
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+public class ExampleTest {
+
+    @Test
+    @DisplayName("인수 테스트")
+    void testExample() {
+        // then
+        mockMvc.perform(
+                        post("/example")
+                                .header(HttpHeaders.AUTHORIZATION, jwt)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(exampleRequest)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(200))
+                .andDo(print());
+    }
+}
+```
