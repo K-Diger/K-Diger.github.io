@@ -108,7 +108,7 @@ public Page<Post> findByCustom_cursorPaging(Pageable pageable, String sorting, L
 
 데이터 삽입 시 중복키 제약 조건에 위배되면 ON DUPLICATE KEY UPDATE 구문에 지정한 내용이 실행된다. (즉, 중복된 키 값을 바탕으로 뭔가 삽입을 시도하면 삽입이 아닌 업데이트를 해주는 것)
 
-![img_1.png](img_1.png)
+![img_1.png](../images/flexible-architecture/msa1.png)
 
 근데 사실 JPA를 사용할 땐 필요없다. 영속성 컨텍스트와 더티체킹이 있기 때문
 
