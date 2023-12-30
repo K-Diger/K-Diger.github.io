@@ -192,7 +192,7 @@ CQRS는 `Responsibility Segregation (책임 분리)`라는 중요 개념에 의�
 
 `Command`에서 사용되는 `Member`와 `Query`에 사용되는 `MemberData`는 무슨 차이가 있을까?
 
-### 단일 책임 원칙 위반
+### 단일 모델의 단일 책임 원칙 위반
 
 ![img.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/flexible-architecture/CQRS2.png?raw=true)
 
@@ -202,13 +202,70 @@ CQRS는 `Responsibility Segregation (책임 분리)`라는 중요 개념에 의�
 
 이렇게 하나의 객체에 너무 많은 역할과 책임을 부여하면 유지보수성이 상당히 떨어지게 된다.
 
-기능에 따라 사용되는 필드가 달라진다.
+**정리하자면, 단순 유저를 조회하는 API가 있을 때, 유저의 실질적인 정보 이외의 실제 조회에 필요없는 내부 관리용 데이터마저도 사용하게 된다는 것이 문제점이다.**
 
-이름 변경 기능은 Member 테이블에 해당하는 내용만 참조하면 되지만
+### 실제 코드로 CQRS 모델을 분리해보기
 
-주문 목록 조회 기능을 구현하기 위해서 Member, LoginHistory, Order 총 세 가지의 테이블을 참조해야한다.
+명령 모델은 우리가 단일 모델로 작성해오던 그 모델을 생각해도된다.
 
+```kotlin
+@Table(name = "user")
+@Entity
+class UserEntity(
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L,
+
+    @Column(name = "oauth_token_payload", nullable = true, length = 255)
+    var oauthTokenPayload: String?,
+
+    @Column(name = "fcm_token_payload", nullable = true, length = 255)
+    var fcmTokenPayload: String?,
+
+    @Embedded
+    var nickname: Nickname
+
+) : BaseEntity()
+```
+
+조회 모델은 조회 요구사항에 맞게 만들어낸 모델들이라고 생각하면 된다. 이 때 각 모델을 결합한 비정규화된 데이터를 가지고 있는다.
+
+```kotlin
+class UserRetrieveModel(
+    var id: Long,
+    var nickname: Nickname,
+)
+```
+
+```kotlin
+class UserPostRetrieveModel(
+    var userId: Long,
+    var userNickname: Nickname,
+    var postId: Long,
+    var postTitle: String,
+    var postContent: String,
+)
+```
+
+```kotlin
+class UserOrderRetrieveModel(
+    var userId: Long,
+    var userNickname: Nickname,
+    var orderId: Long,
+    var orderStoreId: Long,
+    var orderStoreName: String,
+    var orderDateTime: LocalDateTime
+)
+```
+
+### 이렇게 개발 공수도 많이 들어가는 명령/조회 모델을 분리하면 얻는 이점은 무엇일까?
+
+**각 조회 모델에 대한 최적화를 이루어낼 수 있다.**
+
+웬만한 서비스에서는 상대적으로 조회에 대한 요청이 많을 수 밖에 없다. 또한 사용자에게 가장 먼저 제공하는 기능도 조회인 경우가 많다.
+
+각 조회 모델에 대한 캐시를 따로 관리하여 조회 성능에 대한 최적화를 적용할 수도 있다.
 
 ---
 
