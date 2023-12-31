@@ -1,6 +1,6 @@
 ---
 
-title: Fundamental OperatingSystem
+title: Fundamental of OperatingSystem
 date: 2023-10-18
 categories: [OperatingSystem]
 tags: [OperatingSystem]
