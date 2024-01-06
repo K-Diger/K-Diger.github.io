@@ -1,10 +1,9 @@
 ---
 
-title: Apache Lucene
-
-date: 2023-06-09
-categories: [NLP]
-tags: [NLP]
+title: ElasticSearch (+Lucene)
+date: 2024-01-06
+categories: [ElasticSearch]
+tags: [ElasticSearch]
 layout: post
 toc: true
 math: true
@@ -12,42 +11,93 @@ mermaid: true
 
 ---
 
-# 참고자료
+# 참고 자료
+
+[참고 자료](https://blog.naver.com/gi_balja/223157972726)
+
+[IBM](https://www.ibm.com/topics/elasticsearch?utm_medium=OSocial&utm_source=Youtube&utm_content=SOFWW&utm_id=YTDescription-101-What-is-elastic-search-LH-elastic-search)
+
+---
+
+# ElasticSearch 개요
+
+- ELK Stack의 E를 담당한다.
+  - `E`: `ElasticSearch`로 JSON 기반의 저장소 및 검색엔진을 담당한다.
+  - `L`: `Logstash`로 Input Data, 데이터 변환을 수행하고 Stash하는 역할을 담당한다.
+  - `K`: `Kibana`로 UI DashBoard, Widgets/Visualization을 담당한다.
+  - LogStash --> Provide Data --> ElasticSearch --> Visualization --> Kibana
+- JSON을 기반으로한 데이터 저장소이다.
+- RESTful API를 기반으로 한다.
+- Logs, Metrics, Application Trace Data를 다루기 위한 목적이다.
+
+---
+
+## ElasticSearch 구성요소의 용어
+
+| ElasticSearch | 의미                                                                                                                          | RDBMS  |
+|---------------|-----------------------------------------------------------------------------------------------------------------------------|--------|
+| `인덱스`         | 문서(데이터)들의 모음을 가리킨다.                                                                                                         | 데이터베이스 |
+| `샤드`          | 인덱스를 분할한 것을 가리킨다.<br/>엘라스틱서치는 대량의 데이터를 처리하고 분산 저장하기 위해 인덱스를 여러 샤드로 분할한다.<br/>각 샤드는 별도의 노드로 저장되며 병렬로 검색/처리 작업을 수행할 수 있다.     | 파티션    |
+| `타입`          | 7.0버전 부터는 사라진 개념이다.<br/>테이블 없이 여러 유형의 데이터를 구분하기 위해 `필드`를 활용한다.                                                              | 테이블    |
+| `문서`          | 엘라스틱서치 내에서 검색/색인화/분석의 대상이 되는 기본 데이터 단위이다. 일반적으로 JSON형식으로 표현하여 유연한 구조로 데이터를 표현할 수 있다. (블로그 게시물 문서 --> 제목, 내용, 작성자를 필드로 가진다.) | 행      |
+| `필드`          | 문서의 특정 부분으로, 각 필드는 해당하는 데이터 유형을 정의할 수 있다.                                                                                   | 열      |
+| `QueryDSL`    | 엘라스틱서치에서 쿼리를 작성하기 위한 DSL이다. 쿼리 형식을 JSON형식으로 작성하여 검색 요청을 전달할 수 있다.                                                           | SQL    |
+
+---
+
+## ElasticSearch 메서드의 용어
+
+| ElasticSearch(HTTP) | RDBMS(SQL)     |
+|---------------------|----------------|
+| GET                 | SELECT         |
+| PUT                 | INSERT         |
+| POST                | UPDATE, SELECT |
+| DELETE              | DELETE         |
+| HEAD (인덱스 정보 확인)    |                |
+
+---
+
+# ElasticSearch의 구성요소
 
 [Baeldung Docs](https://www.baeldung.com/lucene)
 
 [Medium Blog @karkum](https://medium.com/@karkum/introduction-to-apache-lucene-7d65f67f5231)
 
+Apache Lucene라이브러리를 기반으로 동작한다. Lucene은 검색 엔진 라이브러리로 텍스트 전문을 탐색하여 역 인덱스로 분석/변환하는 기능을 가지고 있다.
+
 ---
 
-# Lucene?
+## Lucene
 
 Lucene은 사용자가 텍스트 데이터(Word 및 PDF 문서, 이메일, 웹 페이지 등)를 색인화 할 수 있는 라이브러리이다.
 
 Lucene이 수행하는 단계는 다음과 같은 두 가지가 있다.
 
-1. 검색하려는 문서의 색인을 만든다.
+1. 검색하려는 문서의 역인덱스를 만든다.
 
-2. 구문 분석 쿼리, 인덱스 탐색 후 결과 반환
+2. 구문 분석 쿼리, 인덱스 탐색 후 결과를 반환한다.
 
 ![img_2.png](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/lucene/lucene-diagram.png?raw=true)
+
 ---
 
-# Inverted Index
+### 역인덱스 개념
 
 [참고 자료](https://blog.lael.be/post/3056)
 
-Lucene은 Inverted Index를 사용한다.
+Lucene은 **Inverted Index**를 사용한다.
 
-Traditional SQL 에서는 LIKE 검색이 INDEX 기능을 이용할 수 없다는 단점이 있어서, 그 문제를 극복하기 위해서 단어(Term)로 인덱싱을 하는 Inverted Index 방식이 고안되었다.
+SQL 에서는 **LIKE 검색이 INDEX 기능을 이용할 수 없다**는 단점이 있어서, 그 문제를 극복하기 위해서 **단어(Term)로 인덱싱을 하는 Inverted Index 방식**이 고안되었다.
 
-기존의 데이터베이스가 하나의 구분자(Primary Key)가 여러 필드를 지정하고 있었다면 Inverted Index에서는 하나의 값(Term)이 해당 Term이 들어간 document id 를 지정하고 있다.
+기존의 데이터베이스가 하나의 구분자(Primary Key)가 여러 필드를 지정하고 있었다면 Inverted Index에서는 하나의 값(Term)이 해당 Term이 들어간 document id를 지정하고 있다.
+
+`쉽게 설명하자면, 단어를 Key 사용하고 Value에는 그 단어를 포함한 Document의 번호가 들어있는 구조이다.`
 
 ![](https://blog.lael.be/wp-content/uploads/2016/01/3107787182.png)
 
 위 그림에서 `how to purchasing guide`라는 문자열을 검색한다면
 
-`how` `to` `purchasing` `guide`라고 나눈 후 각 단어(용어(Term))에 해당하는 인덱스인
+`how`,`to`,`purchasing`,`guide`라고 나눈 후 각 단어(용어(Term))에 해당하는 인덱스인
 
 (3, 9), (1, 6, 9), (7), (1, 6)을 반환한다. 그리고 여기서 가장 많이 등장한 인덱스인 (6, 9)가 가장 유사한 결과물로 취급될 수 있다.
 
@@ -55,21 +105,19 @@ Traditional SQL 에서는 LIKE 검색이 INDEX 기능을 이용할 수 없다는
 
 ---
 
-# Lucene - Inverted Index (Analyzer, Write Index)
+### Lucene에서의 역인덱스 (Analyzer, Write Index)
 
 다양한 유형의 문서를 인덱싱하기 위해선 Lucene이 주어진 문서에서 테스트를 구문 분석할 수 있는 형식으로 추출할 수 있어야 한다.
 
 이를 위해 `Analyzer`가 사용된다.
 
-`Analyzer`는 텍스트 데이터를 필터링하고 정리한다.
-
-텍스트 데이터는 아래와 같은 여러 단계를 거쳐 가공된다.
+`Analyzer`는 텍스트 데이터를 필터링하고 정리한다. 텍스트 데이터는 아래와 같은 여러 단계를 거쳐 가공된다.
 
 - 단어 추출
 - 불용어 제거
 - 단어를 소문자로 만들기
 
-등의 과정을 통해 텍스트를 인덱스에 추가할 수 있는 토큰(단어(용어(Term))으로 변환한다.(코드상에선 TokenStream을 반환한다.)
+등의 과정을 통해 텍스트를 인덱스에 추가할 수 있는 토큰(단어 == 용어 == Term)으로 변환한다.(코드상에선 TokenStream을 반환한다.)
 
 아래 그림은 추출된 텍스트 데이터를 바탕으로 기본 파일 시스템에 역 인덱스로 저장되는 인덱싱 프로세스를 나타낸다.
 
@@ -89,7 +137,7 @@ Lucene은 검색하려는 필드를 저장하기 위해 역인덱스를 사용�
 
 ---
 
-# Lucene - Searching
+### Lucene이 검색을 수행하는 과정
 
 역인덱스를 기반으로 구문을 분석하여 DB든 File System이든 Memeory든 Write를 했으면 그 내용을 바탕으로 검색을 수행할 수 있다.
 
@@ -101,7 +149,7 @@ Lucene은 검색하려는 필드를 저장하기 위해 역인덱스를 사용�
 
 검색을 위한 클래스는 아래와 같다.
 
-### IndexSearcher
+#### IndexSearcher
 
 - 인덱스를 읽을 수 있는 액세스를 제공한다.
 
@@ -109,7 +157,7 @@ Lucene은 검색하려는 필드를 저장하기 위해 역인덱스를 사용�
 
 이 클래스는 인덱스 생성/업데이트에 사용되는 IndexWriter 클래스와 반대의 역할을 수행한다.
 
-### Term
+#### Term
 
 검색의 기본 단위이다. 인덱싱에 사용되는 Field 객체의 반대의 역할을 수행한다.
 
@@ -117,22 +165,21 @@ Lucene은 검색하려는 필드를 저장하기 위해 역인덱스를 사용�
 
 필드 이름에서 값으로의 매핑을 포함한다.
 
-### Query
+#### Query
 
 Lucene은 TermQuery, BooleanQuery, PrefixQuery, WildcardQuery, PhraseQuery 및 FuzzyQuery를 비롯한 여러 유형의 쿼리를 제공한다. 각 쿼리 유형은 인덱스를 검색하는 고유한 방법을 가지고 있다.
 
-### QueryParser
+#### QueryParser
 
 사람이 읽을 수 있는 쿼리(예: "opower AND arlington")를 검색에 사용할 수 있는 쿼리 개체로 구문 분석한다.
 
-### TopDocs
+#### TopDocs
 
 N개의 검색 결과에 대한 포인터를 위한 컨테이너이다. 각 TopDoc에는 문서 ID와 Confidence Score(검색 결과에 대한 적합도)가 포함되어있다.
 
-
 ---
 
-# Lucene의 일부를 사용해서 문장의 키워드를 추출하기
+# Lucene의 일부를 사용해서 문장의 키워드를 추출하기 (Kotlin)
 
 프로젝트를 진행하는 중 특정 뉴스 기사 내용을 키워드로 요약해야하는 요구사항을 해결하기 위해 Lucene을 사용하기로 했다.
 
