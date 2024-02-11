@@ -1238,3 +1238,125 @@ public class GatewayServiceApplication {
 위와 같이 루트에 ServiceDiscovery에 등록하기 위한 `@EnableDiscoveryClient` 애노테이션을 달면 셋팅은 끝난다.
 
 ---
+
+## application.yml
+
+```yaml
+server:
+  port: 8000
+
+spring:
+  application:
+    name: gateway-service
+
+  main:
+    web-application-type: reactive
+
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: [ "http://localhost:5173", "http://127.0.0.1:5173" ]
+            allow-credentials: true
+            allowedHeaders: '*'
+            allowedMethods:
+              - PUT
+              - GET
+              - POST
+              - DELETE
+              - OPTIONS
+      routes:
+        - id: AUTH-SERVICE
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/auth/?(?<segment>.*), /$\{segment}
+
+        - id: USER-SERVICE
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users/,
+              /api/users/verify-email,
+              /api/users/verify-username,
+              /api/users/temporary-join,
+              /api/users/join,
+              /api/users/web-logout,
+              /api/users/profile,
+              /api/users/{id},
+              /api/users/me
+          filters:
+            - RewritePath=/api/users/(?<segment>/?.*), /$\{segment}
+
+        - id: TIMELINE-SERVICE
+          uri: lb://TIMELINE-SERVICE
+          predicates:
+            - Path=/api/timeline/**
+          filters:
+            - RewritePath=/api/timeline/?(?<segment>.*), /$\{segment}
+
+        - id: SOCIAL-SERVICE
+          uri: lb://SOCIAL-SERVICE
+          predicates:
+            - Path=/api/paints/**,
+              /api/users/{id}/following,
+              /api/users/{id}/follower,
+              /api/users/{id}/verified_follower,
+              /api/users/{id}/following,
+              /api/users/{id}/following,
+              /api/users/{id}/paint,
+              /api/users/{id}/reply,
+              /api/users/{id}/media,
+              /api/users/{id}/like,
+              /api/users/{id}/like/{paintId},
+              /api/users/{id}/repaint,
+              /api/users/{id}/repaint/{sourcePaintId}
+
+        - id: TRENDS-SERVICE
+          uri: lb://TRENDS-SERVICE
+          predicates:
+            - Path=/api/trends/**
+          filters:
+            - RewritePath=/api/trends/?(?<segment>.*), /$\{segment}
+
+        - id: SEARCH-SERVICE
+          uri: lb://SEARCH-SERVICE
+          predicates:
+            - Path=/api/search/**
+          filters:
+            - RewritePath=/api/search/?(?<segment>.*), /$\{segment}
+
+        - id: DM-SERVICE
+          uri: lb://DM-SERVICE
+          predicates:
+            - Path=/api/dm/**
+          filters:
+            - RewritePath=/api/dm/?(?<segment>.*), /$\{segment}
+
+        - id: NOTIFICATION-SERVICE
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/api/notification/**
+          filters:
+            - RewritePath=/api/notification/?(?<segment>.*), /$\{segment}
+
+      default-filters:
+        - name: AuthorizationGatewayFilterFactory
+          args:
+            baseMessage: Gateway Authorization Filter
+            preLogger: true
+            postLogger: true
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://host.docker.internal:8761/eureka
+
+```
+
+위와 같이 커스텀 필터를 모든 라우팅에 적용하고 유레카를 통해 각 마이크로서비스에 로드밸런싱 하는 설정을 적용할 수 있다.
