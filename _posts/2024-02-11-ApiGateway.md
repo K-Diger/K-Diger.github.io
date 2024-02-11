@@ -1100,6 +1100,8 @@ public class MyRoutePredicateFactory extends AbstractRoutePredicateFactory<Heade
 }
 ```
 
+---
+
 # Custom PreFilter 작성하기
 
 공식문서에 따르면 커스텀 필터를 만들 때 그 네이밍은 `~~~GatewayFilterFactory`로 끝나야한다.
