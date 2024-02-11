@@ -105,7 +105,7 @@ spring:
 
 ---
 
-## Spring Cloud Gateway가 지원하는 11가지 Predicate
+## Spring Cloud Gateway가 지원하는 11가지 Predicate Factory
 
 ### 1,2,3 : Time After/Before/Between 판별
 
@@ -346,7 +346,7 @@ spring:
 
 ---
 
-## Spring Cloud Gateway가 지원하는 30가지 Filter
+## Spring Cloud Gateway가 지원하는 30가지 Filter Factory
 
 ### 1. Header 추가
 
