@@ -1,7 +1,7 @@
 ---
 
-title: ElasticSearch (+Lucene)
-date: 2024-01-06
+title: ElasticSearch와 조금 더 친해져보기
+date: 2024-02-13
 categories: [ElasticSearch]
 tags: [ElasticSearch]
 layout: post
@@ -16,6 +16,8 @@ mermaid: true
 [참고 자료](https://blog.naver.com/gi_balja/223157972726)
 
 [IBM](https://www.ibm.com/topics/elasticsearch?utm_medium=OSocial&utm_source=Youtube&utm_content=SOFWW&utm_id=YTDescription-101-What-is-elastic-search-LH-elastic-search)
+
+[ElasticSearch Document](https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-indexing-speed.html)
 
 ---
 
@@ -334,3 +336,48 @@ Lucene의 분석기 없이 키워드를 추출하는 로직을 사용하면 수�
 Lucene 한국어 분석기를 통해 추출해온 내용을 바탕으로 한다면 시간은 다소 더 소요되나 부가적인 품사 없이 명사로만 이루어진 키워드를 뽑아낼 수 있었다.
 
 물론 Lucene없이 명사만 뽑아오도록 할 순 있겠지만 추가적인 리소스가 소요된다는 점이 고려되었기도 하고 생산성적인 측면에서 Lucene의 분석기를 사용하여 처리하였다.
+
+---
+
+# ElasticSearch 인덱싱 속도 개선의 12가지 방법
+
+## 1. 벌크 요청 사용하기
+
+일반적으로 매번 인덱스에 어떤 작업을 요청하는 것 보다는 대량의 내용을 인덱스에 요청하는 것이 적합하다.
+
+벌크 요청의 크기를 최적화 하기 위해 단일 노드, 단일 샤드 환경에서의 벤치마크가 필요하다.
+
+처음에는 100개의 요청을 만들고 수행, 그리고 점차 200 -> 400 2배씩 늘려가며 벌크 요청의 성능을 측정하자.
+
+요청-응답 간의 속도가 느려지기 시작하면 벌크 요청의 최적의 크기에 도달한 것으로 판단하면 된다. 만약 비슷한 수치를 기록한 케이스에는 문서양이 조금 더 적은 케이스로 적용하는 것이 더 좋다.
+
+너무 큰 벌크 요청이 동시에 전송되면 클러스터에 메모리를 많이 차지하게 되므로 요청 당 수십MB를 넘지 않도록 주의해야한다.
+
+---
+
+## 2. 여러 Workers/Threads를 사용해서 Elastic Search로 데이터 전송하기
+
+단일 쓰레드로 벌크 요청하는 것은 ElasticSearch Cluster의 Indexing용량을 극대화해서 사용할 수 없다.
+
+클러스터의 모든 리소스를 사용하려면 여러 쓰레드나 프로세스에서 데이터를 전송하여 `fsync`비용을 줄일 수 있다.
+
+벌크 요청의 크기를 조정하는 것과 마찬가지로 벤치마크를 통해 최적의 Workers의 수를 알 수 있다.
+
+I/O, CPU가 포화상태가 되기 전까지 수를 점진적으로 늘려가며 그 설정을 찾아내면 된다.
+
+---
+
+##
+
+---
+
+# ElasticSearch 검색 속도 개선의 12가지 방법
+
+
+---
+
+# ElasticSearch k-nearest-neighbor 속도 개선의 10가지 방법
+
+---
+
+# ElasticSearch 디스크 사용량 최적화의 11가지 방법
