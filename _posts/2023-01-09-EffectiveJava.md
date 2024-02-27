@@ -1,7 +1,6 @@
 ---
 
 title: Effective Java
-author: Diger
 date: 2023-01-09
 categories: [Java, Effective-Java]
 tags: [Java, Effective-Java]
