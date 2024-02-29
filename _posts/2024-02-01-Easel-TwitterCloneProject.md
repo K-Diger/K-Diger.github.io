@@ -49,13 +49,12 @@ mermaid: true
 # 학습 및 적용
 
 - [gRPC](https://k-diger.github.io/posts/gRPC/)
-- [kafka](https://k-diger.github.io/posts/kafka/)
 - [Spring Cloud Gateway](https://k-diger.github.io/posts/spring-cloud-gateway/)
+- [Passport](https://k-diger.github.io/posts/Passport/)
 - [ElasticSearch](https://k-diger.github.io/posts/ElasticSearch/)
+- [kafka](https://k-diger.github.io/posts/kafka/)
 - [Redis](https://k-diger.github.io/posts/redis/)
 - [Neo4j (GraphDB)](https://k-diger.github.io/posts/neo4j/)
-- [Passport](https://k-diger.github.io/posts/passport/)
-
 
 ---
 
