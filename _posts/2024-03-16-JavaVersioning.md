@@ -1,6 +1,6 @@
 ---
 
-title: 공식문서와 함께하는 Java LTS 버전별 주요 기능 (8, 11, 17, 21)
+title: 공식문서(JEP)와 코드로 직접 알아보는 Java LTS 버전별 주요 기능 (8, 11, 17, 21)
 date: 2024-03-16
 categories: [Java]
 tags: [Java]
@@ -315,7 +315,7 @@ public static void main(String[] args) {
 
 [참고 자료 - OpenJDK 11 Official](https://openjdk.org/projects/jdk/11/)
 
-## 1. JEP 181 - Inner Class에서 Outer Class에 접근 가능
+## [🌟1. JEP 181 - Inner Class에서 Outer Class에 접근 가능](https://openjdk.org/jeps/181)
 
 이전 버전에서는 아래와 같이 `Inner클래스에서` `Outer클래스의 private멤버`에 접근하는 것이 불가능했다.
 
@@ -342,7 +342,7 @@ JDK 11 부터는 별다른 코드의 변경 없이 위와 같은 코드가 컴�
 
 ---
 
-## 2. JEP 309 - Dynamic Class-File Constants
+## [2. JEP 309 - Dynamic Class-File Constants](https://openjdk.org/jeps/309)
 
 새로운 상수 풀 형식 `CONSTANT_Dynamic`을 지원한다.
 
@@ -360,7 +360,7 @@ dynamicConstant = bootstrapMethod();
 
 ---
 
-## 3. JEP 315 - Improve Aarch64 Intrinsics
+## [3. JEP 315 - Improve Aarch64 Intrinsics](https://openjdk.org/jeps/315)
 
 - sin (sine trigonometric function)
 - cos (cosine trigonometric function)
@@ -370,7 +370,7 @@ dynamicConstant = bootstrapMethod();
 
 ---
 
-## 4. JEP 318 - Epsilon: A No-Op Garbage Collector (Experimental)
+## [🌟4. JEP 318 - Epsilon: A No-Op Garbage Collector (Experimental)](https://openjdk.org/jeps/318)
 
 Epsilon이라는 새로운 가비지 수집기가 Java 11에서 실험판으로 열렸다. 메모리 할당은 처리하지만 실제 메모리 회수 메커니즘을 구현하지 않는 GC이다. 사용 가능한 Java 힙이 소진되면 JVM은 종료된다.
 
@@ -391,7 +391,7 @@ Epsilon이라는 새로운 가비지 수집기가 Java 11에서 실험판으로 
 
 ---
 
-## 5. JEP 320 - Java EE, CORBA Modules 제거
+## [5. JEP 320 - Java EE, CORBA Modules 제거](https://openjdk.org/jeps/320)
 
 `Java SE 6`에 `Java EE` 플랫폼을 위해 개발된 네 가지 기술 `JAX-WS`, `JAXB`, `JAF`, `Common Annotations`로 구성됐다.
 
@@ -412,8 +412,7 @@ JAF, JAXB, JAX-WS와 같은 기술들은 더 이상 Java SE에 제공되지 않�
 
 ---
 
-
-## 6. JEP 321 - HTTP Client 표준화
+## [🌟6. JEP 321 - HTTP Client 표준화](https://openjdk.org/jeps/321)
 
 JEP 321은 JDK 9에서 인큐베이팅(innovating) API로 도입됐고 JDK 10에서 업데이트된 HTTP Client API를 표준화한다.
 
@@ -466,7 +465,7 @@ public static void main(String[] args) {
 
 ---
 
-## 7. JEP 323 - Lambda 매개변수 지역 변수 문법 개선
+## 🌟7. JEP 323 - Lambda 매개변수 지역 변수 문법 개선
 
 람다 표현식의 형식 매개변수(formal parameters)를 선언할 때 var를 사용할 수 있게 하는 기능을 추가한다.
 
@@ -488,13 +487,13 @@ public static void main(String[] args) {
 
 ---
 
-## 8. JEP 324 - Key Agreement with Curve25519 and Curve448
+## [8. JEP 324 - Key Agreement with Curve25519 and Curve448](https://openjdk.org/jeps/324)
 
 `RFC 7748`에 따라 `Curve25519`와 `Curve448`을 사용하여 `Key Agreement`를 구현한다. 기존 Diffie-Hellman (ECDH) 방식보다 효율적이고 안전한 키 합의 스킴을 제공한다.
 
 ---
 
-## 9. JEP 327 - Unicode 10
+## [🌟9. JEP 327 - Unicode 10](https://openjdk.org/jeps/327)
 
 유니코드 표준 버전 10.0을 지원한다.
 
@@ -517,7 +516,7 @@ public class UnicodeExample {
 
 ---
 
-## 10. JEP 328 - Flight Recorder (JFR) 추가
+## [🌟10. JEP 328 - Flight Recorder (JFR) 추가](https://openjdk.org/jeps/328)
 
 HotSpot JVM 및 자바 애플리케이션의 낮은 오버헤드를 가진 데이터 수집 프레임워크가 추가됐다. 애플리케이션 및 JVM의 상세한 실행 정보를 실시간으로 수집하고 분석할 수 있는 도구이다.
 
@@ -575,7 +574,7 @@ public class Main {
 
 ---
 
-## 11. JEP 329 - ChaCha20, Poly1305 암호화 알고리즘 추가
+## [11. JEP 329 - ChaCha20, Poly1305 암호화 알고리즘 추가](https://openjdk.org/jeps/329)
 
 ```java
 import java.security.InvalidAlgorithmParameterException;
@@ -635,7 +634,7 @@ public class Main {
 
 ---
 
-## 12. JEP 330 - Launch Single-File Source-Code Programs (Java 파일 실행의 간소화)
+## [🌟12. JEP 330 - Launch Single-File Source-Code Programs (Java 파일 실행의 간소화)](https://openjdk.org/jeps/330)
 
 javac를 사용하여 Java 소스 파일을 컴파일할 필요없이 실행 가능해졌다.
 
@@ -656,7 +655,7 @@ Hello Java 11!
 
 ---
 
-## 13. JEP 331 - Low-Overhead Heap Profiling
+## [🌟13. JEP 331 - Low-Overhead Heap Profiling](https://openjdk.org/jeps/331)
 
 낮은 오버헤드로 Heap영역을 프로파일링 할 수 있는 도구가 추가됐다.
 
@@ -671,7 +670,7 @@ java -XX:+HeapDumpOnOutOfMemoryError -XX:StartFlightRecording=dumponexit=true,fi
 
 ---
 
-## 14. JEP 332 - Transport Layer Security (TLS) 1.3
+## [🌟14. JEP 332 - Transport Layer Security (TLS) 1.3](https://openjdk.org/jeps/332)
 
 TLS에 대한 개선이 이루어졌다.
 
@@ -680,7 +679,7 @@ TLS에 대한 개선이 이루어졌다.
 
 ---
 
-## 15. JEP 333 - ZGC 실험판 추가
+## [🌟15. JEP 333 - ZGC 실험판 추가](https://openjdk.org/jeps/333)
 
 ZGC가 실험버전으로 추가되었다. ZGC가 개선하고자 하는 목표는 아래와 같다.
 
@@ -717,7 +716,7 @@ SPECjbb® 2015를 사용한 성능 측정 결과는 아래와 같다. 128G 힙�
 
 ---
 
-## 16. JEP 335 - Deprecate the Nashorn JavaScript Engine
+## [16. JEP 335 - Deprecate the Nashorn JavaScript Engine](https://openjdk.org/jeps/335)
 
 Nashorn은 JDK 8에서 Rhino의 후속으로 도입되어 Java 애플리케이션에서 JavaScript를 실행할 수 있는 방법을 제공했다.
 
@@ -727,7 +726,7 @@ Nashorn은 JDK 8에서 Rhino의 후속으로 도입되어 Java 애플리케이�
 
 ---
 
-## 17. JEP 336 - Deprecate the Pack200 Tools and API
+## [17. JEP 336 - Deprecate the Pack200 Tools and API](https://openjdk.org/jeps/336)
 
 Pack200 Tools와 API는 자바 애플리케이션의 패키징, 전송, 그리고 배포를 위한 디스크와 대역폭 요구사항을 줄이는 목적으로 Java SE 5.0에서 등장했다.
 
@@ -752,9 +751,9 @@ java.util.jar.Pack200.Unpacker
 
 ---
 
-## 18; 공식문서 외의 추가된 내용 (Default Gc == G1, String Method, Collection.toArray())
+## 18. 공식문서 외의 추가된 내용 (Default Gc == G1, String Method, Collection.toArray())
 
-### 1. G1 GC가 기본 값으로 등록됨
+### 🌟1. G1 GC가 기본 값으로 등록됨
 
 LTS 기준 **JDK 8**까지는 **Parallel GC**가 **기본값**이었다.
 
@@ -764,13 +763,13 @@ JDK7에 첫 등장한 **G1 GC**가 **기본값**으로 등록된 버전이다.
 
 ---
 
-### 2. 문자열 메서드 추가
+### 🌟2. 문자열 메서드 추가
 
 `isBlank`, `lines`, `strip`, `stripLeading`, `stripTrailing` 및 `repeat`와 같은 새로운 메서드들이 추가됨
 
 ---
 
-### 3. Collection.toArray()
+### 🌟3. Collection.toArray()
 
 Collection에 `toArray()`가 추가되어 List -> Array의 변환이 간편해졌다.
 
@@ -787,37 +786,247 @@ public static void main(String[] args) {
 
 # Java 17
 
-## 1. Sealed class 추가
+## [🌟1. JEP 306 - Default 엄격한 부동 소수점](https://openjdk.org/jeps/306)
 
-Sealed classe와 interface는 다른 클래스나 인터페이스가 확장하거나 구현할 수 없도록 범위를 제한한다.
+`JEP 306`이전에는 strictfp 키워드를 사용하면 엄격한 부동 소수점 계산을 따르게 했다.
+
+`JEP 306`이후로는 strictfp 키워드 없이도 모든 부동 소수점 연산은 항상 엄격한 부동 소수점을 적용할 수 있도록 개선되었다.
+
+---
+
+## [2. JEP 356 - 개선된 의사 난수 생성기](https://openjdk.org/jeps/356)
+
+- 다양한 PRNG 알고리즘 사용이 용이하도록 개선
+  - 애플리케이션에서 다양한 의사 난수 생성 알고리즘을 교환해 사용할 수 있도록 새로운 인터페이스 타입과 구현을 제공한다.
+
+- 스트림 기반 프로그래밍 지원 강화
+  - PRNG 객체의 스트림을 제공함으로써 스트림 기반 프로그래밍에 적합하도록 개선한다.
+
+- 코드 중복 제거
+  - 기존 PRNG 클래스에서 발생하는 코드 중복을 제거한다.
+
+- java.util.Random 동작 보존
+  - 기존 java.util.Random 클래스의 동작을 보존한다.
+
+아래와 같은 코드로 랜덤 난수 생성기의 알고리즘을 모두 조회할 수 있다.
+
+```java
+import java.util.random.RandomGeneratorFactory;
+
+public class Main {
+
+    public static void main(String[] args) {
+        RandomGeneratorFactory.all()
+            .map(factory -> String.format("%s: %s", factory.group(), factory.name()))
+            .sorted()
+            .forEach(System.out::println);
+    }
+
+    /* 출력 결과
+    LXM: L32X64MixRandom
+    LXM: L64X1024MixRandom
+    LXM: L64X128MixRandom
+    LXM: L64X128StarStarRandom
+    LXM: L64X256MixRandom
+    Legacy: Random
+    Legacy: SecureRandom
+    Legacy: SplittableRandom
+    Xoroshiro: Xoroshiro128PlusPlus
+    Xoshiro: Xoshiro256PlusPlus
+    */
+}
+```
 
 ---
 
-### Sealed class vs Final class
+## [3. JEP 382 - macOS 렌더링 파이프라인 추가](https://openjdk.org/jeps/382)
 
-`확장 가능성`
+macOS용 새로운 렌더링 파이프라인이 추가됐다. OpenGL API가 macOS 10.14에서 Apple에 의해 폐기됐고, Apple은 Metal이라는 더 나은 성능의 새로운 렌더링 파이프라인을 사용하기로 했다.
 
-- Final 클래스
-    - Final 클래스는 어느 곳에서도 상속할 수 없다.
-
-- Sealed 클래스
-    - Sealed 클래스는 제한된 범위 내에서만 상속이 가능하다. 특정 클래스나 인터페이스 목록을 permits 절로 지정하여, 해당 클래스나 인터페이스만이 sealed 클래스를 상속하거나 구현할 수 있다.
-
-`유연성`
-
-- Final 클래스
-    - Final 클래스는 상속을 금지하므로, 하위 클래스에서 상속 받은 메서드를 오버라이드 할 수 없다.
-
-- Sealed 클래스
-    - Sealed 클래스는 permits 절에 선언된 클래스들에 대한 상속을 허용하지만, 해당 클래스들 내에서는 상속을 계속할 수 있다.
-    - 즉, Sealed 클래스의 하위 클래스는 다른 메서드를 추가하거나, 상속 계층을 더 확장할 수 있다.
-
-`설계 목적`
-
-- Final 클래스
-    - Final 클래스는 보안 상의 이유로 상속을 막거나, 불변성을 보장하고자 할 때 사용된다. 다른 클래스가 해당 클래스를 상속하거나 변경하지 못하도록 하여 의도한 동작을 보장한다.
-
-- Sealed 클래스
-    - Sealed 클래스는 클래스 계층 구조의 일부를 통제하고 특정 클래스나 인터페이스를 상속 또는 구현할 수 있는 클래스의 범위를 제한함으로써, 더 명확하고 제한된 클래스 계층을 구성할 수 있게된다.
+따라서 macOS의 Apple Metal API를 사용하여 Java 2D 내부 렌더링 파이프라인을 구현하여, 기존의 폐기된 Apple OpenGL API를 대체하는 것을 목적으로한다.
 
 ---
+
+## [4. JEP 391 - macOS/AArch64 대응](https://openjdk.org/jeps/391)
+
+애플(Apple)이 Macintosh 컴퓨터들의 아키텍처를 `x64`에서 `AArch64`로 전환하는 장기적 계획을 발표함에 따라 JDK를 macOS/AArch64에 대응하는 것을 목적으로 한다.
+
+---
+
+## [5. JEP 398 - Applet 공식 폐기](https://openjdk.org/jeps/398)
+
+Applet API를 공식적으로 폐기한다.
+
+이 API는 과거 웹 브라우저에서 자바 애플릿을 실행하는 데 사용되었지만, 현대의 웹 표준과 보안 우려로 인해 더 이상 사용되지 않게 되어 JDK 9부터 API가 `deprecated`로 표시되었다.
+
+추후 버전에서 갑자기 사라질 여지가 있다.
+
+---
+
+## [6. JEP 403 - JDK 내부 API 캡슐화 강화](https://openjdk.org/jeps/403)
+
+- 캡슐화 강화
+  - 거의 모든 JDK 내부 API 및 구현 세부 사항의 캡슐화를 강화하여, 개발자가 실수로나 악의적으로 JDK 내부로 접근하는 것을 방지한다.
+
+- 예외 처리
+  - `sun.misc.Unsafe`와 같은 중요한 몇몇 내부 API는 여전히 접근 가능하도록 예외를 두어, 필수적으로 사용되어야 하는 경우에 대비한다.
+
+---
+
+## [7. JEP 406 - 개선된 Switch문 실험 버전 추가](https://openjdk.org/jeps/406)
+
+case 라벨에 패턴을 허용하고 다양한 패턴, 각각에 대한 특정 동작과 함께 표현식을 테스트할 수 있게 한다.
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Main {
+
+    private static final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+    public static void main(String[] args) throws IOException {
+        String day = bufferedReader.readLine();
+
+        // Java 17 이전 버전
+        switch (day) {
+            case "MONDAY":
+                System.out.println("월요일입니다.");
+                break;
+            case "TUESDAY":
+                System.out.println("화요일입니다.");
+                break;
+            default:
+                System.out.println("해당 요일을 찾을 수 없습니다.");
+        }
+
+        // Java 17 이후 버전 - 1
+        switch (day) {
+            case "MONDAY" -> System.out.println("월요일입니다.");
+            case "TUESDAY" -> System.out.println("화요일입니다.");
+            default -> System.out.println("해당 요일을 찾을 수 없습니다.");
+        }
+
+
+        // Java 17 이후 버전 - 2 (case문에 타입을 명시하여 분기처리할 수 있다.)
+        Object obj = new Object();
+        switch (obj) {
+            case String s -> System.out.println("문자열: " + s);
+            case Integer i -> System.out.println("정수: " + i);
+            default -> System.out.println("다른 타입");
+        }
+    }
+}
+```
+
+---
+
+## [8. JEP 407 - Remote Method Invocation(RMI) 활성화 메커니즘 제거](https://openjdk.org/jeps/407)
+
+RMI 활성화 기능은 시대에 뒤떨어지고 사용되지 않아 RMI 활성화하는 기능을 제거하고, 나머지 RMI 기능은 유지한다. 이로써 레거시 부분을 정리하여 Java 플랫폼을 최신 상태로 유지하도록 한다.
+
+---
+
+## [🌟9. JEP 409 - Sealed Classes 추가](https://openjdk.org/jeps/409)
+
+`sealed class`와 `sealed interface`는 다른 class나 interface가 이를 상속/구현 할 수 있는지를 제한한다.
+
+타입 계층을 보다 정확하게 모델링할 수 있도록 하는 것이 목적이다.
+
+사용 키워드는 `sealed`, `non-sealed`, `permits` 키워드이다.
+
+- `sealed class`, `sealed interface`는 `permits`키워드로 함께, 이를 확장하거나 구현할 수 있는 다른 클래스나 인터페이스를 지정한다.
+
+- `non-sealed class`나 `non-sealed interface`는 어떤 클래스나 인터페이스로부터도 확장되거나 구현될 수 있다.
+
+
+### 설계 목적
+
+- Final 클래스
+  - Final 클래스는 보안 상의 이유로 상속을 막거나, 불변성을 보장하고자 할 때 사용된다. 다른 클래스가 해당 클래스를 상속하거나 변경하지 못하도록 하여 의도한 동작을 보장한다.
+
+- Sealed 클래스
+  - Sealed 클래스는 클래스 계층 구조의 일부를 통제하고 특정 클래스나 인터페이스를 상속 또는 구현할 수 있는 클래스의 범위를 제한함으로써, 더 명확하고 제한된 클래스 계층을 구성할 수 있게된다.
+
+### UserCustomException.java (최상위 계층)
+```java
+// UserCustomException 클래스는 UserBadRequestException과 UserForbiddenException에 의해서만 상속될 수 있다.
+public sealed class UserCustomException permits UserBadRequestException, UserForbiddenException {}
+```
+
+### UserBadRequestException.java (두 번째 계층)
+```java
+// UserBadRequestException은 상속될 수 없는 final 클래스이다.
+public final class UserBadRequestException extends UserCustomException {}
+```
+
+### UserForbiddenException.java (두 번째 계층)
+```java
+// UserForbiddenException은 UserAuthortionException, UserNotFoundException에 의해서만 다시 상속될 수 있는 sealed 클래스이다.
+public sealed class UserForbiddenException
+    extends UserCustomException
+    permits UserAuthorizationException, UserNotFoundException {
+
+}
+```
+
+### UserAuthorizationException.java (세 번째 계층)
+```java
+// UserAuthorizationException은 상속될 수 없는 final 클래스이다.
+public final class UserAuthorizationException extends UserForbiddenException {}
+```
+
+### UserNotFoundException.java (세 번째 계층)
+
+```java
+// UserNotFoundException은 상속될 수 없는 final 클래스이다.
+public final class UserNotFoundException extends UserForbiddenException {}
+```
+
+---
+
+## [🌟10. JEP 410 - 실험판 AOT, JIT Compiler 제거 (실험버전이 제거된거고 기존 컴파일러들은 남아있는거겠지?)](https://openjdk.org/jeps/410)
+
+Java 기반 사전시간(AOT) 및 실행시간(JIT) 컴파일러를 사용률이 낮고, 유지 보수 비용이 커 JDK 17에서 제거한다.
+
+JIT 컴파일을 위해 외부에서 빌드한 컴파일러 버전을 계속 사용할 수 있도록 실험적인 Java 수준 JVM 컴파일러 인터페이스(JVMCI)는 유지한다.
+
+---
+
+## [11. JEP 411 - Security Manager 사용 중지 및 제거 예정](https://openjdk.org/jeps/411)
+
+Java 언어 자체의 Security Manager가 사용되지 않아 제거 예정된다.
+
+---
+
+## [12. JEP 412 - Foreign Function & Memory API (Incubator)](https://openjdk.org/jeps/412)
+
+Java Application이 Java Runtime 외부의 코드, 데이터와 상호작용할 수 있는 API를 도입한다.
+
+`JVM 외부의 코드`인 **외부 함수**를 효율적으로 호출하고, `JVM이 관리하지 않는 Memory`인 **외부 Memory**에 안전하게 접근한다.
+
+이 기능을 통한 API는 Java Application이 타언어의 라이브러리를 호출하고 외부 데이터를 처리할 수 있도록하며 JNI(Java Native Interface)의 단점과 위험성을 고려하지 않아도 된다.
+
+이 기능의 목적은 아래와 같다.
+
+- 외부 함수 호출
+  - Java Application이 네이티브 코드를 직접 호출할 수 있게 한다.
+
+- 외부 메모리 접근
+  - JVM이 관리하지 않는 메모리에 대한 안전한 접근을 가능하게 한다.
+
+- JNI 대체
+  - 기존 JNI 방식의 대체 장치로 제안되어, 네이티브 코드와의 상호작용을 보다 안전하고 효율적으로 수행한다.
+
+---
+
+## [13. JEP 414 - Vector API (Second Incubator)](https://openjdk.org/jeps/414)
+
+JEP 338에 이어 JDK 16에서 처음으로 인큐베이팅 API로 도입된 벡터 API를 개선한다.
+
+---
+
+## [14. JEP 415 - 컨텍스트별 역직렬화 필터 추가](https://openjdk.org/jeps/415)
+
+컨텍스트별 및 동적으로 선택된 역직렬화 필터를 구성할 수 있는 방법을 제공한다. JVM 전역 필터 팩토리를 통해 실행될 때마다 각 역직렬화 작업에 대해 필터를 선택하는 방식으로 동작한다.
