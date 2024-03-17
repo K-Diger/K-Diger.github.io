@@ -490,68 +490,152 @@ public static void main(String[] args) {
 
 ## 8. JEP 324 - Key Agreement with Curve25519 and Curve448
 
-`RFC 7748`에 따라 `Curve25519`와 `Curve448`을 사용하여 `Key Agreement`를 구현합니다. 이는 Java 11에서 도입된 보안 기능으로, 기존의 타원곡선 Diffie-Hellman (ECDH) 방식보다 효율적이고 안전한 키 합의 스킴을 제공합니다.
-
-
-
-
-
-## 1. G1 GC가 기본 값으로 등록됨
-
-LTS 기준 **JDK 8**까지는 **Parallel GC**가 **기본값**이었다.
-
-JDK7에 첫 등장한 **G1 GC**가 **기본값**으로 등록된 버전이다.
-
-하지만 막상 OpenJDK 11을 쓴다한들 OS에 종속적으로 GC가 선택된다. 예를들어 AWS EC2프리티어 스펙(1Core, Memory 1GB)에서는 SerialGC가 기본으로 적용된다.
+`RFC 7748`에 따라 `Curve25519`와 `Curve448`을 사용하여 `Key Agreement`를 구현한다. 기존 Diffie-Hellman (ECDH) 방식보다 효율적이고 안전한 키 합의 스킴을 제공한다.
 
 ---
 
-## 2. 문자열 메서드 추가
+## 9. JEP 327 - Unicode 10
 
-`isBlank`, `lines`, `strip`, `stripLeading`, `stripTrailing` 및 `repeat`와 같은 새로운 메서드들이 추가됨
-
----
-
-## 3. Collection.toArray()
-
-Collection에 `toArray()`가 추가되어 List -> Array의 변환이 간편해졌다.
+유니코드 표준 버전 10.0을 지원한다.
 
 ```java
-public static void main(String[] args) {
-    List<String> sampleList = Arrays.asList("Java", "Kotlin");
-    String[] sampleArray = sampleList.toArray(String[]::new);
+public class UnicodeExample {
+    public static void main(String[] args) {
+        String newEmoji = "\uD83E\uDD84"; // 🦄유니콘 이모지
 
-    assertThat(sampleArray).containsExactly("Java", "Kotlin");
+        System.out.println("유니코드 10의 새로운 이모지: " + newEmoji);
+
+        int codePoint = newEmoji.codePointAt(newEmoji.offsetByCodePoints(0, 0));
+        System.out.println("이모지의 코드 포인트: " + Integer.toHexString(codePoint));
+    }
 }
+
+// 출력 결과
+// 유니코드 10의 새로운 이모지: 🦄
+// 이모지의 코드 포인트: 1f984
 ```
 
 ---
 
-## 4. var 키워드 추가
+## 10. JEP 328 - Flight Recorder (JFR) 추가
 
-람다 매개변수에서 로컬 변수 구문인 var 키워드 추가됐다.
+HotSpot JVM 및 자바 애플리케이션의 낮은 오버헤드를 가진 데이터 수집 프레임워크가 추가됐다. 애플리케이션 및 JVM의 상세한 실행 정보를 실시간으로 수집하고 분석할 수 있는 도구이다.
+
+주요 기능으로는 아래와 같다.
+
+- 이벤트 생성 및 소비를 위한 API 제공
+  - 개발자가 데이터를 이벤트 형태로 제공하고 소비할 수 있는 API를 제공한다.
+
+- 버퍼 메커니즘 및 이진 데이터 형식 제공
+  - 데이터 수집을 위한 효율적인 저장 및 전송 수단을 제공한다.
+
+- 이벤트 구성 및 필터링 가능
+  - 사용자의 요구에 따라 이벤트를 필터링하고 구성할 수 있다.
+
+- OS, HotSpot JVM, JDK 라이브러리를 위한 이벤트 제공
+  - 시스템 및 JVM 수준에서 발생하는 다양한 이벤트에 대한 정보를 제공한다.
+
+위 모니터링 프레임워크를 사용하려면 Java 명령어에 아래와 같은 옵션을 주면 된다.
+
+```shell
+java -XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:StartFlightRecording=duration=60s,filename=myrecording.jfr MyApp
+```
+
+다음은 JMC(Java Mission Control)을 통해 아래 코드에 대해 대시보드를 띄운 화면이다.
 
 ```java
-public static void main(String[] args) {
-    List<String> sampleList = Arrays.asList("Java", "Kotlin");
+package com.core.digerlaboratory.java11flightrecorder;
 
-    String resultString = sampleList.stream()
-        .map((@Nonnull var x) -> x.toUpperCase())
-        .collect(Collectors.joining(", "));
+import java.util.ArrayList;
+import java.util.List;
 
-    assertThat(resultString).isEqualTo("JAVA, KOTLIN");
+public class Main {
+
+    public static void main(String[] args) {
+        List<Object> items = new ArrayList<>(1);
+        try {
+            while (true) {
+                items.add(new Object());
+            }
+        } catch (OutOfMemoryError e) {
+            System.out.println(e.getMessage());
+        }
+        assert items.size() > 0;
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
+
+```
+
+![](https://github.com/K-Diger/K-Diger.github.io/blob/main/images/jfr/jfr.png?raw=true)
+
+---
+
+## 11. JEP 329 - ChaCha20, Poly1305 암호화 알고리즘 추가
+
+```java
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.ChaCha20ParameterSpec;
+
+public class Main {
+
+    public static void main(String[] args)
+        throws NoSuchAlgorithmException,
+        NoSuchPaddingException,
+        InvalidAlgorithmParameterException,
+        InvalidKeyException,
+        IllegalBlockSizeException,
+        BadPaddingException
+    {
+        byte[] input = "ChaCha20 테스트 원본 텍스트".getBytes();
+
+        // ChaCha20를 위한 키 생성
+        KeyGenerator keyGen = KeyGenerator.getInstance("ChaCha20");
+        keyGen.init(256);
+        SecretKey key = keyGen.generateKey();
+
+        // ChaCha20 파라미터 초기화 (nonce 값과 초기 카운터 값)
+        byte[] nonce = new byte[12]; // 예제를 위한 0으로 초기화된 nonce
+        int counter = 1;
+        ChaCha20ParameterSpec paramSpec = new ChaCha20ParameterSpec(nonce, counter);
+
+        // ChaCha20 Cipher 초기화 및 암호화
+        Cipher cipher = Cipher.getInstance("ChaCha20");
+        cipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
+        byte[] cipherText = cipher.doFinal(input);
+
+        System.out.println("cipherText = " + Arrays.toString(cipherText));
+
+        cipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
+        byte[] decryptedText = cipher.doFinal(cipherText);
+
+        System.out.println("원본 텍스트: " + new String(input));
+        System.out.println("복호화된 텍스트: " + new String(decryptedText));
+    }
+}
+
+// 출력 결과
+// cipherText = [B@449b2d27
+// 원본 텍스트: ChaCha20 테스트 원본 텍스트
+// 복호화된 텍스트: ChaCha20 테스트 원본 텍스트
 ```
 
 ---
 
-## 5. 새로운 HTTP Client 추가
-
-
-
----
-
-## 6. Java 파일 실행의 간소화
+## 12. JEP 330 - Launch Single-File Source-Code Programs (Java 파일 실행의 간소화)
 
 javac를 사용하여 Java 소스 파일을 컴파일할 필요없이 실행 가능해졌다.
 
@@ -572,6 +656,134 @@ Hello Java 11!
 
 ---
 
+## 13. JEP 331 - Low-Overhead Heap Profiling
+
+낮은 오버헤드로 Heap영역을 프로파일링 할 수 있는 도구가 추가됐다.
+
+```shell
+java -XX:+HeapDumpOnOutOfMemoryError -XX:StartFlightRecording=dumponexit=true,filename=myrecording.jfr,settings=profile -jar MyJavaApplication.jar
+```
+
+- -XX:+HeapDumpOnOutOfMemoryError
+  - OutOfMemoryError가 발생했을 때 힙 덤프를 생성한다.
+- -XX:StartFlightRecording=dumponexit=true,filename=myrecording.jfr,settings=profile -jar MyJavaApplication.jar
+  - 애플리케이션 실행이 종료될 때까지 힙 프로파일링을 포함한 다양한 성능 데이터를 수집하여 myrecording.jfr 파일에 저장한다.
+
+---
+
+## 14. JEP 332 - Transport Layer Security (TLS) 1.3
+
+TLS에 대한 개선이 이루어졌다.
+
+- 이전 버전에 존재하던 보안 취약점을 해결하고, 더 강력한 암호화 알고리즘을 사용한다.
+- 핸드셰이크 과정이 간소화되어, 더 빠른 연결 설정이 가능해졌다.
+
+---
+
+## 15. JEP 333 - ZGC 실험판 추가
+
+ZGC가 실험버전으로 추가되었다. ZGC가 개선하고자 하는 목표는 아래와 같다.
+
+- STW
+  - 10ms를 초과하지 않는다.
+
+- 힙 크기 대응
+  - 몇백 MB부터 여러 TB에 이르는 다양한 크기의 힙을 처리할 수 있다.
+
+- 애플리케이션 처리량 감소 제한
+  - G1을 사용할 때와 비교하여 15% 이상의 애플리케이션 처리량 감소가 없다.
+
+SPECjbb® 2015를 사용한 성능 측정 결과는 아래와 같다. 128G 힙을 사용하는 복합 모드에서 ZGC와 G1을 비교한 `처리량`에 대한 벤치마크 점수이다.
+
+**(높을수록 좋음)**
+
+| 구분            | ZGC   | G1    |
+|---------------|-------|-------|
+| max-jOPS      | 100%  | 91.2% |
+| critical-jOPS | 76.1% | 54.7% |
+
+SPECjbb® 2015를 사용한 성능 측정 결과는 아래와 같다. 128G 힙을 사용하는 복합 모드에서 ZGC와 G1을 비교한 `STW`에 대한 벤치마크 점수이다.
+
+**(낮을수록 좋음)**
+
+| 구분                 | ZGC                  | G1                      |
+|--------------------|----------------------|-------------------------|
+| avg                | 1.091ms (+/-0.215ms) | 156.806ms (+/-71.126ms) |
+| 95th percentile    | 1.380ms              | 316.672ms               |
+| 99th percentile    | 1.512ms              | 428.095ms               |
+| 99.9th percentile  | 1.663ms              | 543.846ms               |
+| 99.99th percentile | 1.681ms              | 543.846ms               |
+| max                | 1.681ms              | 543.846ms               |
+
+---
+
+## 16. JEP 335 - Deprecate the Nashorn JavaScript Engine
+
+Nashorn은 JDK 8에서 Rhino의 후속으로 도입되어 Java 애플리케이션에서 JavaScript를 실행할 수 있는 방법을 제공했다.
+
+하지만, 시간이 흐르면서 GraalVM 같은 더 성능이 좋은 JavaScript 실행 환경이 등장했고 Nashorn을 유지 관리하고 최신 ECMAScript 사양과 호환되게 하는 것이 점점 어려워졌다.
+
+따라서 Nashorn JavaScript 엔진과 관련된 API와 jjs 도구를 Java에서 `deprecated`한다.
+
+---
+
+## 17. JEP 336 - Deprecate the Pack200 Tools and API
+
+Pack200 Tools와 API는 자바 애플리케이션의 패키징, 전송, 그리고 배포를 위한 디스크와 대역폭 요구사항을 줄이는 목적으로 Java SE 5.0에서 등장했다.
+
+- 다운로드 속도 개선
+  - 과거에는 인터넷 다운로드 속도가 느려 JDK 다운로드 시간이 문제가 되었지만, 시간이 지나면서 이 문제는 대부분 해결됐다.
+
+- 모듈 시스템
+  - Java 9에서 소개된 모듈 시스템(JEP 220)으로 인해, JAR 파일들은 더 이상 단일 아카이브로 패킹될 필요가 없어졌다.
+
+- 기술 변화
+  - 웹 기술과 네트워크 속도의 발전으로 인해 Pack200의 압축 기능은 더 이상 큰 이점을 제공하지 못하게 됐다.
+
+즉, Pack200의 비효율성, 대역폭 문제의 개선, 그리고 모듈 시스템의 도입으로 인해 더 이상 필요하지 않게 되었다.
+
+```java
+java.util.jar.Pack200
+java.util.jar.Pack200.Packer
+java.util.jar.Pack200.Unpacker
+```
+
+따라서 위 경로에 해당하는 모듈을 `Deprecate`한다.
+
+---
+
+## 18; 공식문서 외의 추가된 내용 (Default Gc == G1, String Method, Collection.toArray())
+
+### 1. G1 GC가 기본 값으로 등록됨
+
+LTS 기준 **JDK 8**까지는 **Parallel GC**가 **기본값**이었다.
+
+JDK7에 첫 등장한 **G1 GC**가 **기본값**으로 등록된 버전이다.
+
+하지만 막상 OpenJDK 11을 쓴다한들 OS에 종속적으로 GC가 선택된다. 예를들어 AWS EC2프리티어 스펙(1Core, Memory 1GB)에서는 SerialGC가 기본으로 적용된다.
+
+---
+
+### 2. 문자열 메서드 추가
+
+`isBlank`, `lines`, `strip`, `stripLeading`, `stripTrailing` 및 `repeat`와 같은 새로운 메서드들이 추가됨
+
+---
+
+### 3. Collection.toArray()
+
+Collection에 `toArray()`가 추가되어 List -> Array의 변환이 간편해졌다.
+
+```java
+public static void main(String[] args) {
+    List<String> sampleList = Arrays.asList("Java", "Kotlin");
+    String[] sampleArray = sampleList.toArray(String[]::new);
+
+    assertThat(sampleArray).containsExactly("Java", "Kotlin");
+}
+```
+
+---
 
 # Java 17
 
