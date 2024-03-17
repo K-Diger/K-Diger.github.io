@@ -1,6 +1,6 @@
 ---
 
-title: Java LTS 버전별 주요 기능 (8, 11, 17, 21)
+title: 공식문서와 함께하는 Java LTS 버전별 주요 기능 (8, 11, 17, 21)
 date: 2024-03-16
 categories: [Java]
 tags: [Java]
@@ -313,6 +313,189 @@ public static void main(String[] args) {
 
 # JDK 11
 
+[참고 자료 - OpenJDK 11 Official](https://openjdk.org/projects/jdk/11/)
+
+## 1. JEP 181 - Inner Class에서 Outer Class에 접근 가능
+
+이전 버전에서는 아래와 같이 `Inner클래스에서` `Outer클래스의 private멤버`에 접근하는 것이 불가능했다.
+
+그래서 내부 클래스가 같은 코드 엔티티의 다른 클래스들의 private 멤버에 직접 접근할 수 있도록 한다.
+
+```java
+public class OuterClass {
+
+    private static void privateMethod() {
+        System.out.println("Private method in OuterClass");
+    }
+
+    public class InnerClass {
+        public void show() {
+            secretMethod(); // 컴파일 에러
+        }
+    }
+}
+```
+
+JDK 11 부터는 별다른 코드의 변경 없이 위와 같은 코드가 컴파일 에러가 발생하지 않도록 조치되었다.
+
+여기서 알고가면 좋을 점은 `Inner Class` vs `Nested Class`인데, `Inner Class`는 위와 같은 형태이고, `Nested Class`는 `Outer Class 내에 Static으로 Class`가 선언된 경우를 말한다.
+
+---
+
+## 2. JEP 309 - Dynamic Class-File Constants
+
+새로운 상수 풀 형식 `CONSTANT_Dynamic`을 지원한다.
+
+새로운 형태의 클래스 파일 상수들의 생성 비용과 중단을 줄이면서 언어/컴파일러 구현자들에게 **더 넓은 표현성과 성능에 대한 옵션을 제공하기 위해 도입되었다.**
+
+JVM내부의 동작 방식을 변경했으므로 예시 코드로 나타내긴 어렵지만 흐름을 나타내면 아래와 같다.
+
+```text
+// CONSTANT_Dynamic을 사용하여 정의된 동적 상수
+dynamicConstant = bootstrapMethod();
+
+// 이 상수는 첫 사용 시 bootstrapMethod를 통하여 그 값이 결정된다.
+// bootstrapMethod는 사용자에 의해 정의될 수 있으며, 다양한 타입의 값을 동적으로 생성할 수 있다.
+```
+
+---
+
+## 3. JEP 315 - Improve Aarch64 Intrinsics
+
+- sin (sine trigonometric function)
+- cos (cosine trigonometric function)
+- log (logarithm of a number)
+
+내부적으로 자바 라이브러리의 성능을 향상시키는 것을 목적으로 `Math.sin()`, `Math.cos()`, `Math.log()`와 같은 함수가 `AArch64 프로세서`에서 더 나은 성능을 낼 수 있게 됐다.
+
+---
+
+## 4. JEP 318 - Epsilon: A No-Op Garbage Collector (Experimental)
+
+Epsilon이라는 새로운 가비지 수집기가 Java 11에서 실험판으로 열렸다. 메모리 할당은 처리하지만 실제 메모리 회수 메커니즘을 구현하지 않는 GC이다. 사용 가능한 Java 힙이 소진되면 JVM은 종료된다.
+
+메모리를 할당하지만 실제로 가비지를 수집하지 않기 때문에 No-Op(작업 없음)라고 한다.
+
+따라서 Epsilon은 메모리 부족 오류를 시뮬레이션하는 데 적용할 수 있다.
+
+일반적인 프로덕션 Java 애플리케이션에 적합하지 않지만 유용할 수 있는 몇 가지 특정 사용 사례가 있다.
+
+`성능 시험`, `메모리 부하 테스트`, `VM 인터페이스 테스트 및 수명이 매우 짧은 작업`
+
+이 GC를 사용하려면
+
+```shell
+-XX:+UnlockExperimentalVMOptions -XX:+UseEpsilonGC
+```
+플래그를 사용하면 된다.
+
+---
+
+## 5. JEP 320 - Java EE, CORBA Modules 제거
+
+`Java SE 6`에 `Java EE` 플랫폼을 위해 개발된 네 가지 기술 `JAX-WS`, `JAXB`, `JAF`, `Common Annotations`로 구성됐다.
+
+이번 버전에서 이들을 제거하였다.
+
+JAF, JAXB, JAX-WS와 같은 기술들은 더 이상 Java SE에 제공되지 않고 이를 필요로 하면 `Java EE` 버전을 사용해야 한다.
+
+### 제거 된 모듈
+
+- java.se.ee
+- java.activation (JAF)
+- java.corba
+- java.transaction
+- java.xml.bind (JAXB)
+- java.xml.ws (JAX-WS)
+- java.xml.ws.annotation
+
+
+---
+
+
+## 6. JEP 321 - HTTP Client 표준화
+
+JEP 321은 JDK 9에서 인큐베이팅(innovating) API로 도입됐고 JDK 10에서 업데이트된 HTTP Client API를 표준화한다.
+
+또한 java.net.http 패키지에 기반한 표준화된 API를 제공하고, 인큐베이팅 API를 제거한다.
+
+새 HTTP API는 전반적인 성능을 개선하고 HTTP/1.1 및 HTTP/2를 모두 지원한다.
+
+사용 코드는 아래와 같다.
+
+### 동기 방식
+
+```java
+public static void main(String[] args) {
+    HttpClient httpClient = HttpClient.newBuilder()
+        .version(HttpClient.Version.HTTP_2)
+        .connectTimeout(Duration.ofSeconds(20))
+        .build();
+
+    HttpRequest httpRequest = HttpRequest.newBuilder()
+        .GET()
+        .uri(URI.create("http://localhost:" + port))
+        .build();
+
+    HttpResponse httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+
+    assertThat(httpResponse.body()).isEqualTo("Hello from the server!");
+}
+```
+
+### 비동기 방식
+
+```java
+public static void main(String[] args) {
+    HttpClient httpClient = HttpClient.newBuilder()
+        .version(HttpClient.Version.HTTP_2)
+        .connectTimeout(Duration.ofSeconds(20))
+        .build();
+
+    HttpRequest httpRequest = HttpRequest.newBuilder()
+        .GET()
+        .uri(URI.create("http://localhost:" + port))
+        .build();
+
+    HttpResponse httpResponse = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+        .thenApply(HttpResponse::body)
+        .thenAccept(System.out::println)
+        .join(); // 비동기 작업 완료까지 대기
+}
+```
+
+---
+
+## 7. JEP 323 - Lambda 매개변수 지역 변수 문법 개선
+
+람다 표현식의 형식 매개변수(formal parameters)를 선언할 때 var를 사용할 수 있게 하는 기능을 추가한다.
+
+### 기존 코드
+
+```java
+public static void main(String[] args) {
+    (BinaryOperator<Integer> bo) = (Integer x, Integer y) -> x + y;
+}
+```
+
+### 적용 후 코드
+
+```java
+public static void main(String[] args) {
+    (BinaryOperator<Integer> bo) = (var x, var y) -> x + y;
+}
+```
+
+---
+
+## 8. JEP 324 - Key Agreement with Curve25519 and Curve448
+
+`RFC 7748`에 따라 `Curve25519`와 `Curve448`을 사용하여 `Key Agreement`를 구현합니다. 이는 Java 11에서 도입된 보안 기능으로, 기존의 타원곡선 Diffie-Hellman (ECDH) 방식보다 효율적이고 안전한 키 합의 스킴을 제공합니다.
+
+
+
+
+
 ## 1. G1 GC가 기본 값으로 등록됨
 
 LTS 기준 **JDK 8**까지는 **Parallel GC**가 **기본값**이었다.
@@ -364,27 +547,7 @@ public static void main(String[] args) {
 
 ## 5. 새로운 HTTP Client 추가
 
-Java 9에서 도입된 java.net.http 패키지의 새로운 HTTP 클라이언트가 Java 11의 표준 기능이 됐다.
 
-새 HTTP API는 전반적인 성능을 개선하고 HTTP/1.1 및 HTTP/2를 모두 지원한다.
-
-```java
-public static void main(String[] args) {
-    HttpClient httpClient = HttpClient.newBuilder()
-        .version(HttpClient.Version.HTTP_2)
-        .connectTimeout(Duration.ofSeconds(20))
-        .build();
-
-    HttpRequest httpRequest=HttpRequest.newBuilder()
-        .GET()
-        .uri(URI.create("http://localhost:" + port))
-        .build();
-
-    HttpResponse httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-    assertThat(httpResponse.body()).isEqualTo("Hello from the server!");
-}
-```
 
 ---
 
@@ -409,26 +572,6 @@ Hello Java 11!
 
 ---
 
-## 7. A No-Op Garbage Collector 추가
-
-Epsilon이라는 새로운 가비지 수집기가 Java 11에서 실험판으로 열렸다.
-
-메모리를 할당하지만 실제로 가비지를 수집하지 않기 때문에 No-Op(작업 없음)라고 한다.
-
-따라서 Epsilon은 메모리 부족 오류를 시뮬레이션하는 데 적용할 수 있다.
-
-분명히 Epsilon은 일반적인 프로덕션 Java 애플리케이션에 적합하지 않지만 유용할 수 있는 몇 가지 특정 사용 사례가 있다.
-
-`성능 시험`, `메모리 부하 테스트`, `VM 인터페이스 테스트 및 수명이 매우 짧은 작업`
-
-이 GC를 사용하려면
-
-```shell
--XX:+UnlockExperimentalVMOptions -XX:+UseEpsilonGC
-```
-플래그를 사용하면 된다.
-
----
 
 # Java 17
 
