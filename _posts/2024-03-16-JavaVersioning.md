@@ -271,18 +271,23 @@ public static void main(String[] args) {
 ```java
 public static void main(String[] args) {
     // map()
-    List<String> words = Arrays.asList("Java", "Stream", "Map");
-    List<String> upperWords = words.stream()
-        .map(String::toUpperCase)
+    List<List<String>> mapList = Arrays.asList(
+        Arrays.asList("Java", "is"),
+        Arrays.asList("super", "fun")
+    );
+
+    List<Stream<String>> mapListStreamMap = mapList.stream()
+        .map(List::stream)
         .collect(Collectors.toList());
-    System.out.println(upperWords);
-    // 결과 : [JAVA, STREAM, MAP]
+    System.out.println(mapListStreamMap);
+    // 결과 : [java.util.stream.ReferencePipeline$Head@378bf509, java.util.stream.ReferencePipeline$Head@5fd0d5ae]
 
     // flatMap()
     List<List<String>> listOfLists = Arrays.asList(
         Arrays.asList("Java", "is"),
         Arrays.asList("super", "fun")
     );
+
     List<String> flatList = listOfLists.stream()
         .flatMap(List::stream)
         .collect(Collectors.toList());
