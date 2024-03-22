@@ -335,7 +335,7 @@ public class OuterClass {
 
     public class InnerClass {
         public void show() {
-            secretMethod(); // 컴파일 에러
+            privateMethod(); // Java 11이전 버전에서는 컴파일 에러가 발생한다.
         }
     }
 }
@@ -343,7 +343,9 @@ public class OuterClass {
 
 JDK 11 부터는 별다른 코드의 변경 없이 위와 같은 코드가 컴파일 에러가 발생하지 않도록 조치되었다.
 
-여기서 알고가면 좋을 점은 `Inner Class` vs `Nested Class`인데, `Inner Class`는 위와 같은 형태이고, `Nested Class`는 `Outer Class 내에 Static으로 Class`가 선언된 경우를 말한다.
+여기서 알고가면 좋을 점은 `Inner Class` vs `Nested Class`인데, `Inner Class`는 위와 같은 형태이고,
+
+`Nested Class`는 `Outer Class 내에 Static으로 Class`가 선언된 경우를 말한다.
 
 ---
 
