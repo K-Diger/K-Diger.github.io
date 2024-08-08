@@ -216,14 +216,10 @@ Stream에서 지원하는 문법은 굉장히 많다. 다 외워서 사용할 �
     for(int i=0; i < e; i++)
     if(a[i] > m) m = a[i];
 
-<br>
-
 ### Stream을 이용한 배열 접근 후 최댓값 도출
 
     int m = Arrays.stream(ints)
     .reduce(Integer.MIN_VALUE, Math::max);
-
-<br>
 
 > 두 코드를 동작시킨 환경에서의 성능차이는 다음과 같다.
 
@@ -232,11 +228,7 @@ int-array, for-loop : 0.36 ms
 int-array, seq. stream: 5.35 ms
 
 
-<br>
-
 단편적인 예시이긴 하지만 **일반 배열이 아닌** **ArrayList 에서도 반복문이 더 우세한 결과**를 가지고 있었다.
-
-<br>
 
 https://pamyferret.tistory.com/49
 
@@ -256,8 +248,7 @@ For-loop이 더 빠른 이유를 설명해놓았는데
 ####  - stream의 경우 신생(?)인 만큼 정보가 없어 for문과 같은 정교한 최적화를 수행할 수 없다.
 
 
-<br>
-이 두가지 근거(?)가 설득력 있게 다가왔다.
+이 두가지 근거가 설득력 있게 다가왔다.
 
 ---
 
