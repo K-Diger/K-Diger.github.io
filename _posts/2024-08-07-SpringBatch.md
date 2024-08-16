@@ -239,26 +239,101 @@ Step은 기본적으로 `Tasklet`이라는 인터페이스를 가지고 있는�
 
 ---
 
-## TaskletStep
+## Step 하위 구현체
+
+### TaskletStep
 
 기본적인 Step이다. Tasklet 타입을 구현한다.
 
----
-
-## PartitionStep
+### PartitionStep
 
 멀티 쓰레드 기반으로 Step을 여러 개로 분리해서 실행한다.
 
----
-
-## JobStep
+### JobStep
 
 Step내에서 Job을 실행시킨다.
 
----
-
-## FlowStep
+### FlowStep
 
 Step내에서 Flow를 실행하도록한다.
 
 ---
+
+# 2.2 StepExecution
+
+StepExecution은 Step 실행 중에 발생한 정보들을 갖고 있는다. 따라서 Step이 실제로 시작됐을 때만 생성되는 객체이다.
+
+JobExecution은 이 StepExecution이 모두 정상적으로 완료되어야 완료된다는 관계를 갖는다. (JobExecution:StepExecution = 1:N)
+
+StepExecution이 가지는 필드는 아래와 같다.
+
+- `JobExecution`: JobExecution객체
+- `stepName`: Step이름
+- `BatchStatus` : 실행 상태
+    - COMPLETED: 배치 작업 실행을 성공적으로 완료
+    - STARTING: 배치 작업 실행 전 상태
+    - STARTED: 배치 작업이 실행중
+    - STOPPING: 배치 작업을 중지하기 전에 단계가 완료되기를 기다리는 배치 작업 상태
+    - STOPPED: 요청에 의해 중지된 배치 작업
+    - FAILED: 배치 작업 실행 중에 실패
+    - ABANDONED: 제대로 중지되지 않아 다시 시작할 수 없는 배치 작업의 상태
+    - UNKNOWN: 불확실한 상태인 배치 작업의 상태
+- `readCount`: read 성공한 아이템 수
+- `writeCount`: write 성공한 아이템 수
+- `commitCount`: 실행 중 커밋된 트랜잭션 수
+- `rollbackCount`: 트랜잭션 중 롤백된 횟수
+- `readSkipCount`: read에 실패해서 스킵된 횟수
+- `writeSkipCount`: write에 실패해서 스킵된 횟수
+- `processSkipCount`: process에 실패해서 스킵된 횟수
+- `filterCount`: ItemProcessor에 필터링된 아이템 수
+- `startTime`: Job 실행 시의 시스템 시간
+- `endTime`: 성공 여부와 관계없는 종료 시간
+- `lastUpdated`: JobExecution이 마지막 저장될 때의 시스템 시간
+- `ExecutionContext`: 실행되는 동안 유지하는 메타데이터
+- `ExitStatus` : 실행 결과
+    - UNKNOWN: 알 수 없는 상태, 배치 재시작이 불가능하다
+    - EXECUTING: 배치 처리가 진행중
+    - COMPLETED: 배치 실행이 정상적으로 종료되었을때
+    - NOOP: 배치 작업을 처리할 게 없는경우 ex) 배치가 이미 완료가 된경우
+    - FAILED: 배치 처리가 실패함
+    - STOPPED: 배치 처리 작업 중간에 중단된 상태
+- `failureException`: Job실행 중 발생한 예외 리스트
+
+### Table. BATCH_STEP_EXECUTION
+
+| STEP_EXECUTION_ID | STEP_NAME | JOB_EXECUTION_ID | STATUS    |
+|-------------------|-----------|------------------|-----------|
+| 1                 | Step1     | 1                | COMPLETED |
+| 2                 | Step2     | 1                | COMPLETED |
+| 3                 | Step1     | 2                | COMPLETED |
+| 4                 | Step2     | 2                | FAILED    |
+| 5                 | Step2     | 2                | COMPLETED |
+
+---
+
+# 2.3 StepContribution
+
+Chunk Process의 변경 사항을 버퍼링한 후 StepExecution 상태를 업데이트 하는 객체이다.
+
+Chunk Commit 직전에 StepExecution의 apply()메서드를 호출하여 상태를 업데이트한다.
+
+ExitStatus의 기본 종료코드 외 사용자 정의 종료코드를 생성하여 적용할 수 있다.
+
+StepContribution은 아래 필드를 갖는다.
+
+- `readCount`: read 성공한 아이템 수
+- `writeCount`: write 성공한 아이템 수
+- `filterCount`: ItemProcessor에 필터링된 아이템 수
+- `parentSkipCount`: StepExecution의 총 skip 횟수
+- `readSkipCount`: read에 실패해서 스킵된 횟수
+- `writeSkipCount`: write에 실패해서 스킵된 횟수
+- `processSkipCount`: process에 실패해서 스킵된 횟수
+- `ExitStatus` : 실행 결과
+    - UNKNOWN: 알 수 없는 상태, 배치 재시작이 불가능하다
+    - EXECUTING: 배치 처리가 진행중
+    - COMPLETED: 배치 실행이 정상적으로 종료되었을때
+    - NOOP: 배치 작업을 처리할 게 없는경우 ex) 배치가 이미 완료가 된경우
+    - FAILED: 배치 처리가 실패함
+    - STOPPED: 배치 처리 작업 중간에 중단된 상태
+- `StepExecution`: StepExecution객체 저장
+
