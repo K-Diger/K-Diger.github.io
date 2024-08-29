@@ -11,6 +11,10 @@ mermaid: true
 
 ---
 
+## 공식문서
+
+[레디스 공식문서 - 클러스터링](https://redis.io/docs/latest/operate/oss_and_stack/management/scaling/)
+
 ## Docker Compose [MAC]
 
 ```yaml
