@@ -1,8 +1,7 @@
 ---
 
 title: 커서기반 페이징 및 MySQL 최적화 톺아보기와 적용
-
-date: 2023-05-03
+date: 2024-09-19
 categories: [MySQL, Cursor, Paging]
 tags: [MySQL, Cursor, Paging]
 layout: post

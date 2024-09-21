@@ -1,7 +1,7 @@
 ---
 
 title: Spring Cloud Gateway 공식문서 톺아보기와 적용
-date: 2024-02-11
+date: 2024-09-20
 categories: [Gateway]
 tags: [Gateway]
 layout: post

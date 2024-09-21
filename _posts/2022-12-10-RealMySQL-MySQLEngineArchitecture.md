@@ -1,8 +1,7 @@
 ---
 
 title: MySQL 엔진 아키텍처
-
-date: 2022-12-10
+date: 2024-09-19
 categories: [MySQL]
 tags: [MySQL-Architecture]
 layout: post

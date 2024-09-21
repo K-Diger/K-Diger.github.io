@@ -1,7 +1,7 @@
 ---
 
 title: 트랜잭션과 잠금 톺아보기
-date: 2023-05-02
+date: 2024-09-19
 categories: [MySQL, Transaction]
 tags: [MySQL, Transaction]
 layout: post

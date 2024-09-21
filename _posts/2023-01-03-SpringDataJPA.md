@@ -2,7 +2,7 @@
 
 title: Spring Data JPA 톺아보기
 author: Diger
-date: 2023-01-03
+date: 2024-09-19
 categories: [Java, Spring, Spring Data JPA]
 tags: [Java, Spring, Spring Data JPA]
 layout: post

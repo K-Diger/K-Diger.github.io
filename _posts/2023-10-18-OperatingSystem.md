@@ -1,7 +1,7 @@
 ---
 
 title: 자문자답 - 운영체제 기본
-date: 2023-10-18
+date: 2024-09-20
 categories: [OperatingSystem]
 tags: [OperatingSystem]
 layout: post

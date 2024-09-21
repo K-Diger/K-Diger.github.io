@@ -1,7 +1,7 @@
 ---
 
 title: 그런 REST API로 괜찮은가
-date: 2023-05-23
+date: 2024-09-19
 categories: [URI, URL]
 tags: [URI, URL]
 layout: post

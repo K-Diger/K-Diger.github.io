@@ -1,7 +1,7 @@
 ---
 
 title: JVM - Memory
-date: 2022-10-10
+date: 2024-09-19
 categories: [JVM-Memory]
 tags: [JVM-Memory]
 layout: post
