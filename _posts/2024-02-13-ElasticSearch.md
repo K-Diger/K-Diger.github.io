@@ -1,7 +1,7 @@
 ---
 
 title: ElasticSearch, 형태소 분석기 톺아보기 및 적용
-date: 2024-09-21
+date: 2024-09-18
 categories: [ElasticSearch]
 tags: [ElasticSearch]
 layout: post
