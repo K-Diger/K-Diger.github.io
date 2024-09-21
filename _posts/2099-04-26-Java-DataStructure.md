@@ -1,7 +1,6 @@
 ---
 
 title: Java 자료구조 모음
-
 date: 2023-04-26
 categories: [Java, DataStructure]
 tags: [Java]

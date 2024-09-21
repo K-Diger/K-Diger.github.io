@@ -1,6 +1,6 @@
 ---
 
-title: 공식문서(JEP)와 코드로 직접 알아보는 Java LTS 버전별 주요 기능 (8, 11, 17, 21)
+title: 공식문서(JEP)로 톺아보는 Java LTS 버전별 주요 기능 (8, 11, 17, 21)
 date: 2024-03-16
 categories: [Java]
 tags: [Java]

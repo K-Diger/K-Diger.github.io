@@ -1,6 +1,6 @@
 ---
 
-title: 유연한 시스템을 위해 알아야할 내용들
+title: 유연한 시스템 설계 방법 톺아보기와 자문자답
 date: 2023-12-29
 categories: [MicroService]
 tags: [MicroService]
@@ -284,6 +284,3 @@ class UserOrderRetrieveModel(
 물론 명령 측면 서비스에 데이터가 들어간 즉시 조회 측면 서비스의 데이터가 일치할 수 없고 시간적 간격이 있을 수 있지만 어느 시점이 되면 결과적으로 일치하게 된다. 앞서 말 한 결과적 일관성을(Eventual Consistency)추구하는 것이다.
 
 ---
-
-## 2. 도메인 중심 설계 (DDD)
-

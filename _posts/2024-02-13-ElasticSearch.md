@@ -1,6 +1,6 @@
 ---
 
-title: ElasticSearch와 조금 더 친해져보기
+title: ElasticSearch, 형태소 분석기 톺아보기 및 적용
 date: 2024-02-13
 categories: [ElasticSearch]
 tags: [ElasticSearch]

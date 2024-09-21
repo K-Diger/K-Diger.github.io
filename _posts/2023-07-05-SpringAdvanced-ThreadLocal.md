@@ -1,6 +1,6 @@
 ---
 
-title: Thread Local
+title: Thread Local 톺아보기
 date: 2023-07-05
 categories: [Spring, ThreadLocal]
 tags: [Spring, ThreadLocal]

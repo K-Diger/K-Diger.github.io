@@ -1,6 +1,6 @@
 ---
 
-title: 쿠버네티스 공식문서 정복하기
+title: 쿠버네티스와 살짝 친해져보기
 date: 2024-08-17
 categories: [Kubernetes]
 tags: [Kubernetes]
@@ -14,6 +14,7 @@ mermaid: true
 # 참고자료
 
 - [Kubernetes 공식문서](https://kubernetes.io/ko/docs/concepts/overview/)
+- [Udemy](https://www.udemy.com/course/certified-kubernetes-administrator-with-practice-tests/?couponCode=JUST4U02223)
 
 ---
 
@@ -69,9 +70,14 @@ mermaid: true
 
 ---
 
-# Kubernetes Component
+# 구성요소
 
-- 쿠버네티스를 배포하면 클러스터를 구성하게 된다. 클러스터는 컨테이너를 실행하는 한 개 이상의 `워커 노드`를 가지고있다.
-- 워커 노드는 하나의 애플리케이션을 서비스하기 위한 컨테이너를 묶은 `파드`를 호스팅한다.
-- 그리고 워커 노드와 파드 내의 컨테이너의 라이프사이클을 정의, 배포, 관리하기 위한 API와 인터페이스들을 노출하는 컨테이너 오케스트레이션 레이어 `컨트롤 플레인`이다.
+## Master
+
+Master는 Manage, Plan, Schedule와 다른 노드들을 Monitor하는 역할을 수행한다.
+
+## Worker Node
+
+호스팅하고 있는 컨테이너들을 의미한다.
+
 

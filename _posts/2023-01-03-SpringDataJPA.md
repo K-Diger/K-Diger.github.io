@@ -1,6 +1,6 @@
 ---
 
-title: Spring Data JPA - 어떻게 생겼나?
+title: Spring Data JPA 톺아보기
 author: Diger
 date: 2023-01-03
 categories: [Java, Spring, Spring Data JPA]

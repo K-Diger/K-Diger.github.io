@@ -1,6 +1,6 @@
 ---
 
-title: Fundamental of OperatingSystem
+title: 자문자답 - 운영체제 기본
 date: 2023-10-18
 categories: [OperatingSystem]
 tags: [OperatingSystem]

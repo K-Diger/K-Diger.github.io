@@ -1,7 +1,6 @@
 ---
 
 title: Server Side Session vs Token
-
 date: 2022-06-16
 categories: [Session, Token]
 tags: [Session, Token]
