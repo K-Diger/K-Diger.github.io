@@ -1,6 +1,6 @@
 ---
 
-title: Spring Data JPA 톺아보기
+title: Spring Data JPA 구현체 따라가기
 author: Diger
 date: 2024-09-19
 categories: [Java, Spring, Spring Data JPA]
