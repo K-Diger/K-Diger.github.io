@@ -11,9 +11,10 @@ mermaid: true
 
 ---
 
-[KIP-480 | StickyPartitioner](https://cwiki.apache.org/confluence/display/KAFKA/KIP-480%3A+Sticky+Partitioner)
+### 참고자료
 
-[KIP-429 | 살짝 관련성은 떨어지지만 Consumer Rebalance 관련](https://cwiki.apache.org/confluence/display/KAFKA/KIP-429:+Kafka+Consumer+Incremental+Rebalance+Protocol#KIP429:KafkaConsumerIncrementalRebalanceProtocol-Consumer)
+- [KIP-480 | StickyPartitioner](https://cwiki.apache.org/confluence/display/KAFKA/KIP-480%3A+Sticky+Partitioner)
+- [KIP-429 | 살짝 관련성은 떨어지지만 Consumer Rebalance 관련](https://cwiki.apache.org/confluence/display/KAFKA/KIP-429:+Kafka+Consumer+Incremental+Rebalance+Protocol#KIP429:KafkaConsumerIncrementalRebalanceProtocol-Consumer)
 
 ## 배경
 
@@ -428,7 +429,7 @@ Sticky 파티션 할당 전략은 다음과 같은 공식으로 균등 분배를
 
 즉, 초기에는 균등하게 분배되지 않을 수 있다고 **보인다.**
 
-그래도 마냥 불균등하진 않을 것으로 보이는데 아래 추가 조건이 있었기 때문이다.
+그래도 마냥 불균등하진 않을 것으로 **보이는데** 아래 추가 조건이 있었기 때문이다.
 
 - 모든 컨슈머가 동일한 토픽을 구독하는 경우 constrainedAssign()
   - quota 기반의 분배 공식을 사용해서 각 컨슈머가 minQuota를 채울 때까지 할당하고, 남은 파티션은 maxQuota 범위 내에서 추가 할당
