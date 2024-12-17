@@ -13,8 +13,8 @@ mermaid: true
 
 ### 참고자료
 
-- [KIP-480 | StickyPartitioner](https://cwiki.apache.org/confluence/display/KAFKA/KIP-480%3A+Sticky+Partitioner)
-- [KIP-429 | 살짝 관련성은 떨어지지만 Consumer Rebalance 관련](https://cwiki.apache.org/confluence/display/KAFKA/KIP-429:+Kafka+Consumer+Incremental+Rebalance+Protocol#KIP429:KafkaConsumerIncrementalRebalanceProtocol-Consumer)
+- [KIP-480 StickyPartitioner](https://cwiki.apache.org/confluence/display/KAFKA/KIP-480%3A+Sticky+Partitioner)
+- [KIP-429 살짝 관련성은 떨어지지만 Consumer Rebalance 관련](https://cwiki.apache.org/confluence/display/KAFKA/KIP-429:+Kafka+Consumer+Incremental+Rebalance+Protocol#KIP429:KafkaConsumerIncrementalRebalanceProtocol-Consumer)
 
 ## 배경
 
