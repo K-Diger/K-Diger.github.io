@@ -337,10 +337,8 @@ classDiagram
         KEY3: Value3
     }
 
-    A1 --> B1: "컨텍스트 전파를
-    이용하지 않은 요청"
-    A2 --> B2: "컨텍스트 전파를
-    이용한 요청"
+    A1 --> B1: "컨텍스트 전파 미사용"
+    A2 --> B2: "컨텍스트 전파 사용"
 
     style A1 fill:#2a4055,stroke:#4a6785,color:white
     style B1 fill:#2a4055,stroke:#4a6785,color:white
